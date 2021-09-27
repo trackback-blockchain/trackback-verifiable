@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig.base.json",
+    "include": [
+        "./packages/trackback-vc/src/**/*.ts",
+    ],
+    "compilerOptions": {
+        "paths": {
+            "@trackback/vc": [
+                "./packages/trackback-vc/src"
+            ],
+        }
+    }
+}

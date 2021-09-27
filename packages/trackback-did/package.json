@@ -1,0 +1,40 @@
+{
+  "name": "@trackback/did",
+  "version": "1.0.0",
+  "description": "Decentralized Identifiers (DIDs) v1.0",
+  "source": "src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "git@github.com:trackback-blockchain/trackback-did.git",
+  "author": "Don <don@track-back.co>",
+  "contributors": [],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
+    "watch": "babel src --out-dir lib --extensions '.ts' --watch",
+    "build": "tsc -p .",
+    "lint": "eslint . --ext .ts",
+    "format": "npx prettier --write ."
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "mocha": "^9.1.1",
+    "prettier": "2.3.2",
+    "sinon": "^11.1.2",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}

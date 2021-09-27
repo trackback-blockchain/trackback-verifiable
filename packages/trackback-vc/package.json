@@ -1,0 +1,29 @@
+{
+  "name": "@trackback/vc",
+  "version": "1.0.0",
+  "description": "Verifiable Credentials js sdk",
+  "source": "src/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": "git@github.com:trackback-blockchain/trackback-vc.git",
+  "author": "Don Lokuge <don@track-back.co>",
+  "contributors": [
+    "Don <don@track-back.co>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "watch": "babel --watch src ---out-dir lib --extensions '.ts,.tsx'",
+    "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
+    "tsc": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^16.9.4",
+    "ts-node": "^10.2.1"
+  },
+  "dependencies": {
+    "@stablelib/ed25519": "^1.0.2",
+    "jose": "^3.17.0",
+    "uint8arrays": "^3.0.0"
+  }
+}

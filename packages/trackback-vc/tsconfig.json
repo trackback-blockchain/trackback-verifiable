@@ -1,0 +1,21 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "include": ["src/**/*", "typings.d.ts"],
+    "compilerOptions": {
+      "target": "ES2019",
+      "module": "commonjs",
+      "declaration": true,
+      "declarationMap": true,
+      "sourceMap": true,
+      "outDir": "./lib",
+      "strict": true,
+      "noImplicitThis": false,
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "allowJs": false
+    },
+    "exclude": ["**/__tests__/*", "node_modules", "lib"]
+  }
+  
