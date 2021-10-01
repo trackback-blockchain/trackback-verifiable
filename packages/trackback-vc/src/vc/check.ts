@@ -1,6 +1,6 @@
 
 
-import { RFC3339_REGEX, CREDIENTIAL_CONTEXT } from '../constants';
+import { RFC3339_REGEX, CREDIENTIAL_CONTEXT, URI_REGEX } from '../constants';
 
 function isNonEmptyArray(item: any): boolean {
     return Array.isArray(item) && item.length > 0
@@ -16,7 +16,7 @@ export function check(credential: any): boolean {
         throw new Error('Credentials must have a "@context" property.');
     }
 
-    const context = credential['@contextt'][0];
+    const context = credential['@context'][0];
 
     if (context !== CREDIENTIAL_CONTEXT) {
         throw new Error("Credentials first item is a URI with the value https://www.w3.org/2018/credentials/v1");
@@ -39,6 +39,12 @@ export function check(credential: any): boolean {
         throw new Error('Credentials must have "issuer"');
     }
 
+    // fix this
+    
+    // if(!URI_REGEX.test(credential['issuer'])){
+    //     throw new Error('Credentials must have "issuer"');
+    // }
+
     if (credential["issuanceDate"]) {
         if (typeof credential["issuanceDate"] !== 'string') {
             throw new Error('"issuanceDate" must be a string.');
@@ -52,5 +58,3 @@ export function check(credential: any): boolean {
     return true;
 
 }
-
-

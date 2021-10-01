@@ -1,7 +1,1 @@
-export function create() {
-
-}
-
-export function sign() {
-
-}
+export * from "./vc";

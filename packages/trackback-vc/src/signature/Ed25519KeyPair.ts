@@ -77,7 +77,12 @@ export class Ed25519KeyPair {
         throw new Error('Not yet implemented')
     }
 
-
+/**
+ * 
+ * @param publicKey 
+ * @param contentType 
+ * @returns 
+ */
     static toDIDDocument(publicKey: Uint8Array, contentType: string) {
         const fingerprint = Encoding.encodeED25519Key(publicKey, 'base58btc')
         const did = `did:key:${fingerprint}`;
@@ -91,7 +96,7 @@ export class Ed25519KeyPair {
         if (contentType === CONTENT_TYPE_DID_LD_JSON) {
             context['@context'] = 'https://w3id.org/did/v1'
         }
-
+        // info https://w3c-ccg.github.io/ld-cryptosuite-registry/#signature-suites
         return {
             ...context,
             id: did,
