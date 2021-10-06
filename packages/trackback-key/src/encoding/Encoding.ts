@@ -40,9 +40,22 @@ export class Encoding {
   }
 
   static toBase58btc(publicKey: Uint8Array): string {
-    return u8a.toString(publicKey, 'base64url')
+    return u8a.toString(publicKey, 'base58btc')
+  }
+  // https://medium.com/swlh/json-web-signature-jws-and-jws-detached-for-a-five-year-old-88729b7b1a68
+  static toBase64url(data: any): string {
+    return Buffer
+      .from(data || '')
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/g, '');
   }
 
-
+  static fromBase64Url(data: string): string {
+    const fixed = data.replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = Buffer.from(fixed, 'base64').toString('utf8');
+    return decoded;
+  }
 
 }

@@ -1,3 +1,5 @@
+import type { KeyObject } from 'crypto'
+
 export interface Ed25519VerificationKey2018 {
     id: string;
     type: string;
@@ -7,10 +9,19 @@ export interface Ed25519VerificationKey2018 {
 }
 
 export interface IEd25519KeyPair {
-    id: string;
-    controller: string;
+    id?: string;
+    controller?: string;
     publicKey: Uint8Array;
     privateKey?: Uint8Array;
- 
 
 }
+export interface IX25519KeyPair {
+    id?: string;
+    controller?: string;
+    publicKey: KeyObject | CryptoKey;
+    privateKey?: KeyObject | CryptoKey;
+
+}
+
+
+export * from './ISignatureSuite'

@@ -11,6 +11,7 @@ export class Ed25519KeyPair implements IEd25519KeyPair {
     public publicKey: Uint8Array;
     public privateKey?: Uint8Array;
 
+
     constructor(options: { id: string, controller: string, publicKey: Uint8Array, privateKey?: Uint8Array }) {
         this.id = options.id;
         this.controller = options.controller;
@@ -34,6 +35,7 @@ export class Ed25519KeyPair implements IEd25519KeyPair {
 
         })
     }
+
 
     static secureRandom = () => {
         return randomBytes(32);

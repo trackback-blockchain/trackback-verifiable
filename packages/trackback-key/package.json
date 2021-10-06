@@ -1,4 +1,9 @@
 {
   "name": "@trackback/trackback-key",
-  "packageManager": "yarn@3.0.2"
+  "packageManager": "yarn@3.0.2",
+  "dependencies": {
+    "@stablelib/ed25519": "^1.0.2",
+    "crypto": "^1.0.1",
+    "jose": "^3.19.0"
+  }
 }

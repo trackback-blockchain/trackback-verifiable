@@ -70,3 +70,8 @@ export interface DIDResolutionResult {
   didDocument: DIDDocument | null;
   didDocumentMetadata: DIDDocumentMetadata;
 }
+
+
+export interface IDIDManager {
+  
+}
