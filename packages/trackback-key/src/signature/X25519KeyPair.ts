@@ -14,36 +14,36 @@ export class X25519KeyPair implements IX25519KeyPair {
     public controller?: string;
     public publicKey: KeyObject | CryptoKey;
     public privateKey: KeyObject | CryptoKey;
-    public publicKeyJWK?: JWK;
-    public privateKeyJWK?: JWK;
+    public publicKeyJwk?: JWK;
+    public privateKeyJwK?: JWK;
 
     constructor(options: {
         id?: string,
         controller?: string,
         publicKey: KeyObject | CryptoKey,
         privateKey?: KeyObject | CryptoKey,
-        publicKeyJWK?: JWK,
-        privateKeyJWK?: JWK
+        publicKeyJwk?: JWK,
+        privateKeyJwK?: JWK
     }) {
         this.id = options.id;
         this.controller = options.controller;
         this.publicKey = options.publicKey;
         this.privateKey = options.privateKey;
-        this.publicKeyJWK = options.publicKeyJWK;
-        this.privateKeyJWK = options.privateKeyJWK;
+        this.publicKeyJwk = options.publicKeyJwk;
+        this.privateKeyJwK = options.privateKeyJwK;
     }
 
     static async generate(): Promise<X25519KeyPair> {
         const { publicKey, privateKey } = await generateKeyPair(ALG, { crv: 'X25519' })
 
-        const privateKeyJWK: JWK = await exportJWK(privateKey)
-        const publicKeyJWK = await exportJWK(publicKey)
+        const privateKeyJwK: JWK = await exportJWK(privateKey)
+        const publicKeyJwk = await exportJWK(publicKey)
 
         return new X25519KeyPair({
             publicKey,
             privateKey,
-            privateKeyJWK,
-            publicKeyJWK,
+            publicKeyJwk,
+            privateKeyJwK,
         })
     }
 
@@ -66,5 +66,23 @@ export class X25519KeyPair implements IX25519KeyPair {
         return (decoder.decode(payload) === data)
     }
 
+    toDidDocument() {
+
+        return {
+            "@context": [
+                "https://www.w3.org/ns/did/v1",
+                "https://w3id.org/security/suites/jws-2020/v1"
+            ],
+            id: "",
+            "assertionMethod": [
+                {
+                    "id": "",
+                    "type": "JsonWebKey2020",
+                    "controller": "",
+                    "publicKeyJwk": this.publicKeyJwk
+                }
+            ]
+        }
+    }
 
 }
