@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto';
 import * as ed25519 from '@stablelib/ed25519';
 import { Encoding } from '../encoding/Encoding';
 import { CONTENT_TYPE_DID_LD_JSON } from '../constants';
+
 import { Ed25519VerificationKey2018, IEd25519KeyPair } from '../types';
 
 export class Ed25519KeyPair implements IEd25519KeyPair {

@@ -52,7 +52,7 @@ export class Encoding {
       .replace(/=+$/g, '');
   }
 
-  static fromBase64Url(data: string): string {
+  static decodeBase64Url(data: string): string {
     const fixed = data.replace(/-/g, '+').replace(/_/g, '/');
     const decoded = Buffer.from(fixed, 'base64').toString('utf8');
     return decoded;
