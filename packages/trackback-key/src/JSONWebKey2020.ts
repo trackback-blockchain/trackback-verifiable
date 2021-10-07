@@ -2,7 +2,7 @@
 import { generateKeyPair, GenerateKeyPairOptions } from 'jose/util/generate_key_pair'
 import { exportJWK } from 'jose/key/export'
 import { importJWK } from 'jose/key/import'
-import type { JWK } from 'jose/types';
+import type { FlattenedJWS, JWK } from 'jose/types';
 import { calculateThumbprint } from 'jose/jwk/thumbprint'
 import { FlattenedSign } from 'jose/jws/flattened/sign'
 import { Encoding } from './encoding/Encoding';
@@ -49,27 +49,55 @@ export class JsonWebKey2020 {
         )
     }
 
+    get getId(): string {
+        return this.id;
+    }
 
-    async sign(data: string): Promise<string> {
+    get getController(): string {
+        return this.controller;
+    }
+
+    get getPublicKeyJwk(): JWK {
+        return this.publicKeyJwk;
+    }
+
+    async sign(data: any, header?:any): Promise<string> {
+        const _header = {
+            alg: 'EdDSA',
+            b64: false,
+            crit: ['b64'],
+            ...header,
+        }
+
+        const flattenedJWS = await this._sign(data, _header);
+        return flattenedJWS.protected + '.' + flattenedJWS.payload + '.' + flattenedJWS.signature
+    }
+
+    private async _sign(data: string, header): Promise<FlattenedJWS> {
+
+        const encoder = new TextEncoder();
+
+        const payloadToSign = typeof data === 'string' ? data : JSON.stringify(data);
+
+        return new FlattenedSign(encoder.encode(payloadToSign))
+            .setProtectedHeader(header)
+            .sign(await importJWK(this.privateKeyJwk));
+    }
+
+
+    async signDeattached(data: string): Promise<string> {
         const header = {
             alg: 'EdDSA',
             b64: false,
             crit: ['b64'],
         }
-        const encoder = new TextEncoder();
-
-        const payloadToSign = typeof data === 'string' ? data : JSON.stringify(data);
-
-        const flattenedJWS = await new FlattenedSign(encoder.encode(payloadToSign))
-            .setProtectedHeader(header)
-            .sign(await importJWK(this.privateKeyJwk));
-
+        const flattenedJWS = await this._sign(data, header);
 
         return flattenedJWS.protected + '..' + flattenedJWS.signature
     }
 
 
-    async verify(jws: string, data: string): Promise<boolean> {
+    async verifyDeattached(jws: string, data: string): Promise<boolean> {
 
         const [encodedHeader, encodedSignature] = jws.split('..');
         let header;
