@@ -45,13 +45,13 @@ export class Ed25519KeyPair {
     }
 
 
-    async sign(keyPair: Ed25519KeyPair, data: string) {
+    async sign(data: string) {
 
         if (typeof data !== 'string') {
             throw new Error('string required');
         }
 
-        if (!keyPair.privateKey) {
+        if (!this.privateKey) {
             throw new Error('No private key');
         }
 
@@ -60,7 +60,7 @@ export class Ed25519KeyPair {
 
         const jws = await new CompactSign(encoder.encode(digest))
             .setProtectedHeader({ alg: 'ES256' })
-            .sign(keyPair.privateKey)
+            .sign(this.privateKey)
 
         console.log(jws)
 
@@ -77,12 +77,12 @@ export class Ed25519KeyPair {
         throw new Error('Not yet implemented')
     }
 
-/**
- * 
- * @param publicKey 
- * @param contentType 
- * @returns 
- */
+    /**
+     * 
+     * @param publicKey 
+     * @param contentType 
+     * @returns 
+     */
     static toDIDDocument(publicKey: Uint8Array, contentType: string) {
         const fingerprint = Encoding.encodeED25519Key(publicKey, 'base58btc')
         const did = `did:key:${fingerprint}`;

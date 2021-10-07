@@ -4,7 +4,7 @@ import { Issuer } from "./Issuer";
 export type Type = string | string[];
 
 
-export interface Credential {
+export interface Claim {
   id?: string
   [key: string]: any;
 }
@@ -14,7 +14,7 @@ export interface CredentialStatus {
   [key: string]: any;
 }
 
-export type CredentialSubject = Credential | [Credential]
+export type CredentialSubject = Claim | [Claim]
 
 export interface VerifiableCredential {
   context: string[];
