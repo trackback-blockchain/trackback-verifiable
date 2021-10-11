@@ -17,13 +17,6 @@
     "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
     "tsc": "tsc"
   },
-  "devDependencies": {
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.9.4",
-    "chai": "^4.3.4",
-    "mocha": "^9.1.2",
-    "ts-node": "^10.2.1"
-  },
   "dependencies": {
     "@stablelib/ed25519": "^1.0.2",
     "jose": "^3.17.0",
