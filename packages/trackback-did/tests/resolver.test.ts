@@ -1,11 +1,11 @@
-import DIDUtilily from '../src/did-utility';
+import DIDResolver from '../src/resolver';
 import { expect } from 'chai';
 import { DIDResolutionResult } from '../src/types';
 
 describe('DID Utility Tests', function () {
   describe('Tests for parseDID()', () => {
     it('parseDID should return trackback', () => {
-      const did = new DIDUtilily();
+      const did = new DIDResolver();
       const result = did.parseDID('did:trackback:1324');
 
       expect(result).to.be.an('object').to.have.property('prefix');
@@ -14,7 +14,7 @@ describe('DID Utility Tests', function () {
     });
 
     it('parseDID should return TypeError: Not a valid did format', () => {
-      const did = new DIDUtilily();
+      const did = new DIDResolver();
 
       expect(() => did.parseDID('did:test')).to.throw('Not a valid did format');
     });
@@ -43,7 +43,7 @@ describe('DID Utility Tests', function () {
     it('should not resolve for unknown method', async () => {
       const { method, resolver } = mockOptions('trackback');
 
-      const didUtil = new DIDUtilily(method, resolver);
+      const didUtil = new DIDResolver(method, resolver);
       const result: DIDResolutionResult = await didUtil.resolve(
         'did:web:test1234'
       );
@@ -55,7 +55,7 @@ describe('DID Utility Tests', function () {
     it('should not resolve for bad did', async () => {
       const { method, resolver } = mockOptions('trackback');
 
-      const didUtil = new DIDUtilily(method, resolver);
+      const didUtil = new DIDResolver(method, resolver);
       const result: DIDResolutionResult = await didUtil.resolve('did:34');
 
       expect(result).to.be.an('object');
@@ -69,7 +69,7 @@ describe('DID Utility Tests', function () {
 
       const expected = await resolver.resolve(did);
 
-      const didUtil = new DIDUtilily(method, resolver);
+      const didUtil = new DIDResolver(method, resolver);
       const result: DIDResolutionResult = await didUtil.resolve(did);
 
       expect(result).to.be.an('object');

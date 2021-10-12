@@ -1,10 +1,7 @@
-import { DIDResolutionResult } from './types';
+import { DIDResolutionResult, DIDResolutionOptions } from './types';
 import { DID_FORMAT } from './helpers';
-
-
-export type DIDResolutionOptions = {};
-
-export interface DIDResolver {
+ 
+export interface IDIDResolver {
   resolve: (
     did: string,
     options: DIDResolutionOptions
@@ -12,7 +9,7 @@ export interface DIDResolver {
 }
 
 export interface ResolverMap {
-  [key: string]: DIDResolver;
+  [key: string]: IDIDResolver;
 }
 
 export type ParsedResult = {
@@ -25,17 +22,17 @@ const emptyResult: DIDResolutionResult = {
   didDocumentMetadata: {},
 };
 
-export default class DIDUtilily {
+export default class DIDResolver {
   private _resolverMap: ResolverMap;
 
-  constructor(method?: string, resolver?: DIDResolver) {
+  constructor(method?: string, resolver?: IDIDResolver) {
     this._resolverMap = {};
     if (method && resolver) {
       this.add(method, resolver);
     }
   }
 
-  add(method: string, resolver: DIDResolver): void {
+  add(method: string, resolver: IDIDResolver): void {
     const map = {
       [method]: resolver,
     };
@@ -49,7 +46,7 @@ export default class DIDUtilily {
     try {
       const parse = this.parseDID(did);
 
-      const resolver: DIDResolver = this._resolverMap[parse.prefix];
+      const resolver: IDIDResolver = this._resolverMap[parse.prefix];
 
       const didDocumentResult = await resolver.resolve(did, options);
 

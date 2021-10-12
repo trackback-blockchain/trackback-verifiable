@@ -1,23 +1,3 @@
-import DIDUtilily from './did-utility';
+export * from './types';
 
-import {
-  JSONWebKey,
-  VerificationMethod,
-  ServiceEndpoint,
-  DIDDocument,
-  DIDResolutionMetadata,
-  DIDDocumentMetadata,
-  DIDResolutionResult,
-} from './types';
-
-export {
-  JSONWebKey,
-  VerificationMethod,
-  ServiceEndpoint,
-  DIDDocument,
-  DIDResolutionMetadata,
-  DIDDocumentMetadata,
-  DIDResolutionResult,
-};
-
-export default DIDUtilily;
+export * from './resolver'
