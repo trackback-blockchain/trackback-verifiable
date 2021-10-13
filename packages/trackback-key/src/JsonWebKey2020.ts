@@ -1,17 +1,35 @@
-
+import { flattenedVerify } from 'jose/jws/flattened/verify';
 import { generateKeyPair, GenerateKeyPairOptions } from 'jose/util/generate_key_pair'
 import { exportJWK } from 'jose/key/export'
 import { importJWK } from 'jose/key/import'
 import type { FlattenedJWS, JWK } from 'jose/types';
 import { calculateThumbprint } from 'jose/jwk/thumbprint'
 import { FlattenedSign } from 'jose/jws/flattened/sign'
+
 import { Encoding } from './encoding/Encoding';
-import { flattenedVerify } from 'jose/jws/flattened/verify'
 
 
 // based on https://github.com/w3c-ccg/lds-jws2020
 // https://github.com/w3c-ccg/lds-jws2020
 // not all alg is supported
+
+const DEFAULT_ALG = "EdDSA";
+const DEFAULT_CRV_LENGTH = { crv: 'Ed25519' }
+
+/**
+ * check header has deattached params
+ * @param encodedHeader 
+ * @returns 
+ */
+function isDeattachedHeader(encodedHeader: string) {
+    try {
+        const header = JSON.parse(Encoding.base64Decode(encodedHeader));
+        return header?.b64 === false && header.crit[0] === 'b64';
+    } catch (error) {
+        console.log(error)
+    }
+    return false;
+}
 
 export class JsonWebKey2020 {
     public id: string;
@@ -30,19 +48,18 @@ export class JsonWebKey2020 {
     }
 
     static async generate(controller?: string, alg?: string, options?: GenerateKeyPairOptions): Promise<JsonWebKey2020> {
-        const ALG = 'EdDSA';
 
-        const { publicKey, privateKey } = await generateKeyPair(alg || ALG, options || { crv: 'Ed25519' });
+        const { publicKey, privateKey } = await generateKeyPair(alg || DEFAULT_ALG, options || DEFAULT_CRV_LENGTH);
 
         const privateKeyJwk: JWK = await exportJWK(privateKey);
         const publicKeyJwk: JWK = await exportJWK(publicKey);
         const thumbprint = await calculateThumbprint(publicKeyJwk);
         const _controller = controller || `did:trackback:key:${thumbprint}`;
 
-        if(!privateKeyJwk.alg){
+        if (!privateKeyJwk.alg) {
             privateKeyJwk.alg = alg;
         }
-        if(!publicKeyJwk.alg){
+        if (!publicKeyJwk.alg) {
             publicKeyJwk.alg = alg;
         }
 
@@ -93,19 +110,22 @@ export class JsonWebKey2020 {
         const _this = this;
 
         return {
-            async sign(data: any, header?: any) {
-                return _this.sign(data, header);
+            async sign(data: any, options?: any) {
+                return _this.sign(data, options);
             }
         }
 
     }
 
-    async sign(data: any, header?: any): Promise<string> {
-        const _header = {
-            alg: 'EdDSA',
+    async sign(data: any, options?: { deattached: boolean, header: any }): Promise<string> {
+        const deattachedHeaders = {
             b64: false,
             crit: ['b64'],
-            ...header,
+        }
+        const _header = {
+            alg: this.privateKeyJwk?.alg,
+            ...(options?.deattached ? deattachedHeaders : undefined),
+            ...(options?.header),
         }
 
         const flattenedJWS = await this._sign(data, _header);
@@ -132,50 +152,44 @@ export class JsonWebKey2020 {
     }
 
 
-    async signDeattached(data: string): Promise<string> {
-        const header = {
-            alg: 'EdDSA',
-            b64: false,
-            crit: ['b64'],
-        }
-        const flattenedJWS = await this._sign(data, header);
 
-        return flattenedJWS.protected + '..' + flattenedJWS.signature
+    verifier() {
+        if (!this.publicKeyJwk) {
+            return {
+                verify({ data, signature }: { data: any, signature: string }) {
+                    throw new Error('Public key required')
+                }
+            }
+        }
+
+        const _this = this;
+
+        return {
+            async verify({ data, signature }: { data: any, signature: string }) {
+                try {
+
+                    const [encodedHeader, payloadEncoded, sig] = signature.split(".");
+
+                    const isDeattached = isDeattachedHeader(encodedHeader);
+
+                    const payloadToSign = typeof data === 'string' ? data : JSON.stringify(data);
+
+                    const jws = {
+                        signature: sig,
+                        payload: isDeattached ? (payloadToSign) : payloadEncoded,
+                        protected: encodedHeader
+                    }
+
+                    const result = await flattenedVerify(jws, await importJWK(_this.publicKeyJwk))
+
+                    return Boolean(result);
+                } catch (error) {
+                    console.log(error)
+                }
+                return false
+            }
+        }
+
     }
 
-
-    async verifyDeattached(jws: string, data: string): Promise<boolean> {
-
-        const [encodedHeader, encodedSignature] = jws.split('..');
-        let header;
-
-        try {
-            header = JSON.parse(Encoding.decodeBase64Url(encodedHeader));
-        } catch (e) {
-            throw new Error('Invalid header' + e);
-        }
-
-        if (header.alg !== this.publicKeyJwk.alg) {
-            throw new Error('Invalid alg')
-        }
-        const encoder = new TextEncoder();
-        const decoder = new TextDecoder()
-
-        const detachedJWS = {
-            protected: encodedHeader,
-            payload: encoder.encode(data),
-            signature: encodedSignature,
-        };
-
-        try {
-            const { payload, protectedHeader } = await flattenedVerify(detachedJWS, await importJWK(this.publicKeyJwk))
-            console.log(decoder.decode(payload))
-            console.log(protectedHeader)
-
-            return decoder.decode(payload) === data;
-        } catch (error) {
-            console.log(error)
-            return false;
-        }
-    }
 }
