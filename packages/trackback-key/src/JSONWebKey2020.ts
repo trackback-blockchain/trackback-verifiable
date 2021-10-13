@@ -73,7 +73,7 @@ export class JsonWebKey2020 {
         return flattenedJWS.protected + '.' + flattenedJWS.payload + '.' + flattenedJWS.signature
     }
 
-    private async _sign(data: string, header): Promise<FlattenedJWS> {
+    private async _sign(data: string, header:any): Promise<FlattenedJWS> {
 
         const encoder = new TextEncoder();
 

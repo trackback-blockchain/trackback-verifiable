@@ -9,8 +9,14 @@ export interface IDIDManager {
 
 }
 
+export interface IKeyManager {
+
+}
+
 export interface ITrackbackAgentOptions {
     url: string;
     options: ApiOptions;
-    didManager: IDIDManager;
+    didManager?: IDIDManager;
 }
+
+
