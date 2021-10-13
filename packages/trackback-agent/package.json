@@ -1,0 +1,9 @@
+{
+  "name": "@trackback/agent",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@polkadot/api": "^6.1.2"
+  }
+}
