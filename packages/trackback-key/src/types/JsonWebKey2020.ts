@@ -1,5 +1,10 @@
 import type { JWK } from 'jose/types';
 
+
+export type Signer = {
+    sign: () => Promise<string>
+}
+
 export type JsonWebKey2020 = {
 
     id: string;
@@ -11,5 +16,6 @@ export type JsonWebKey2020 = {
     generate: () => Promise<JsonWebKey2020>;
     sign: () => Promise<string>;
     verify: () => Promise<boolean>;
+    signer: () => Promise<Signer>;
 
 }

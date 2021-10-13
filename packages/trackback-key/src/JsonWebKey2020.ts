@@ -10,6 +10,7 @@ import { flattenedVerify } from 'jose/jws/flattened/verify'
 
 
 // based on https://github.com/w3c-ccg/lds-jws2020
+// https://github.com/w3c-ccg/lds-jws2020
 // not all alg is supported
 
 export class JsonWebKey2020 {
@@ -17,35 +18,44 @@ export class JsonWebKey2020 {
     public type: string;
     public controller: string;
     public publicKeyJwk: JWK;
-    public privateKeyJwk: JWK;
+    public privateKeyJwk?: JWK;
 
 
-    constructor(id: string, type: string, controller: string, publicKeyJwk: JWK, privateKeyJwk: JWK) {
-        this.id = id;
-        this.type = type;
-        this.controller = controller;
-        this.publicKeyJwk = publicKeyJwk;
-        this.privateKeyJwk = privateKeyJwk;
+    constructor(option: { id: string, type: string, controller: string, publicKeyJwk: JWK, privateKeyJwk?: JWK }) {
+        this.id = option.id;
+        this.type = option.type;
+        this.controller = option.controller;
+        this.publicKeyJwk = option.publicKeyJwk;
+        this.privateKeyJwk = option.privateKeyJwk;
     }
 
-    static async generate(controller: string, alg: string, options?: GenerateKeyPairOptions): Promise<JsonWebKey2020> {
+    static async generate(controller?: string, alg?: string, options?: GenerateKeyPairOptions): Promise<JsonWebKey2020> {
         const ALG = 'EdDSA';
 
         const { publicKey, privateKey } = await generateKeyPair(alg || ALG, options || { crv: 'Ed25519' });
 
-        const privateKeyJwK: JWK = await exportJWK(privateKey);
+        const privateKeyJwk: JWK = await exportJWK(privateKey);
         const publicKeyJwk: JWK = await exportJWK(publicKey);
         const thumbprint = await calculateThumbprint(publicKeyJwk);
-        const _controller = controller || `did:trackback:${thumbprint}`;
+        const _controller = controller || `did:trackback:key:${thumbprint}`;
+
+        if(!privateKeyJwk.alg){
+            privateKeyJwk.alg = alg;
+        }
+        if(!publicKeyJwk.alg){
+            publicKeyJwk.alg = alg;
+        }
 
         const id = `${_controller}#${thumbprint}`
 
-        return new JsonWebKey2020(
+        return new JsonWebKey2020({
             id,
-            "JsonWebKey2020",
-            _controller,
+            type: "JsonWebKey2020",
+            controller: _controller,
             publicKeyJwk,
-            privateKeyJwK,
+            privateKeyJwk
+        }
+
         )
     }
 
@@ -61,7 +71,36 @@ export class JsonWebKey2020 {
         return this.publicKeyJwk;
     }
 
-    async sign(data: any, header?:any): Promise<string> {
+    static from(keyPair: any) {
+        return new JsonWebKey2020({
+            ...keyPair
+        })
+    }
+
+    static async fingerprint(publicKeyJwk: JWK) {
+        return calculateThumbprint(publicKeyJwk);
+    }
+
+    signer() {
+        if (!this.privateKeyJwk) {
+            return {
+                async sign() {
+                    throw new Error('No private key');
+                },
+            };
+        }
+
+        const _this = this;
+
+        return {
+            async sign(data: any, header?: any) {
+                return _this.sign(data, header);
+            }
+        }
+
+    }
+
+    async sign(data: any, header?: any): Promise<string> {
         const _header = {
             alg: 'EdDSA',
             b64: false,
@@ -73,7 +112,15 @@ export class JsonWebKey2020 {
         return flattenedJWS.protected + '.' + flattenedJWS.payload + '.' + flattenedJWS.signature
     }
 
-    private async _sign(data: string, header:any): Promise<FlattenedJWS> {
+    private async _sign(data: string, header: any): Promise<FlattenedJWS> {
+
+        if (!this.privateKeyJwk) {
+            throw new Error('No private key');
+        }
+
+        if (!this.privateKeyJwk.alg && !header.alg) {
+            throw new Error('TypeError: "alg" argument is required when "jwk.alg" is not present')
+        }
 
         const encoder = new TextEncoder();
 
@@ -81,7 +128,7 @@ export class JsonWebKey2020 {
 
         return new FlattenedSign(encoder.encode(payloadToSign))
             .setProtectedHeader(header)
-            .sign(await importJWK(this.privateKeyJwk));
+            .sign(await importJWK(this.privateKeyJwk, header.alg));
     }
 
 
@@ -123,6 +170,7 @@ export class JsonWebKey2020 {
         try {
             const { payload, protectedHeader } = await flattenedVerify(detachedJWS, await importJWK(this.publicKeyJwk))
             console.log(decoder.decode(payload))
+            console.log(protectedHeader)
 
             return decoder.decode(payload) === data;
         } catch (error) {
