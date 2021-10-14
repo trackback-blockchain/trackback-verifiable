@@ -12,19 +12,20 @@ const defaultOptions = {
   options: {
     types: {
       VerifiableCredential: {
-        account_id: 'AccountId',
-        public_key: 'Vec<8>',
-        block_time_stamp: 'u64',
-        active: 'bool',
+        "account_id": "AccountId",
+        "public_key": "Vec<u8>",
+        "block_time_stamp":"u64",
+        "active":"bool"
       },
       DID: {
-        did_resolution_metadata: 'Option<Vec<u8>>',
-        // did_document: 'Vec<u8>',
-        did_document_metadata: 'Option<Vec<u8>>',
-        block_number: 'BlockNumber',
-        block_time_stamp: 'u64',
-        did_ref: 'Vec<u8>',
-        sender_account_id: 'Vec<u8>',
+        "did_resolution_metadata" :"Option<Vec<u8>>",
+        "did_document_metadata" :"Option<Vec<u8>>",
+        "block_number" :"BlockNumber",
+        "block_time_stamp" :"u64",
+        "updated_timestamp": "u64",
+        "did_ref" :"Option<Vec<u8>>",
+        "sender_account_id" :"Vec<u8>",
+        "public_keys": "Option<Vec<Vec<u8>>>"
       },
 
     },
@@ -143,6 +144,7 @@ export class TrackBackAgent implements ITrackbackAgent {
     return this.api;
   }
 
+  // IPFS 
   async resolve(didUri: string): Promise<IDIDResolutionResult> {
     const didUriHex = this.uriToHex(didUri);
     console.log(didUriHex)
