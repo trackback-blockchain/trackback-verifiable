@@ -144,6 +144,11 @@ export class TrackBackAgent implements ITrackbackAgent {
     return this.api;
   }
 
+  async disconnect(){
+    return (await this.connect()).disconnect();
+
+}  
+
   // IPFS 
   async resolve(didUri: string): Promise<IDIDResolutionResult> {
     const didUriHex = this.uriToHex(didUri);
@@ -166,10 +171,11 @@ export class TrackBackAgent implements ITrackbackAgent {
     });
   }
 
-  toUnit8Aaay(json: any): number[] {
+  toUint8Array(json: any): number[] {
     const str = JSON.stringify(json);
 
     var bytes = new Uint8Array(str.length);
+
     for (var iii = 0; iii < str.length; iii++) {
       bytes[iii] = str.charCodeAt(iii);
     }
@@ -200,32 +206,46 @@ export class TrackBackAgent implements ITrackbackAgent {
 
   }
 
+  /**
+   * Saves a DID Document on chain
+   * @param account | Polkadot Account
+   * @param didDocument | DID Document represented in a JSON Structure
+   * @param didDocumentMetadata | DID Documen metadata JSON List 
+   * @param didResolutionMetadata | DID Resolution metadata JSON list 
+   * @param didRef | IPFS URI for the the DID
+   * @param publicKeys | Aithorised public keys
+   * @returns Promise<boolean>
+   */
   async save(
     account: IKeyringPair,
     didDocument: DIDDocument,
     didDocumentMetadata: IDIDDocumentMetadata,
-    dIDResolutionMetadata: IDIDResolutionMetadata
+    didResolutionMetadata: IDIDResolutionMetadata,
+    didRef: string,
+    publicKeys: Array<string>
   ): Promise<boolean> {
-    const didDoc = this.toUnit8Aaay(didDocument);
-    const didDocMetadata = this.toUnit8Aaay(didDocumentMetadata);
-    const didDocRes = this.toUnit8Aaay(dIDResolutionMetadata);
+    const didDoc = this.toUint8Array(didDocument);
+    const didDocMetadata = this.toUint8Array(didDocumentMetadata);
+    const didDocRes = this.toUint8Array(didResolutionMetadata);
 
     const palletRpc = 'didModule';
     const callable = 'insertDidDocument';
 
-    const id = this.uriToHex(didDocument.id)
+    const didURI = this.uriToHex(didDocument.id)
 
-    console.log(id)
+    console.log(didURI)
 
     const inputParams = [
       didDoc,
       didDocMetadata,
       didDocRes,
       account.address,
-      id,
+      didURI,
+      didRef,
+      publicKeys
     ];
 
-    const paramFields = [true, true, true, true, true];
+    const paramFields = [true, true, true, true, true, true, true];
 
     const transformed = transformParams(paramFields, inputParams);
 
@@ -271,7 +291,13 @@ export class TrackBackAgent implements ITrackbackAgent {
       .catch((error) => {
         console.log(error);
         return false;
-      });
+      }).finally(
+        () => {
+          this.disconnect();
+        }
+      )
+
+      ;
   }
 
 }
