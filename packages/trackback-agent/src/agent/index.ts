@@ -8,7 +8,8 @@ import { DIDDocument, IDIDResolutionResult, ITrackbackAgent } from "../types";
 
 const defaultOptions = {
   // url: 'wss://trackback.dev',
-  url: 'ws://ec2-13-210-205-180.ap-southeast-2.compute.amazonaws.com:9944/',
+  // url: 'ws://ec2-13-210-205-180.ap-southeast-2.compute.amazonaws.com:9944/',
+  url: 'ws://127.0.0.1:9944',
   options: {
     types: {
       VerifiableCredential: {
@@ -122,7 +123,9 @@ function transformParams(
   }, []);
 }
 
-
+type SaveResult = {
+  [key: string]: any
+}
 export class TrackBackAgent implements ITrackbackAgent {
 
   private options: ITrackbackAgentOptions;
@@ -223,7 +226,7 @@ export class TrackBackAgent implements ITrackbackAgent {
     didResolutionMetadata: IDIDResolutionMetadata,
     didRef: string,
     publicKeys: Array<string>
-  ): Promise<boolean> {
+  ): Promise<SaveResult> {
     const didDoc = this.toUint8Array(didDocument);
     const didDocMetadata = this.toUint8Array(didDocumentMetadata);
     const didDocRes = this.toUint8Array(didResolutionMetadata);
@@ -252,37 +255,54 @@ export class TrackBackAgent implements ITrackbackAgent {
     return this.saveToChain(account, palletRpc, callable, transformed);
   }
 
+  /**
+   * Saves a DID document data structure into TrackBack chain
+   * @param account | Polkadot Account which analogous to `IKeyringPair`
+   * @param palletRpc | RPC module in DID Pallet
+   * @param callable | RPC method in DID Pallet
+   * @param transformed | A valid transform object
+   * @returns 
+   */
   async saveToChain(
     account: IKeyringPair,
     palletRpc: string,
     callable: string,
     transformed: any
-  ): Promise<boolean> {
+  ): Promise<SaveResult> {
     return this.connect()
       .then((api) => {
-        if (!api) return false;
+        // if (!api) return false;
+        if (!api) return {};
 
         return api.rpc.system
           .accountNextIndex(account.address)
           .then((nonce) => {
-            return new Promise<boolean>((resolve) => {
+            return new Promise<SaveResult>((resolve) => {
               const txExecute = api.tx[palletRpc][callable](...transformed);
+ 
 
               txExecute.signAndSend(account, { nonce }, (result: any) => {
+
+                
                 console.log(`Current status is ${JSON.stringify(result)}`);
                 console.log(`Current nonce is ${nonce}`);
 
                 if (result.status.isInBlock) {
-                  console.log(
-                    `Transaction included at blockHash ${result.status.asInBlock}`
-                  );
+                  console.log(`Block Hash ${result.status.asInBlock}`);
                 } else if (result.status.isFinalized) {
-                  console.log(
-                    `Transaction finalized at blockHash ${JSON.stringify(
-                      result
-                    )}`
-                  );
-                  resolve(result.status.isFinalized);
+                  if(result.dispatchError) {
+ 
+                    resolve({
+                      Error: true,
+                      Message: "dispatchError"
+                    });
+                  } else {
+                    console.log(`Finalised Block Hash ${JSON.stringify(result)}`);
+                    resolve({
+                      Error: false,
+                      Message: "Data has been saved successfully"
+                    });
+                  }
                 }
               });
             });
@@ -290,7 +310,11 @@ export class TrackBackAgent implements ITrackbackAgent {
       })
       .catch((error) => {
         console.log(error);
-        return false;
+        return {
+          "Error": true,
+          "Message": "Error"
+        };
+        // return false;
       }).finally(
         () => {
           this.disconnect();

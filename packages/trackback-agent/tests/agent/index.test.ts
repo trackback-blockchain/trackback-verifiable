@@ -62,23 +62,10 @@ describe('generate', () => {
         didRef,
         publicKeys
       );
-      expect(result).to.equal({});
-      // keyring.loadAll({ ss58Format: 42, type: 'sr25519' });
-    
-      // additional initialization here, including rendering
+      expect(result).to.equal({
+          "Error": true,
+          "Message": "dispatchError",
+         });
     });
-
-    // let agent = new TrackBackAgent();
-    // let result = agent.save(
-    //   account, 
-    //   didDocument, 
-    //   didDocumentMetadata, 
-    //   didResolutionMetadata, 
-    //   didRef,
-    //   publicKeys
-    // );
-    // expect(result).to.equal({});
   });
-
-  
 })
