@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import {TrackBackAgent} from '../../src/agent';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-
+import {WebSocket, Server} from 'mock-socket';
 
 const didDocument =  {
   "@context": [
@@ -45,6 +45,7 @@ describe('generate', () => {
 
   it('default is ed25519', async () => {
     
+    ///const
 
     await cryptoWaitReady().then(async () => {
       // load all available addresses and accounts

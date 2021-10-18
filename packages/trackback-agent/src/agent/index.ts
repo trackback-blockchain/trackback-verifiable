@@ -126,6 +126,9 @@ function transformParams(
 type SaveResult = {
   [key: string]: any
 }
+
+const TRACKBACK_BLOCKCHAIN_MODULE = 'didModule';
+const TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT = 'insertDidDocument';
 export class TrackBackAgent implements ITrackbackAgent {
 
   private options: ITrackbackAgentOptions;
@@ -149,8 +152,7 @@ export class TrackBackAgent implements ITrackbackAgent {
 
   async disconnect(){
     return (await this.connect()).disconnect();
-
-}  
+  }  
 
   // IPFS 
   async resolve(didUri: string): Promise<IDIDResolutionResult> {
@@ -231,8 +233,6 @@ export class TrackBackAgent implements ITrackbackAgent {
     const didDocMetadata = this.toUint8Array(didDocumentMetadata);
     const didDocRes = this.toUint8Array(didResolutionMetadata);
 
-    const palletRpc = 'didModule';
-    const callable = 'insertDidDocument';
 
     const didURI = this.uriToHex(didDocument.id)
 
@@ -252,7 +252,12 @@ export class TrackBackAgent implements ITrackbackAgent {
 
     const transformed = transformParams(paramFields, inputParams);
 
-    return this.saveToChain(account, palletRpc, callable, transformed);
+    return this.saveToChain(
+      account, 
+      TRACKBACK_BLOCKCHAIN_MODULE, 
+      TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT, 
+      transformed
+      );
   }
 
   /**
@@ -271,8 +276,10 @@ export class TrackBackAgent implements ITrackbackAgent {
   ): Promise<SaveResult> {
     return this.connect()
       .then((api) => {
-        // if (!api) return false;
-        if (!api) return {};
+        if (!api) return {
+          Error: true,
+          Message: "dispatchError"
+        };
 
         return api.rpc.system
           .accountNextIndex(account.address)
@@ -314,7 +321,6 @@ export class TrackBackAgent implements ITrackbackAgent {
           "Error": true,
           "Message": "Error"
         };
-        // return false;
       }).finally(
         () => {
           this.disconnect();
