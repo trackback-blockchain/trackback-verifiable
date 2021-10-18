@@ -127,8 +127,10 @@ type ExtrinsicResults = {
   [key: string]: any
 }
 
+// TODO: Move this to an enum
 const TRACKBACK_BLOCKCHAIN_MODULE = 'didModule';
 const TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT = 'insertDidDocument';
+const TRACKBACK_BLOCKCHAIN_CALLABLE_DID_UPDATE = 'updateDid';
 export class TrackBackAgent implements ITrackbackAgent {
 
   private options: ITrackbackAgentOptions;
@@ -211,7 +213,48 @@ export class TrackBackAgent implements ITrackbackAgent {
 
   }
 
-  // async updateDIDDocument():
+  /**
+   * Updates a DID Document
+   * @param account | Polkadot Account
+   * @param didDocument | DID Document represented in a JSON Structure
+   * - DID Document gets update on IPFS or Decentralosed data store
+   * @param didDocumentMetadata | DID Documen metadata JSON List 
+   * @param didResolutionMetadata | DID Resolution metadata JSON list 
+   * @param didRef | IPFS URI for the the DID
+   * @param publicKeys | Aithorised public keys
+   * @returns Promise<ExtrinsicResults>
+   */
+  async updateDIDDocument(
+    account: IKeyringPair, 
+    didDocument: DIDDocument, 
+    didDocumentMetadata: IDIDDocumentMetadata,
+    didResolutionMetadata: IDIDResolutionMetadata,
+    didRef: string,
+    publicKeys: Array<String>
+  ) {
+    const didDoc = this.toUint8Array(didDocument);
+    const didDocMetadata = this.toUint8Array(didDocumentMetadata);
+    const didDocRes = this.toUint8Array(didResolutionMetadata);
+    const didURI = this.uriToHex(didDocument.id)
+
+    const inputParams = [
+      didURI,
+      didDocRes,
+      didDocMetadata,
+      didRef,
+      publicKeys
+    ];
+
+    const paramFields = [true, true, true, true, true];
+
+    const transformed = transformParams(paramFields, inputParams);
+    return this.dispatch(
+      account, 
+      TRACKBACK_BLOCKCHAIN_MODULE, 
+      TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT, 
+      transformed
+    );
+  }
 
   /**
    * Saves a DID Document on chain
@@ -221,7 +264,7 @@ export class TrackBackAgent implements ITrackbackAgent {
    * @param didResolutionMetadata | DID Resolution metadata JSON list 
    * @param didRef | IPFS URI for the the DID
    * @param publicKeys | Aithorised public keys
-   * @returns Promise<boolean>
+   * @returns Promise<ExtrinsicResults>
    */
   async constructDIDDocument(
     account: IKeyringPair,
@@ -254,23 +297,23 @@ export class TrackBackAgent implements ITrackbackAgent {
 
     const transformed = transformParams(paramFields, inputParams);
 
-    return this.saveToChain(
+    return this.dispatch(
       account, 
       TRACKBACK_BLOCKCHAIN_MODULE, 
       TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT, 
       transformed
-      );
+    );
   }
 
   /**
-   * Saves a DID document data structure into TrackBack chain
+   * Sends a transform to the TackBack Chain.
    * @param account | Polkadot Account which analogous to `IKeyringPair`
    * @param palletRpc | RPC module in DID Pallet
    * @param callable | RPC method in DID Pallet
    * @param transformed | A valid transform object
    * @returns 
    */
-  async saveToChain(account: IKeyringPair, palletRpc: string, callable: string, transformed: any): Promise<ExtrinsicResults> {
+  async dispatch(account: IKeyringPair, palletRpc: string, callable: string, transformed: any): Promise<ExtrinsicResults> {
     return this.connect()
       .then((api) => {
         if (!api) return {
