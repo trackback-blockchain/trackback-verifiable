@@ -123,7 +123,7 @@ function transformParams(
   }, []);
 }
 
-type SaveResult = {
+type ExtrinsicResults = {
   [key: string]: any
 }
 
@@ -211,6 +211,8 @@ export class TrackBackAgent implements ITrackbackAgent {
 
   }
 
+  // async updateDIDDocument():
+
   /**
    * Saves a DID Document on chain
    * @param account | Polkadot Account
@@ -221,14 +223,14 @@ export class TrackBackAgent implements ITrackbackAgent {
    * @param publicKeys | Aithorised public keys
    * @returns Promise<boolean>
    */
-  async save(
+  async constructDIDDocument(
     account: IKeyringPair,
     didDocument: DIDDocument,
     didDocumentMetadata: IDIDDocumentMetadata,
     didResolutionMetadata: IDIDResolutionMetadata,
     didRef: string,
     publicKeys: Array<string>
-  ): Promise<SaveResult> {
+  ): Promise<ExtrinsicResults> {
     const didDoc = this.toUint8Array(didDocument);
     const didDocMetadata = this.toUint8Array(didDocumentMetadata);
     const didDocRes = this.toUint8Array(didResolutionMetadata);
@@ -268,12 +270,7 @@ export class TrackBackAgent implements ITrackbackAgent {
    * @param transformed | A valid transform object
    * @returns 
    */
-  async saveToChain(
-    account: IKeyringPair,
-    palletRpc: string,
-    callable: string,
-    transformed: any
-  ): Promise<SaveResult> {
+  async saveToChain(account: IKeyringPair, palletRpc: string, callable: string, transformed: any): Promise<ExtrinsicResults> {
     return this.connect()
       .then((api) => {
         if (!api) return {
@@ -284,13 +281,11 @@ export class TrackBackAgent implements ITrackbackAgent {
         return api.rpc.system
           .accountNextIndex(account.address)
           .then((nonce) => {
-            return new Promise<SaveResult>((resolve) => {
+            return new Promise<ExtrinsicResults>((resolve) => {
               const txExecute = api.tx[palletRpc][callable](...transformed);
  
-
               txExecute.signAndSend(account, { nonce }, (result: any) => {
 
-                
                 console.log(`Current status is ${JSON.stringify(result)}`);
                 console.log(`Current nonce is ${nonce}`);
 
@@ -325,9 +320,6 @@ export class TrackBackAgent implements ITrackbackAgent {
         () => {
           this.disconnect();
         }
-      )
-
-      ;
-  }
-
+      );
+    }
 }

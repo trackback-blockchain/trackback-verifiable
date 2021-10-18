@@ -55,7 +55,7 @@ describe('generate', () => {
 
       const account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
       let agent = new TrackBackAgent();
-      let result = await agent.save(
+      let result = await agent.constructDIDDocument(
         account, 
         didDocument, 
         didDocumentMetadata, 
@@ -63,10 +63,7 @@ describe('generate', () => {
         didRef,
         publicKeys
       );
-      expect(result).to.equal({
-          "Error": true,
-          "Message": "dispatchError",
-         });
+      expect(result).to.equal({"Error": true, "Message": "dispatchError"});
     });
   });
 })
