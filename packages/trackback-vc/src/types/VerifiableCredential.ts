@@ -17,12 +17,23 @@ export interface CredentialStatus {
 export type CredentialSubject = Claim | [Claim]
 
 export interface VerifiableCredential {
-  context: string[];
+  "@context": string[];
   issuer: Issuer;
   type: string | string[];
   issuanceDate: string;
   credentialSubject: CredentialSubject
   credentialStatus?: CredentialStatus
   proof?: any;
+  [x: string]: any;
+}
+
+
+export type W3Credential = {
+  "@context": string[];
+  issuer: Issuer;
+  type: string | string[];
+  issuanceDate: string;
+  credentialSubject: CredentialSubject
+  credentialStatus?: CredentialStatus
   [x: string]: any;
 }

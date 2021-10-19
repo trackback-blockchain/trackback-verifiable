@@ -1,6 +1,7 @@
 {
   "name": "@trackback/key",
   "version": "1.0.0",
+  "main":"src/index.ts",
   "scripts": {
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
   },

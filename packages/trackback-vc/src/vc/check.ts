@@ -45,15 +45,17 @@ export function check(credential: any): boolean {
     //     throw new Error('Credentials must have "issuer"');
     // }
 
-    if (credential["issuanceDate"]) {
-        if (typeof credential["issuanceDate"] !== 'string') {
-            throw new Error('"issuanceDate" must be a string.');
-        }
 
-        if (!RFC3339_REGEX.test(credential["issuanceDate"])) {
-            throw new Error('"issuanceDate" must be RFC 3339 Date Time.');
-        }
-    }
+    // TODO: FIXME
+    // if (credential["issuanceDate"]) {
+    //     if (typeof credential["issuanceDate"] !== 'string') {
+    //         throw new Error('"issuanceDate" must be a string.');
+    //     }
+
+    //     if (!RFC3339_REGEX.test(credential["issuanceDate"])) {
+    //         throw new Error('"issuanceDate" must be RFC 3339 Date Time.');
+    //     }
+    // }
 
     return true;
 
