@@ -1,8 +1,9 @@
 import { expect } from 'chai';
-import {TrackBackAgent} from '../../src/agent';
+import {Connector, TrackBackAgent} from '../../src/agent';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {WebSocket, Server} from 'mock-socket';
+import { uriToHex } from '../../src/agent/helpers';
 
 const didDocument =  {
   "@context": [
@@ -69,12 +70,12 @@ describe('update', () => {
   it('updates a did document', async () => {
 
     await cryptoWaitReady().then(async () => {
-
+      let connector = new Connector();
       const keyring = new Keyring({ type: 'sr25519' });
 
       const account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
-      let agent = new TrackBackAgent();
-      let result = await agent.constructDIDDocument(
+      let agent = new TrackBackAgent(connector=connector);
+      let result = await agent.procedure.constructDIDDocument(
         account, 
         didDocument, 
         didDocumentMetadata, 
@@ -83,10 +84,10 @@ describe('update', () => {
         publicKeys
       );
       
-      let didURI = agent.uriToHex(didDocument.id)
+      let didURI = uriToHex(didDocument.id)
       console.log(didURI);
-      let p = await agent.resolve(didDocument.id)
-        console.log(p)
+      let p = await agent.procedure.resolve(didDocument.id)
+      console.log(p)
       expect(p).to.equal({});
     });
   });

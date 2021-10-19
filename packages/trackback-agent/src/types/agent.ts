@@ -1,12 +1,18 @@
+import { ApiPromise } from '@polkadot/api/promise';
 import { ApiOptions } from '@polkadot/api/types';
 
 
-export interface ITrackbackAgent {
+export interface IConnect {
+    connect(): Promise<ApiPromise>;
+    disconnect(): Promise<void>;
+}
+
+export interface ITrackBackAgent {
 
 }
 
 export interface IDIDManager {
-
+     
 }
 
 export interface IKeyManager {
