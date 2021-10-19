@@ -1,7 +1,5 @@
-import { ITrackbackAgent } from './agent';
-
+import { ITrackbackAgent } from "./agent";
 
 export interface ITrackBackContext {
-    agent: ITrackbackAgent;
-
+  agent: ITrackbackAgent;
 }

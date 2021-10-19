@@ -1,10 +1,10 @@
 export enum TrackBackModules {
-    DIDModule = "didModule",
+  DIDModule = "didModule",
 }
 
 export enum TrackBackCallables {
-    DIDInsert = "insertDidDocument",
-    DIDUpdate = "updateDid",
-    DIDResolve = "resolveDid",
-    DIDTrail = "trailDid"
+  DIDInsert = "insertDidDocument",
+  DIDUpdate = "updateDid",
+  DIDResolve = "resolveDid",
+  DIDTrail = "trailDid",
 }
