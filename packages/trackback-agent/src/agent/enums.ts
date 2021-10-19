@@ -1,6 +1,5 @@
 export enum TrackBackModules {
     DIDModule = "didModule",
-
 }
 
 export enum TrackBackCallables {

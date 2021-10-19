@@ -1,9 +1,10 @@
 import { expect } from 'chai';
-import {Connector, TrackBackAgent} from '../../src/agent';
+import { TrackBackAgent } from '../../src/agent';
 import { Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {WebSocket, Server} from 'mock-socket';
 import { uriToHex } from '../../src/agent/helpers';
+import { Connector } from '../../src/agent/connection';
 
 const didDocument =  {
   "@context": [
