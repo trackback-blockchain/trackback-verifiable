@@ -4,8 +4,14 @@ import { AbstractJsonWebKey } from '@trackback/key';
 import { W3Credential } from './../types/VerifiableCredential';
 import { check } from "./check";
 
-
-
+/**
+ * Trackback implementation for verifiable credential
+ * Creates, Validates and Issue JWTs for Verifiable credential.
+ * 
+ * @remarks Please see {@link https://www.w3.org/TR/vc-data-model | W3C Verifiable Credentials data model}
+ *
+ * @public
+ */
 export class VC {
 
 
