@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { check } from '../../src/credential/check'
-import { VC } from '../../src/credential'
+import { VC } from '../../src/'
 
 import { JsonWebKey2020 } from '@trackback/key';
 
