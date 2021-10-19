@@ -2,7 +2,7 @@ import DIDResolver from '../src/resolver';
 import { expect } from 'chai';
 import { DIDResolutionResult } from '../src/types';
 
-describe('DID Utility Tests', function () {
+describe('DID resolver Tests', function () {
   describe('Tests for parseDID()', () => {
     it('parseDID should return trackback', () => {
       const did = new DIDResolver();
