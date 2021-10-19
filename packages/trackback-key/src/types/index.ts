@@ -24,4 +24,4 @@ export interface IX25519KeyPair {
 }
 
 
-export * from './ISignatureSuite'
+export * from './AbstractJsonWebKey'

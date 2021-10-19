@@ -1,3 +1,4 @@
+import { AbstractJsonWebKey } from './types';
 import { flattenedVerify } from 'jose/jws/flattened/verify';
 import { generateKeyPair, GenerateKeyPairOptions } from 'jose/util/generate_key_pair'
 import { exportJWK } from 'jose/key/export'
@@ -31,7 +32,7 @@ function isDeattachedHeader(encodedHeader: string) {
     return false;
 }
 
-export class JsonWebKey2020 {
+export class JsonWebKey2020 extends AbstractJsonWebKey {
     public id: string;
     public type: string;
     public controller: string;
@@ -40,6 +41,7 @@ export class JsonWebKey2020 {
 
 
     constructor(option: { id: string, type: string, controller: string, publicKeyJwk: JWK, privateKeyJwk?: JWK }) {
+        super();
         this.id = option.id;
         this.type = option.type;
         this.controller = option.controller;
@@ -49,7 +51,8 @@ export class JsonWebKey2020 {
 
     static async generate(controller?: string, alg?: string, options?: GenerateKeyPairOptions): Promise<JsonWebKey2020> {
 
-        const { publicKey, privateKey } = await generateKeyPair(alg || DEFAULT_ALG, options || DEFAULT_CRV_LENGTH);
+        alg = alg || DEFAULT_ALG;
+        const { publicKey, privateKey } = await generateKeyPair(alg, options || DEFAULT_CRV_LENGTH);
 
         const privateKeyJwk: JWK = await exportJWK(privateKey);
         const publicKeyJwk: JWK = await exportJWK(publicKey);
@@ -76,16 +79,19 @@ export class JsonWebKey2020 {
         )
     }
 
-    get getId(): string {
+    getId(): string {
         return this.id;
     }
 
-    get getController(): string {
+    getController(): string {
         return this.controller;
     }
 
-    get getPublicKeyJwk(): JWK {
+    getPublicKeyJwk(): JWK {
         return this.publicKeyJwk;
+    }
+    getPrivateKeyJwk(): JWK | undefined {
+        return this.privateKeyJwk;
     }
 
     static from(keyPair: any) {
