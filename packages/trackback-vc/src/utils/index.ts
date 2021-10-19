@@ -8,15 +8,14 @@ export function bufferToUint8Array(buffer: Buffer): Uint8Array {
     return u8a;
 }
 
-
-
-export function checkDate(date:string){
-    
+export function checkDate(date: string) {
+    throw new Error("not yet implemented")
 }
 
-
-export function toISODateTime(datetime:string, format:string){
+export function toISODateTime(datetime: string, format: string) {
     return moment(datetime).toISOString()
 }
 
-
+export function isNonEmptyArray(item: any): boolean {
+    return Array.isArray(item) && item.length > 0
+}
