@@ -41,28 +41,28 @@ const publicKeys = [
 
 const didRef = "https://ipfs.trackback.dev:8080/ipfs/did-document-cid";
 
-describe('create', () => {
+// describe('create', () => {
 
-  it('creates a DID document structure on chain', async () => {
+//   it('creates a DID document structure on chain', async () => {
 
-    await cryptoWaitReady().then(async () => {
+//     await cryptoWaitReady().then(async () => {
 
-      const keyring = new Keyring({ type: 'sr25519' });
+//       const keyring = new Keyring({ type: 'sr25519' });
 
-      const account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
-      let agent = new TrackBackAgent();
-      let result = await agent.constructDIDDocument(
-        account, 
-        didDocument, 
-        didDocumentMetadata, 
-        didResolutionMetadata, 
-        didRef,
-        publicKeys
-      );
-      expect(result).to.equal({"Error": true, "Message": "dispatchError"});
-    });
-  });
-})
+//       const account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
+//       let agent = new TrackBackAgent();
+//       let result = await agent.constructDIDDocument(
+//         account, 
+//         didDocument, 
+//         didDocumentMetadata, 
+//         didResolutionMetadata, 
+//         didRef,
+//         publicKeys
+//       );
+//       expect(result).to.equal({"Error": true, "Message": "dispatchError"});
+//     });
+//   });
+// })
 
 describe('update', () => {
 
@@ -82,7 +82,12 @@ describe('update', () => {
         didRef,
         publicKeys
       );
-      expect(result).to.equal({"Error": true, "Message": "dispatchError"});
+      
+      let didURI = agent.uriToHex(didDocument.id)
+      console.log(didURI);
+      let p = await agent.resolve(didDocument.id)
+        console.log(p)
+      expect(p).to.equal({});
     });
   });
 })

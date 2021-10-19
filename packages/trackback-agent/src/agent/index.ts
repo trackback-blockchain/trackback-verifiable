@@ -3,7 +3,9 @@ import type { IKeyringPair } from '@polkadot/types/types';
 
 import { ITrackbackAgentOptions } from './../types/agent';
 import { IDIDDocumentMetadata, IDIDResolutionMetadata } from './../types';
-import { DIDDocument, IDIDResolutionResult, ITrackbackAgent } from "../types";
+import { DIDDocument, IDIDResolutionResult, ITrackbackAgent } from '../types';
+import { TrackBackModules, TrackBackCallables} from './enums';
+import { ExtrinsicResults} from './helpers';
 
 
 const defaultOptions = {
@@ -123,14 +125,8 @@ function transformParams(
   }, []);
 }
 
-type ExtrinsicResults = {
-  [key: string]: any
-}
 
-// TODO: Move this to an enum
-const TRACKBACK_BLOCKCHAIN_MODULE = 'didModule';
-const TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT = 'insertDidDocument';
-const TRACKBACK_BLOCKCHAIN_CALLABLE_DID_UPDATE = 'updateDid';
+
 export class TrackBackAgent implements ITrackbackAgent {
 
   private options: ITrackbackAgentOptions;
@@ -153,8 +149,44 @@ export class TrackBackAgent implements ITrackbackAgent {
   }
 
   async disconnect(){
-    return (await this.connect()).disconnect();
+    // return (await this.connect()).disconnect();
+     (await this.connect()).disconnect();
+     this.api = null;
   }  
+
+  toUint8Array(json: any): number[] {
+    const str = JSON.stringify(json);
+
+    var bytes = new Uint8Array(str.length);
+
+    for (var iii = 0; iii < str.length; iii++) {
+      bytes[iii] = str.charCodeAt(iii);
+    }
+
+    return Array.from(new Uint8Array(bytes));
+  }
+
+  tohex(name: string): string {
+    return Buffer.from(name, 'utf8').toString('hex');
+  }
+
+  uriToHex(didUri: string) {
+    return didUri
+      .split(':')
+      .map((part, i) => {
+        switch (i) {
+          case 0:
+            return part;
+          case 1:
+            return '0x' + this.tohex(part);
+
+          default:
+            return this.tohex(part);
+        }
+      })
+      .reduce((a, b) => `${a === '' ? '' : a + ':'}${b}`, '');
+
+  }
 
   // IPFS 
   async resolve(didUri: string): Promise<IDIDResolutionResult> {
@@ -174,44 +206,18 @@ export class TrackBackAgent implements ITrackbackAgent {
       }).catch((error) => {
         console.log(error);
         return null;
-      });
+      }).finally(
+        () => {
+          this.disconnect();
+        }
+      );
     });
   }
 
-  toUint8Array(json: any): number[] {
-    const str = JSON.stringify(json);
-
-    var bytes = new Uint8Array(str.length);
-
-    for (var iii = 0; iii < str.length; iii++) {
-      bytes[iii] = str.charCodeAt(iii);
-    }
-
-    return Array.from(new Uint8Array(bytes));
-  }
-
-  tohex(name: string): string {
-    return Buffer.from(name, 'utf8').toString('hex');
-  }
 
 
-  uriToHex(didUri: string) {
-    return didUri
-      .split(':')
-      .map((part, i) => {
-        switch (i) {
-          case 0:
-            return part;
-          case 1:
-            return '0x' + this.tohex(part);
 
-          default:
-            return this.tohex(part);
-        }
-      })
-      .reduce((a, b) => `${a === '' ? '' : a + ':'}${b}`, '');
 
-  }
 
   /**
    * Updates a DID Document
@@ -250,8 +256,8 @@ export class TrackBackAgent implements ITrackbackAgent {
     const transformed = transformParams(paramFields, inputParams);
     return this.dispatch(
       account, 
-      TRACKBACK_BLOCKCHAIN_MODULE, 
-      TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT, 
+      TrackBackModules.DIDModule, 
+      TrackBackCallables.DIDUpdate, 
       transformed
     );
   }
@@ -299,8 +305,8 @@ export class TrackBackAgent implements ITrackbackAgent {
 
     return this.dispatch(
       account, 
-      TRACKBACK_BLOCKCHAIN_MODULE, 
-      TRACKBACK_BLOCKCHAIN_CALLABLE_DID_INSERT, 
+      TrackBackModules.DIDModule, 
+      TrackBackCallables.DIDInsert, 
       transformed
     );
   }
