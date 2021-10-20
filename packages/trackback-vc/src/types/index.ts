@@ -1,3 +1,3 @@
-export * from "./VerifiableCredential";
+export * from './VerifiableCredential';
 
-export * from "./Issuer"
+export * from './Issuer';

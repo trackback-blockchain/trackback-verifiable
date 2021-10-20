@@ -1,1 +1,1 @@
-export * from "./vc";
+export * from './vc';

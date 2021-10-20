@@ -1,17 +1,16 @@
-import * as u8a from 'uint8arrays'
+import * as u8a from 'uint8arrays';
 
 export class Encoding {
-
   static base64Encode(buffer: string | Buffer | Uint8Array): string {
-    return Buffer.from(buffer).toString("base64").replace(/=+$/g, '');
+    return Buffer.from(buffer).toString('base64').replace(/=+$/g, '');
   }
 
   static base64Decode(st: string): string {
-    return Buffer.from(st, "base64").toString("utf8");
+    return Buffer.from(st, 'base64').toString('utf8');
   }
 
   static base58BTC(key: Uint8Array) {
-    return u8a.toString(key, 'base58btc')
+    return u8a.toString(key, 'base58btc');
   }
 
   /**
@@ -36,13 +35,10 @@ export class Encoding {
       return `u${u8a.toString(publicKey, 'base64url')}`;
     }
 
-    throw new Error('Encoding not supported: ' + encoding)
+    throw new Error('Encoding not supported: ' + encoding);
   }
 
   static toBase58btc(publicKey: Uint8Array): string {
-    return u8a.toString(publicKey, 'base64url')
+    return u8a.toString(publicKey, 'base64url');
   }
-
-
-
 }

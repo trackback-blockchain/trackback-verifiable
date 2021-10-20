@@ -1,21 +1,17 @@
 {
   "name": "@trackback/did",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha.0",
   "description": "Decentralized Identifiers (DIDs) v1.0",
   "source": "src/index.js",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "repository": "git@github.com:trackback-blockchain/trackback-did.git",
   "author": "Don <don@track-back.co>",
   "contributors": [],
-  "license": "MIT",
-  "private": true,
   "scripts": {
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
-    "watch": "babel src --out-dir lib --extensions '.ts' --watch",
-    "build": "tsc -p .",
-    "lint": "eslint . --ext .ts",
-    "format": "npx prettier --write ."
+    "build": "tsc",
+    "test": "mocha -r ts-node/register 'tests/**/*.ts'",
+    "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "chai": "^4.3.4",

@@ -1,6 +1,5 @@
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyType = Record<string, any>
+export type AnyType = Record<string, any>;
 
 // TODO:: FILL
 // https://datatracker.ietf.org/doc/html/rfc7517
@@ -45,25 +44,24 @@ export interface DIDDocument {
 }
 
 export interface DIDResolutionOptions extends AnyType {
-  accept?: string
+  accept?: string;
 }
 
 export interface DIDResolutionMetadata extends AnyType {
-  contentType?: string
-  error?: 'invalidDid' | 'notFound' | 'representationNotSupported' | string
+  contentType?: string;
+  error?: 'invalidDid' | 'notFound' | 'representationNotSupported' | string;
 }
 
 export interface DIDDocumentMetadata extends AnyType {
-  created?: string
-  updated?: string
-  deactivated?: boolean
-  versionId?: string
-  nextUpdate?: string
-  nextVersionId?: string
-  equivalentId?: string
-  canonicalId?: string
+  created?: string;
+  updated?: string;
+  deactivated?: boolean;
+  versionId?: string;
+  nextUpdate?: string;
+  nextVersionId?: string;
+  equivalentId?: string;
+  canonicalId?: string;
 }
-
 
 export interface DIDResolutionResult {
   didResolutionMetadata: DIDResolutionMetadata;
@@ -71,7 +69,4 @@ export interface DIDResolutionResult {
   didDocumentMetadata: DIDDocumentMetadata;
 }
 
-
-export interface IDIDManager {
-  
-}
+export interface IDIDManager {}
