@@ -1,6 +1,6 @@
 import { DIDResolutionResult, DIDResolutionOptions } from './types';
 import { DID_FORMAT } from './helpers';
- 
+
 export interface IDIDResolver {
   resolve: (
     did: string,

@@ -1,5 +1,5 @@
 export * from './types';
 
-export * from './resolver'
+export * from './resolver';
 
-export * from './builder'
+export * from './builder';

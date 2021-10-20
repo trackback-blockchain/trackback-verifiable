@@ -5,6 +5,9 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "lerna run build",
+    "bootstrap": "lerna bootstrap",
+    "prettier": "prettier --write '{packages,!build}/**/*.ts'",
     "test": "lerna run --stream test"
   },
   "devDependencies": {
