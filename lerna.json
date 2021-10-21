@@ -4,5 +4,14 @@
   ],
   "version": "independent",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "command": {
+    "publish": {
+      "allowBranch": [
+        "main"
+      ],
+      "conventionalCommits": true,
+      "gitRemote": "origin"
+    }
+  }
 }
