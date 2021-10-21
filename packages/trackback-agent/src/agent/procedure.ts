@@ -24,13 +24,36 @@ export interface IProcedure {
     didRef: string,
     publicKeys: Array<string>
   ): Promise<ExtrinsicResults>;
+  updateDIDDocument(
+    account: IKeyringPair,
+    didDocument: DIDDocument,
+    didDocumentMetadata: IDIDDocumentMetadata,
+    didResolutionMetadata: IDIDResolutionMetadata,
+    didRef: string,
+    publicKeys: Array<String>
+  ) : Promise<ExtrinsicResults> ;
+  dispatch(
+    account: IKeyringPair,
+    palletRpc: string,
+    callable: string,
+    transformed: any
+  ): Promise<ExtrinsicResults>;
 }
+
+/**
+ * Facilitates DID operations
+ */
 export class Procedure implements IProcedure {
   private connector: IConnect | null | undefined;
   constructor(connector: IConnect | null | undefined) {
     this.connector = connector;
   }
 
+  /**
+   * 
+   * @param didUri Resolves a Decentralised Identifier by the DID URI
+   * @returns Promise<IDIDResolutionResult>
+   */
   async resolve(didUri: string): Promise<IDIDResolutionResult> {
     const didUriHex = uriToHex(didUri);
     console.log(didUriHex);
@@ -74,7 +97,7 @@ export class Procedure implements IProcedure {
     didResolutionMetadata: IDIDResolutionMetadata,
     didRef: string,
     publicKeys: Array<String>
-  ) {
+  ) : Promise<ExtrinsicResults> {
     const didDoc = toUint8Array(didDocument);
     const didDocMetadata = toUint8Array(didDocumentMetadata);
     const didDocRes = toUint8Array(didResolutionMetadata);
@@ -117,7 +140,7 @@ export class Procedure implements IProcedure {
 
     const didURI = uriToHex(didDocument.id);
 
-    console.log(didURI);
+
 
     const inputParams = [
       didDoc,

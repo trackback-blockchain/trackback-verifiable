@@ -1,10 +1,13 @@
-import { expect } from "chai";
+import { assert } from "chai";
 import { TrackBackAgent } from "../../src/agent";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-import { WebSocket, Server } from "mock-socket";
-import { uriToHex } from "../../src/agent/helpers";
-import { Connector } from "../../src/agent/connection";
+import  { toUint8Array, transformParams, uriToHex } from "../../src/agent/helpers";
+
+import sinon from 'sinon';
+
+import { Procedure } from "../../src/agent/procedure";
+import { TrackBackModules, TrackBackCallables } from "../../src/agent/enums";
 
 const didDocument = {
   "@context": [
@@ -41,17 +44,31 @@ const publicKeys = [
 
 const didRef = "https://ipfs.trackback.dev:8080/ipfs/did-document-cid";
 
-describe('create', () => {
+let stub: any;
+let keyring: any;
+let account: any;
+let agent: any;
 
-  it('creates a DID document structure on chain', async () => {
+describe('DID operation tests', () => {
+  beforeEach(() => {
+    stub = sinon.stub(Procedure.prototype, "dispatch").callsFake(() => {
+      return Promise.resolve(null)
+    });
+    keyring = new Keyring({ type: 'sr25519' });
+    account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
+    agent = new TrackBackAgent(null);
+  });
 
+  afterEach(() => {
+    sinon.restore();
+    keyring = null;
+    account = null;
+    agent = null;
+  });
+
+  it("Should call dispatch once when creating a DID Document", async () => {
     await cryptoWaitReady().then(async () => {
-      let connector = new Connector();
-      const keyring = new Keyring({ type: 'sr25519' });
-
-      const account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
-      let agent = new TrackBackAgent(connector);
-      let result = await agent.procedure.constructDIDDocument(
+      await agent.procedure.constructDIDDocument(
         account,
         didDocument,
         didDocumentMetadata,
@@ -59,35 +76,61 @@ describe('create', () => {
         didRef,
         publicKeys
       );
-      expect(result).to.equal({"Error": true, "Message": "dispatchError"});
+
+      const didDoc = toUint8Array(didDocument);
+      const didDocMetadata = toUint8Array(didDocumentMetadata);
+      const didDocRes = toUint8Array(didResolutionMetadata);
+
+      const didURI = uriToHex(didDocument.id);
+
+      const inputParams = [
+        didDoc,
+        didDocMetadata,
+        didDocRes,
+        account.address,
+        didURI,
+        didRef,
+        publicKeys,
+      ];
+
+      const paramFields = [true, true, true, true, true, true, true];
+
+      const transformed = transformParams(paramFields, inputParams);
+      assert(
+        stub.calledOnceWith(
+            account, 
+            TrackBackModules.DIDModule,
+            TrackBackCallables.DIDInsert,
+            transformed
+        )
+      );
+    });
+  });
+
+  it("Should call dispatch once when updating a DID Document", async () => {
+    await cryptoWaitReady().then(async () => {
+      await agent.procedure.updateDIDDocument(
+        account,
+        didDocument,
+        didDocumentMetadata,
+        didResolutionMetadata,
+        didRef,
+        publicKeys
+      );
+
+      const transformed = transformParams(
+        [true, true, true, true, true], 
+        [uriToHex(didDocument.id), toUint8Array(didResolutionMetadata), toUint8Array(didDocumentMetadata), didRef, publicKeys
+      ]);
+
+      assert(
+        stub.calledOnceWith(
+            account, 
+            TrackBackModules.DIDModule,
+            TrackBackCallables.DIDUpdate,
+            transformed
+        )
+      );
     });
   });
 })
-
-describe("update", () => {
-  it("updates a did document", async () => {
-    await cryptoWaitReady().then(async () => {
-      let connector = new Connector();
-      const keyring = new Keyring({ type: "sr25519" });
-
-      const account = keyring.addFromUri("//Alice", {
-        name: "Alice test account",
-      });
-      let agent = new TrackBackAgent(connector);
-      let result = await agent.procedure.constructDIDDocument(
-        account,
-        didDocument,
-        didDocumentMetadata,
-        didResolutionMetadata,
-        didRef,
-        publicKeys
-      );
-
-      let didURI = uriToHex(didDocument.id);
-      console.log(didURI);
-      let p = await agent.procedure.resolve(didDocument.id);
-      console.log(p);
-      expect(p).to.equal({});
-    });
-  });
-});
