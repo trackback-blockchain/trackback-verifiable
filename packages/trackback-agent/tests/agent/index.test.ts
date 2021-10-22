@@ -1,4 +1,4 @@
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import { TrackBackAgent } from "../../src/agent";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
@@ -8,6 +8,28 @@ import sinon from 'sinon';
 
 import { Procedure } from "../../src/agent/procedure";
 import { TrackBackModules, TrackBackCallables } from "../../src/agent/enums";
+import { Connector, DecentralisedFileStoreConnector } from "../../src/agent/connection";
+
+const desDIDStructure = {
+  "didDocument": {
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1"
+  ],
+  "id": "did:trackback.dev:0xaaaaaa8ef2bc79f13faf22de4165ac99efc2sssscabe6e3194c0a58336fed7c56b1b3",
+  "assertionMethod": [
+      {
+        "id": "did:trackback.dev:dia-0x12345678999",
+        "type": "Ed25519VerificationKey2020", 
+        "controller": "did:trackback.dev:dia-0x1234567890",
+        "publicKeyMultibase": "AAAAC3NzaC1lZDI1NTE5AAAAIIFraDC1HgOAg22FdjngyaRuFvCTcL+N3yeBH/tN+zUI"
+      }
+    ]
+  },
+  "proof": "1234",
+  "senderTimeStamp": "2021-06-20",
+  "publicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgl183qensmRV8tKBqM/E2GSEuQGLV883tAecMhuNUu"
+  };
 
 const didDocument = {
   "@context": [
@@ -48,12 +70,19 @@ let stub: any;
 let keyring: any;
 let account: any;
 let agent: any;
+let decentralisedStorageServiceStub: any;
 
 describe('DID operation tests', () => {
   beforeEach(() => {
+
     stub = sinon.stub(Procedure.prototype, "dispatch").callsFake(() => {
       return Promise.resolve(null)
     });
+
+    decentralisedStorageServiceStub = sinon.stub(DecentralisedFileStoreConnector.prototype, "postData").callsFake(() => {
+      return Promise.resolve("https://decentralisedFileStoreURL/api/CID");
+    });
+
     keyring = new Keyring({ type: 'sr25519' });
     account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
     agent = new TrackBackAgent(null);
@@ -120,8 +149,10 @@ describe('DID operation tests', () => {
 
       const transformed = transformParams(
         [true, true, true, true, true], 
-        [uriToHex(didDocument.id), toUint8Array(didResolutionMetadata), toUint8Array(didDocumentMetadata), didRef, publicKeys
-      ]);
+        [
+          uriToHex(didDocument.id), toUint8Array(didResolutionMetadata), toUint8Array(didDocumentMetadata), didRef, publicKeys
+        ]
+      );
 
       assert(
         stub.calledOnceWith(
@@ -132,5 +163,15 @@ describe('DID operation tests', () => {
         )
       );
     });
+  });
+
+  it("Should save a record on IPFS or a Decentralised data store", async () => {
+      agent = new TrackBackAgent(null);
+      let result = await agent.procedure.saveToDistributedStorage(desDIDStructure, null);
+      assert(
+        decentralisedStorageServiceStub.calledOnceWith(desDIDStructure, null
+        )
+      );
+      expect(result).to.equal("https://decentralisedFileStoreURL/api/CID");
   });
 })

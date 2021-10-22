@@ -6,6 +6,12 @@ export interface IConnect {
   disconnect(): Promise<void>;
 }
 
+export interface IDecentraliseStoreConnect {
+    connect(): Promise<ApiPromise>;
+    disconnect(): Promise<void>;
+}
+
+
 export interface ITrackBackAgent {}
 
 export interface IDIDManager {}
@@ -16,4 +22,11 @@ export interface ITrackbackAgentOptions {
   url: string;
   options: ApiOptions;
   didManager?: IDIDManager;
+}
+
+
+export interface IDistributedConnectorOptions {
+  url: string;
+  api: string;
+  decentralisedStoreURL: string;
 }

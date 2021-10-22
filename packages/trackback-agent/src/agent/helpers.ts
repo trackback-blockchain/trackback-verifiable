@@ -2,6 +2,13 @@ export type ExtrinsicResults = {
   [key: string]: any;
 };
 
+
+export const DistributedStorageOptions = {
+  url: "https://ipfs-connector.trackback.dev",
+  api: "/api/0.1/",
+  decentralisedStoreURL: "https://ipfs.trackback.dev:8080/ipfs/"
+}
+
 export const DefaultOptions = {
   url: "ws://127.0.0.1:9944",
   options: {

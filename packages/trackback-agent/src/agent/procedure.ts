@@ -6,6 +6,7 @@ import {
   IDIDResolutionMetadata,
   IDIDResolutionResult,
 } from "../types";
+import { DecentralisedFileStoreConnector } from "./connection";
 import { TrackBackModules, TrackBackCallables } from "./enums";
 import {
   ExtrinsicResults,
@@ -38,6 +39,7 @@ export interface IProcedure {
     callable: string,
     transformed: any
   ): Promise<ExtrinsicResults>;
+  saveToDistributedStorage(data: any, headers: any):Promise<any>;
 }
 
 /**
@@ -60,22 +62,26 @@ export class Procedure implements IProcedure {
     return this.connector.connect().then((api) => {
       return new Promise<IDIDResolutionResult>((resolve, reject) => {
         if (!api) return null;
-        api.query.didModule.dIDDocument(didUriHex, (result: any) => {
+        api.query.didModule.dIDDocument(didUriHex, async(result: any) => {
           console.log(result);
           if (!result.isEmpty) {
-            resolve(JSON.parse(result.toString()));
+            // Gets DID document from IPFS
+            let data = (JSON.parse(result.toString()));
+            data["didDocument"]  = await new DecentralisedFileStoreConnector().getData(data.did_ref, null);
+            resolve(data);
+            // resolve(JSON.parse(result.toString()));
           } else {
             reject();
           }
         });
       })
-        .catch((error) => {
-          console.log(error);
-          return null;
-        })
-        .finally(() => {
-          this.connector.disconnect();
-        });
+      .catch((error) => {
+        console.log(error);
+        return null;
+      })
+      .finally(() => {
+        this.connector.disconnect();
+      });
     });
   }
 
@@ -103,6 +109,15 @@ export class Procedure implements IProcedure {
     const didDocRes = toUint8Array(didResolutionMetadata);
     const didURI = uriToHex(didDocument.id);
 
+    /*
+    let didDocument = req.body.didDocument;
+        let didURI = req.body.didURI;
+        let publicKey = req.body.publicKey;
+        let senderTimeStamp = req.body.senderTimeStamp;
+        let proof = req.body.proof;
+    
+    */
+
     const inputParams = [didURI, didDocRes, didDocMetadata, didRef, publicKeys];
 
     const paramFields = [true, true, true, true, true];
@@ -114,6 +129,28 @@ export class Procedure implements IProcedure {
       TrackBackCallables.DIDUpdate,
       transformed
     );
+  }
+
+  /**
+   * Saves a DID document to a Decentralised file store
+   * @param data | A Valid data object
+   * @param headers 
+   * @returns CID wrapped in a Promise
+   */
+  async saveToDistributedStorage(data: any, headers: any): Promise<any> {
+    let connector = new DecentralisedFileStoreConnector();
+    let results = await connector.postData(data, headers)
+      .then((d) => {
+        console.log(d)
+        return d;
+      })
+      .catch((error) => {
+        console.log(error)
+        return {error:error}
+      }
+    );
+  
+    return results
   }
 
   /**
@@ -139,9 +176,9 @@ export class Procedure implements IProcedure {
     const didDocRes = toUint8Array(didResolutionMetadata);
 
     const didURI = uriToHex(didDocument.id);
-
-
-
+    console.log("----------------------------------------")
+    console.log(account)
+    console.log("----------------------------------------")
     const inputParams = [
       didDoc,
       didDocMetadata,
