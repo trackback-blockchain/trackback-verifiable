@@ -50,6 +50,7 @@ export class DecentralisedFileStoreConnector {
   }
 
   // TODO: Setup Auth Headers 
+  // |TOD: Replace any
   /**
    * 
    * @param cid IPFS Content Identifier
@@ -57,28 +58,21 @@ export class DecentralisedFileStoreConnector {
    * @returns 
    */
   async getData(cid: string, headers): Promise<any> {
-    let content: any;
-    let url = this.options.url  + this.options.url + "ipfs/get?CID=" + cid
-
-    try {
-      axios.get(url).then(function (response) {
-        content = response.data;
-        return {
-          CID: cid,
-          content: content
-        };
-      }).catch(function (error){
-        content = error;
-      });
-  } catch (error) {
-      content = error;
-      return{
+    let res = await axios.get(cid).then(response => {
+      return {
         CID: cid,
-        content: content
-      };
-    }
+        content: response.data
+      };;
+    }).catch( error => {
+      return {
+        "Error": error,
+      }
+    })
+
+    return res;
   }
   /**
+   * # TODO: Replace any
    * Create a DID Document.
    * @param data | The following JSON Structure
    * @param headers | Dictionary holds header information

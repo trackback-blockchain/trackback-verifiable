@@ -10,13 +10,47 @@ import { Procedure } from "../../src/agent/procedure";
 import { TrackBackModules, TrackBackCallables } from "../../src/agent/enums";
 import { Connector, DecentralisedFileStoreConnector } from "../../src/agent/connection";
 
+const savedDIDStructure = {
+  did_resolution_metadata: {
+    DIDResolutionMedatadataKey1: "DIDResolutionMedatadataValue1",
+  },
+  did_document_metadata: {
+    DIDMetadataKey1: "DIDMetadataValue1",
+  },
+  block_number: 15096,
+  block_time_stamp: 1634897784,
+  updated_timestamp: 1634897784,
+  did_ref: "https://ipfs.trackback.dev:8080/ipfs/Qma3fM3VBKPXt7peEeJCAG25s7QMUwvLvGDwFikonZbPff",
+  sender_account_id: "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
+  public_keys: [
+    "cdET4zImQD0JnzvZ63V9q4MAI7paQlprfxOXDjaMxIo=",
+    "692RCpjogX/ypSL6RHflJ4zRcn0qoidBfb7b+rw3rnM=",
+    "IX+Er8hGzerTzB1g2Ufxu2dQP/9fDR4kKe1Q0BaUgWk=",
+  ],
+  did_document: {
+    "@context": [
+      "https://www.w3.org/ns/did/v2",
+      "https://w3id.org/security/suites/ed2551s9-2020/v1",
+    ],
+    id: "did:trackback.dev:0x2a674c8ef2bc79f13faf22d4165ac99efc2cabe6e3194c0a58336fed7c56b1b3",
+    assertionMethod: [
+      {
+        id: "did:trackback.dev:dia-0x12345678999",
+        type: "Ed25519VerificationKey2020",
+        controller: "did:trackback.dev:dia-0x1234567890",
+        publicKeyMultibase: "AAAAC3NzaCfbdgdsssssss1lZDI1NTE5AAAAIIFraDC1HgOAg22wwwyaRuFvCTcL+N3yeBH/tN+zUI",
+      },
+    ],
+  },
+};
+
 const desDIDStructure = {
   "didDocument": {
   "@context": [
     "https://www.w3.org/ns/did/v1",
     "https://w3id.org/security/suites/ed25519-2020/v1"
   ],
-  "id": "did:trackback.dev:0xaaaaaa8ef2bc79f13faf22de4165ac99efc2sssscabe6e3194c0a58336fed7c56b1b3",
+  "id": "did:0xfac17a:0x68b5d6033f8958558cc0bb48328bb9ba0651078b3f69eee533a2dfdba75965f2",
   "assertionMethod": [
       {
         "id": "did:trackback.dev:dia-0x12345678999",
@@ -70,7 +104,8 @@ let stub: any;
 let keyring: any;
 let account: any;
 let agent: any;
-let decentralisedStorageServiceStub: any;
+let decentralisedStorageServiceStubPostData: any;
+let decentralisedStorageServiceStubGetData: any;
 
 describe('DID operation tests', () => {
   beforeEach(() => {
@@ -79,8 +114,12 @@ describe('DID operation tests', () => {
       return Promise.resolve(null)
     });
 
-    decentralisedStorageServiceStub = sinon.stub(DecentralisedFileStoreConnector.prototype, "postData").callsFake(() => {
+    decentralisedStorageServiceStubPostData = sinon.stub(DecentralisedFileStoreConnector.prototype, "postData").callsFake(() => {
       return Promise.resolve("https://decentralisedFileStoreURL/api/CID");
+    });
+
+    decentralisedStorageServiceStubGetData = sinon.stub(DecentralisedFileStoreConnector.prototype, "getData").callsFake(() => {
+      return Promise.resolve(savedDIDStructure);
     });
 
     keyring = new Keyring({ type: 'sr25519' });
@@ -96,7 +135,7 @@ describe('DID operation tests', () => {
   });
 
   it("Should call dispatch once when creating a DID Document", async () => {
-    await cryptoWaitReady().then(async () => {
+
       await agent.procedure.constructDIDDocument(
         account,
         didDocument,
@@ -133,45 +172,92 @@ describe('DID operation tests', () => {
             transformed
         )
       );
-    });
+
   });
 
   it("Should call dispatch once when updating a DID Document", async () => {
-    await cryptoWaitReady().then(async () => {
-      await agent.procedure.updateDIDDocument(
-        account,
-        didDocument,
-        didDocumentMetadata,
-        didResolutionMetadata,
-        didRef,
-        publicKeys
-      );
 
-      const transformed = transformParams(
-        [true, true, true, true, true], 
-        [
-          uriToHex(didDocument.id), toUint8Array(didResolutionMetadata), toUint8Array(didDocumentMetadata), didRef, publicKeys
-        ]
-      );
+    await agent.procedure.updateDIDDocument(
+      account,
+      didDocument,
+      didDocumentMetadata,
+      didResolutionMetadata,
+      didRef,
+      publicKeys
+    );
 
-      assert(
-        stub.calledOnceWith(
-            account, 
-            TrackBackModules.DIDModule,
-            TrackBackCallables.DIDUpdate,
-            transformed
-        )
-      );
-    });
+    const transformed = transformParams(
+      [true, true, true, true, true], 
+      [
+        uriToHex(didDocument.id), toUint8Array(didResolutionMetadata), toUint8Array(didDocumentMetadata), didRef, publicKeys
+      ]
+    );
+
+    assert(
+      stub.calledOnceWith(
+          account, 
+          TrackBackModules.DIDModule,
+          TrackBackCallables.DIDUpdate,
+          transformed
+      )
+    );
+
   });
 
   it("Should save a record on IPFS or a Decentralised data store", async () => {
       agent = new TrackBackAgent(null);
       let result = await agent.procedure.saveToDistributedStorage(desDIDStructure, null);
       assert(
-        decentralisedStorageServiceStub.calledOnceWith(desDIDStructure, null
+        decentralisedStorageServiceStubPostData.calledOnceWith(desDIDStructure, null
         )
       );
       expect(result).to.equal("https://decentralisedFileStoreURL/api/CID");
+  });
+
+  /**
+   * This test has been skipped though the function has been tested using integration tests
+   * TODO: Mock Polkadot Crypto await functionality
+   */
+  it.skip("Should fetch the DID Document from CID", async () => {
+    await cryptoWaitReady().then(async () => {
+      agent = new TrackBackAgent(new Connector());
+      let result = await agent.procedure.resolve("did:0xfac17a:0x68b5d6033f8958558cc0bb48328bb9ba0651078b3f69eee533a2dfdba75965f2");
+      assert(
+        decentralisedStorageServiceStubGetData.calledOnceWith(desDIDStructure, null)
+      );
+      expect(result).to.equal({
+        did_resolution_metadata: {
+          DIDResolutionMedatadataKey1: "DIDResolutionMedatadataValue1",
+        },
+        did_document_metadata: {
+          DIDMetadataKey1: "DIDMetadataValue1",
+        },
+        block_number: 15096,
+        block_time_stamp: 1634897784,
+        updated_timestamp: 1634897784,
+        did_ref: "https://ipfs.trackback.dev:8080/ipfs/Qma3fM3VBKPXt7peEeJCAG25s7QMUwvLvGDwFikonZbPff",
+        sender_account_id: "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
+        public_keys: [
+          "cdET4zImQD0JnzvZ63V9q4MAI7paQlprfxOXDjaMxIo=",
+          "692RCpjogX/ypSL6RHflJ4zRcn0qoidBfb7b+rw3rnM=",
+          "IX+Er8hGzerTzB1g2Ufxu2dQP/9fDR4kKe1Q0BaUgWk=",
+        ],
+        did_document: {
+          "@context": [
+            "https://www.w3.org/ns/did/v2",
+            "https://w3id.org/security/suites/ed2551s9-2020/v1",
+          ],
+          id: "did:trackback.dev:0x2a674c8ef2bc79f13faf22d4165ac99efc2cabe6e3194c0a58336fed7c56b1b3",
+          assertionMethod: [
+            {
+              id: "did:trackback.dev:dia-0x12345678999",
+              type: "Ed25519VerificationKey2020",
+              controller: "did:trackback.dev:dia-0x1234567890",
+              publicKeyMultibase: "AAAAC3NzaCfbdgdsssssss1lZDI1NTE5AAAAIIFraDC1HgOAg22wwwyaRuFvCTcL+N3yeBH/tN+zUI",
+            },
+          ],
+        },
+      });
+    });    
   });
 })

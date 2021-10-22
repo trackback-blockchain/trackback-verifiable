@@ -10,6 +10,7 @@ import { DecentralisedFileStoreConnector } from "./connection";
 import { TrackBackModules, TrackBackCallables } from "./enums";
 import {
   ExtrinsicResults,
+  hexToUtf8,
   toUint8Array,
   transformParams,
   uriToHex,
@@ -56,20 +57,27 @@ export class Procedure implements IProcedure {
    * @param didUri Resolves a Decentralised Identifier by the DID URI
    * @returns Promise<IDIDResolutionResult>
    */
-  async resolve(didUri: string): Promise<IDIDResolutionResult> {
-    const didUriHex = uriToHex(didUri);
-    console.log(didUriHex);
+  async resolve(didURI: string): Promise<IDIDResolutionResult> {
+    const didURIHex = uriToHex(didURI);
+    console.log(didURIHex);
     return this.connector.connect().then((api) => {
       return new Promise<IDIDResolutionResult>((resolve, reject) => {
         if (!api) return null;
-        api.query.didModule.dIDDocument(didUriHex, async(result: any) => {
+        api.query.didModule.dIDDocument(didURIHex, async(result: any) => {
           console.log(result);
           if (!result.isEmpty) {
-            // Gets DID document from IPFS
             let data = (JSON.parse(result.toString()));
-            data["didDocument"]  = await new DecentralisedFileStoreConnector().getData(data.did_ref, null);
+            let cid = hexToUtf8(data.did_ref.substr(2).toString());
+            let desContent = await new DecentralisedFileStoreConnector().getData(cid, null);
+            data["did_document"]  = desContent.content;
+            data["did_document_metadata"] = JSON.parse(hexToUtf8(data.did_document_metadata.substr(2).toString()));
+            data["did_resolution_metadata"] = JSON.parse(hexToUtf8(data.did_resolution_metadata.substr(2).toString()));
+            data["did_ref"] = cid;
+            data["public_keys"] = data.public_keys.map((pk: string) => {
+                return hexToUtf8(pk.substr(2).toString())
+            });
+            data["sender_account_id"] = hexToUtf8(data.sender_account_id.substr(2).toString());
             resolve(data);
-            // resolve(JSON.parse(result.toString()));
           } else {
             reject();
           }
@@ -109,15 +117,6 @@ export class Procedure implements IProcedure {
     const didDocRes = toUint8Array(didResolutionMetadata);
     const didURI = uriToHex(didDocument.id);
 
-    /*
-    let didDocument = req.body.didDocument;
-        let didURI = req.body.didURI;
-        let publicKey = req.body.publicKey;
-        let senderTimeStamp = req.body.senderTimeStamp;
-        let proof = req.body.proof;
-    
-    */
-
     const inputParams = [didURI, didDocRes, didDocMetadata, didRef, publicKeys];
 
     const paramFields = [true, true, true, true, true];
@@ -149,7 +148,6 @@ export class Procedure implements IProcedure {
         return {error:error}
       }
     );
-  
     return results
   }
 
