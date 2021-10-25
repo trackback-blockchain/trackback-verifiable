@@ -179,9 +179,7 @@ export class Procedure implements IProcedure {
     const didDocRes = toUint8Array(didResolutionMetadata);
 
     const didURI = uriToHex(didDocument.id);
-    console.log("----------------------------------------")
-    console.log(account)
-    console.log("----------------------------------------")
+
     const inputParams = [
       didDoc,
       didDocMetadata,
