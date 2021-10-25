@@ -1,50 +1,47 @@
-import { AnyType, DIDDocument } from './did';
+import { AnyType, DIDDocument } from "./did";
 
 export interface IDIDResolutionOptions extends AnyType {
-    accept?: string
+  accept?: string;
 }
 
 export interface IDIDResolutionMetadata extends AnyType {
-    contentType?: string
-    error?: 'invalidDid' | 'notFound' | 'representationNotSupported' | string
+  contentType?: string;
+  error?: "invalidDid" | "notFound" | "representationNotSupported" | string;
 }
 
-export class DIDResolutionMetadata implements IDIDResolutionMetadata {
-
-}
+export class DIDResolutionMetadata implements IDIDResolutionMetadata {}
 
 export interface IDIDDocumentMetadata extends AnyType {
-    created?: string
-    updated?: string
-    deactivated?: boolean
-    versionId?: string
-    nextUpdate?: string
-    nextVersionId?: string
-    equivalentId?: string
-    canonicalId?: string
+  created?: string;
+  updated?: string;
+  deactivated?: boolean;
+  versionId?: string;
+  nextUpdate?: string;
+  nextVersionId?: string;
+  equivalentId?: string;
+  canonicalId?: string;
 }
 
-
 export interface IDIDResolutionResult {
-    didResolutionMetadata: IDIDResolutionMetadata;
-    didDocument: DIDDocument | null;
-    didDocumentMetadata: IDIDDocumentMetadata;
+  didResolutionMetadata: IDIDResolutionMetadata;
+  didDocument: DIDDocument | null;
+  didDocumentMetadata: IDIDDocumentMetadata;
 }
 
 export interface ResolverMap {
-    [key: string]: IDIDResolver;
+  [key: string]: IDIDResolver;
 }
 
 export interface ParsedResult {
-    prefix: string;
-    [key: string]: string;
-};
+  prefix: string;
+  [key: string]: string;
+}
 
 export interface IDIDResolver {
-    resolve: (
-        did: string,
-        options: IDIDResolutionOptions
-    ) => Promise<IDIDResolutionResult>;
+  resolve: (
+    did: string,
+    options: IDIDResolutionOptions
+  ) => Promise<IDIDResolutionResult>;
 
-    parseDID: (did: string) => ParsedResult
+  parseDID: (did: string) => ParsedResult;
 }
