@@ -1,6 +1,6 @@
 export type ExtrinsicResults = {
   [key: string]: any;
-};
+} | null;
 
 
 export const DistributedStorageOptions = {
@@ -154,5 +154,5 @@ export function uriToHex(didUri: string) {
     .reduce((a, b) => `${a === "" ? "" : a + ":"}${b}`, "");
 }
 
-export const convert = (from, to) => str => Buffer.from(str, from).toString(to);
+export const convert = (from:any, to:any) => (str:any) => Buffer.from(str, from).toString(to);
 export const hexToUtf8 = convert('hex', 'utf8');

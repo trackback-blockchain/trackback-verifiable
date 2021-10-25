@@ -57,8 +57,8 @@ export class DecentralisedFileStoreConnector {
    * @param headers Auth Headers
    * @returns 
    */
-  async getData(cid: string, headers): Promise<any> {
-    let res = await axios.get(cid).then(response => {
+  async getData(cid: string, headers:any): Promise<any> {
+    return axios.get(cid).then(response => {
       return {
         CID: cid,
         content: response.data
@@ -67,9 +67,7 @@ export class DecentralisedFileStoreConnector {
       return {
         "Error": error,
       }
-    })
-
-    return res;
+    });
   }
   /**
    * # TODO: Replace any
@@ -80,13 +78,13 @@ export class DecentralisedFileStoreConnector {
   async postData(data: any, headers: any): Promise<any> {
 
     let url = this.options.url  + this.options.api + "ipfs/add";
-    let res = await axios.post(url, data).then(response => {
+    return axios.post(url, data).then((response:any) => {
       return this.options.decentralisedStoreURL +  response.data["cid"];
     }).catch( error => {
       return {
         "Error": error,
       }
     })
-    return res;
+
   }
 }
