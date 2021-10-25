@@ -6,7 +6,7 @@ import {
   IDIDResolutionMetadata,
   IDIDResolutionResult,
 } from "../types";
-import { DecentralisedFileStoreConnector } from "./connection";
+import { Connector, DecentralisedFileStoreConnector } from "./connection";
 import { TrackBackModules, TrackBackCallables } from "./enums";
 import {
   ExtrinsicResults,
@@ -17,7 +17,7 @@ import {
 } from "./helpers";
 
 export interface IProcedure {
-  resolve(didUri: string): Promise<IDIDResolutionResult>;
+  resolve(didUri: string): Promise<IDIDResolutionResult|null>;
   constructDIDDocument(
     account: IKeyringPair,
     didDocument: DIDDocument,
@@ -49,7 +49,11 @@ export interface IProcedure {
 export class Procedure implements IProcedure {
   private connector: IConnect | null | undefined;
   constructor(connector: IConnect | null | undefined) {
-    this.connector = connector;
+    if(!connector){
+      this.connector = new Connector();
+    }else {
+      this.connector = connector;      
+    }
   }
 
   /**
@@ -57,10 +61,11 @@ export class Procedure implements IProcedure {
    * @param didUri Resolves a Decentralised Identifier by the DID URI
    * @returns Promise<IDIDResolutionResult>
    */
-  async resolve(didURI: string): Promise<IDIDResolutionResult> {
+  async resolve(didURI: string): Promise<IDIDResolutionResult | null> {
     const didURIHex = uriToHex(didURI);
     console.log(didURIHex);
-    return this.connector.connect().then((api) => {
+    if(!this.connector) throw new Error("Throw")
+    return this.connector?.connect().then((api) => {
       return new Promise<IDIDResolutionResult>((resolve, reject) => {
         if (!api) return null;
         api.query.didModule.dIDDocument(didURIHex, async(result: any) => {
@@ -88,7 +93,7 @@ export class Procedure implements IProcedure {
         return null;
       })
       .finally(() => {
-        this.connector.disconnect();
+        this.connector?.disconnect();
       });
     });
   }
@@ -213,8 +218,8 @@ export class Procedure implements IProcedure {
     callable: string,
     transformed: any
   ): Promise<ExtrinsicResults> {
-    return this.connector
-      .connect()
+    if(!this.connector) return null;
+    return this.connector?.connect()
       .then((api) => {
         if (!api)
           return {
@@ -262,7 +267,7 @@ export class Procedure implements IProcedure {
         };
       })
       .finally(() => {
-        this.connector.disconnect();
+        this.connector?.disconnect();
       });
   }
 }
