@@ -31,8 +31,9 @@
 This is a minimum viable product suite. Please do not use this for production
 
 ## Prerequisites
-* SDKs has been tested on Ubuntu and Mint Linux.
-* Works NodeJS 14.0.0 +
+* NodeJS 14.0.0 +
+* BuildScripts 
+* Working with NodeJS in either Linux or Windows
 
 ### Setup project
 ```bash
