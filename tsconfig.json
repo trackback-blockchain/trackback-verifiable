@@ -3,6 +3,8 @@
     "include": [
         "./packages/trackback-vc/src/**/*.ts",
         "./packages/trackback-did/src/**/*.ts",
+        "./packages/trackback-agent/src/**/*.ts",
+        "./packages/trackback-key/src/**/*.ts",
     ],
     "compilerOptions": {
         "paths": {
@@ -12,6 +14,21 @@
             "@trackback/did": [
                 "./packages/trackback-did/src"
             ],
+            "@trackback/agent": [
+                "./packages/trackback-agent/src"
+            ],
+            "@trackback/key": [
+                "./packages/trackback-key/src"
+            ],
         }
+    },
+    "typedocOptions": {
+        "entryPoints": [
+            "packages/trackback-vc/src/index.ts",
+            "packages/trackback-did/src/index.ts",
+            "packages/trackback-agent/src/index.ts",
+            "packages/trackback-key/src/index.ts",
+        ],
+        "out": "docs"
     }
 }
