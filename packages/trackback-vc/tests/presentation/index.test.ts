@@ -190,7 +190,7 @@ describe('Presentation Tests', () => {
 
       expect(typeof jwt).to.be.equal('string');
       expect(jwt.split('.').length).to.be.equal(3);
-      expect(header.alg).to.be.equal(keyPair.getPublicKeyJwk().alg);
+      expect(header.alg).to.be.equal(keyPair.getPublicKey().alg);
       expect(payload.vp).to.be.an('object');
       expect(JSON.stringify(payload.vp)).to.be.equal(
         JSON.stringify(presentation)

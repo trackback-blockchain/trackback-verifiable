@@ -1,6 +1,6 @@
 {
   "name": "@trackback/did",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "Decentralized Identifiers (DIDs) v1.0",
   "source": "src/index.js",
   "main": "build/index.js",

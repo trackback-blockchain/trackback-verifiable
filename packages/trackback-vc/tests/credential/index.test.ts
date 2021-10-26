@@ -182,7 +182,7 @@ describe('VC Tests', () => {
 
       expect(typeof jwt).to.be.equal('string');
       expect(jwt.split('.').length).to.be.equal(3);
-      expect(header.alg).to.be.equal(keyPair.getPublicKeyJwk().alg);
+      expect(header.alg).to.be.equal(keyPair.getPublicKey().alg);
       expect(payload.vc).to.be.an('object');
       expect(JSON.stringify(payload.vc)).to.be.equal(
         JSON.stringify(credential)

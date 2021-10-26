@@ -9,7 +9,8 @@ export declare abstract class AbstractJsonWebKey {
     abstract verifier(): IVerifier;
     abstract getId(): string;
     abstract getController(): string;
-    abstract getPublicKeyJwk(): any;
-    abstract getPrivateKeyJwk(): any;
+    abstract getPublicKey(): any;
+    abstract getPrivateKey(): any;
+    abstract toDIDDocument(): any;
 }
 //# sourceMappingURL=AbstractJsonWebKey.d.ts.map

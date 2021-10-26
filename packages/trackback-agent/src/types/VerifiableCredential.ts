@@ -1,37 +1,39 @@
+import { Issuer } from './Issuer';
+
 export interface ICredential {
-  "@context": string[];
-  id?: string;
-  type: string[];
-  issuer: { id: string; [x: string]: any };
+  '@context': string[];
+  issuer: Issuer;
+  type: string | string[];
   issuanceDate: string;
-  expirationDate?: string;
-  credentialSubject: {
-    id?: string;
-    [x: string]: any;
-  };
-  credentialStatus?: {
-    id: string;
-    type: string;
-  };
+  credentialSubject: CredentialSubject;
+  credentialStatus?: CredentialStatus;
   [x: string]: any;
+ 
 }
 
-export interface VerifiableCredential {
-  "@context": string[];
+
+export type Type = string | string[];
+
+export interface Claim {
   id?: string;
-  type: string[];
-  issuer: { id: string; [x: string]: any };
+  [key: string]: any;
+}
+
+export interface CredentialStatus {
+  id?: string;
+  [key: string]: any;
+}
+
+export type CredentialSubject = Claim | [Claim];
+
+export interface VerifiableCredential {
+  '@context': string[];
+  issuer: Issuer;
+  type: string | string[];
   issuanceDate: string;
-  expirationDate?: string;
-  credentialSubject: {
-    id?: string;
-    [x: string]: any;
-  };
-  credentialStatus?: {
-    id: string;
-    type: string;
-  };
-  proof: {
+  credentialSubject: CredentialSubject;
+  credentialStatus?: CredentialStatus;
+  proof?: {
     type?: string;
     [x: string]: any;
   };

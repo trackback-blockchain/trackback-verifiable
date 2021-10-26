@@ -1,13 +1,14 @@
 {
   "name": "@trackback/key",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "author": "Team Trackback <dev@track-back.co>",
   "license": "GPL-3.0-or-later",
   "contributors": [
-    "Don <don@track-back.co>"
+    "Don <don@track-back.co>",
+    "Dev <dev@track-back.co>"
   ],
     "scripts": {
     "build": "tsc",

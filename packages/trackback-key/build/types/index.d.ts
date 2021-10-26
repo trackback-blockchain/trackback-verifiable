@@ -19,5 +19,13 @@ export interface IX25519KeyPair {
     publicKey: KeyObject | CryptoKey;
     privateKey?: KeyObject | CryptoKey;
 }
+/**
+ * same as jose/util/generate_key_pair GenerateKeyPairOptions
+ */
+export interface KeyPairOptions {
+    crv?: string;
+    modulusLength?: number;
+    extractable?: boolean;
+}
 export * from './AbstractJsonWebKey';
 //# sourceMappingURL=index.d.ts.map

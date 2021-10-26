@@ -28,12 +28,13 @@
     <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" alt="TrackBack Verifiable Credentials SDK 0.0.1-alpha.0">
 </a>
 
-This is a minimum viable product suite. Please do not use this for production
+## IMPORTANT! 
+* This is a minimum viable product suite. The Tech Team is fully aware of limitations.
+* Please do not use this for production
 
 ## Prerequisites
-* NodeJS 14.0.0 +
 * BuildScripts 
-* Working with NodeJS in either Linux or Windows
+* Working with NodeJS 14.0.0 + in either Linux or Windows
 
 ### Setup project
 ```bash
