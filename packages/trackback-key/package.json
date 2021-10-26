@@ -4,6 +4,11 @@
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "author": "Team Trackback <dev@track-back.co>",
+  "license": "GPL-3.0-or-later",
+  "contributors": [
+    "Don <don@track-back.co>"
+  ],
     "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register 'tests/**/*.ts'"
@@ -14,7 +19,6 @@
     "jose": "^3.19.0",
     "ts-node": "^10.2.1"
   },
-  "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",

@@ -2,15 +2,20 @@
   "name": "@trackback/agent",
   "version": "0.0.1-alpha.0",
   "main": "index.js",
-  "license": "MIT",
+  "author": "Team Trackback <dev@track-back.co>",
+  "license": "GPL-3.0-or-later",
+  "contributors": [
+    "Don <don@track-back.co>",
+    "Gayan <gayan@track-back.co>"
+  ],
   "scripts": {
-    "test": "mocha  --timeout 100000 -r ts-node/register 'tests/**/*.ts'"
+    "test": "mocha -r ts-node/register 'tests/**/*.ts'"
   },
   "dependencies": {
     "@polkadot/api": "^6.1.2",
     "@polkadot/util-crypto": "^7.5.1",
     "mock-socket": "^9.0.5",
-    "sinon": "^11.1.2",
+    "sinon": "@types/sinon@10.0.0",
     "ts-sinon": "^2.0.2"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@
   "contributors": [
     "Don <don@track-back.co>"
   ],
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register 'tests/**/*.ts'"

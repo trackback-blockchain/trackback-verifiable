@@ -6,8 +6,11 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "repository": "git@github.com:trackback-blockchain/trackback-did.git",
-  "author": "Don <don@track-back.co>",
-  "contributors": [],
+  "author": "Team Trackback <dev@track-back.co>",
+  "license": "GPL-3.0-or-later",
+  "contributors": [
+    "Don <don@track-back.co>"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register 'tests/**/*.ts'",

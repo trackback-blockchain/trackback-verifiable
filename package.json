@@ -9,7 +9,7 @@
     "bootstrap": "lerna bootstrap",
     "prettier": "prettier --write '{packages,!build}/**/*.ts'",
     "test": "lerna run --stream test",
-    "publish:prerelease":"lerna publish --conventional-prerelease --yes"
+    "publish:prerelease": "lerna publish --conventional-prerelease --yes"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
@@ -25,6 +25,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "lerna": "^4.0.0",
     "prettier": "^2.3.2",
+    "typedoc": "^0.22.7",
     "typescript": "^4.4.2"
   },
   "license": "ISC",
