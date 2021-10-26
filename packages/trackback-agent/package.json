@@ -1,6 +1,6 @@
 {
   "name": "@trackback/agent",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -10,8 +10,8 @@
   "dependencies": {
     "@polkadot/api": "^6.1.2",
     "@polkadot/util-crypto": "^7.5.1",
-    "@trackback/key": "^0.0.1-alpha.0",
-    "@trackback/vc": "^0.0.1-alpha.0",
+    "@trackback/key": "^0.0.1-alpha.1",
+    "@trackback/vc": "^0.0.1-alpha.1",
     "mock-socket": "^9.0.5",
     "sinon": "^11.1.2",
     "ts-sinon": "^2.0.2"
