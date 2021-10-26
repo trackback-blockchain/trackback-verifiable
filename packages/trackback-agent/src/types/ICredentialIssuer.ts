@@ -1,15 +1,18 @@
-import { ITrackBackContext } from "./ITrackBackContext";
+import { IKeyPair } from './IKeyPair';
 import { ICredential, VerifiableCredential } from "./VerifiableCredential";
-import { VerifiablePresentation } from "./VerifiablePresentation";
 
+
+/**
+ * Trackback implementation for issuing credentials and presentations interface
+ */
 export interface ICredentialIssuer {
   createVerifiableCredentials(
     cred: ICredential,
-    context: ITrackBackContext
-  ): Promise<VerifiableCredential>;
+    keyPair: IKeyPair
+    ): Promise<string> 
 
   createVerifiablePresentation(
-    vcs: VerifiableCredential[],
-    context: ITrackBackContext
-  ): Promise<VerifiablePresentation>;
+    vcs: string[],
+    keyPair: IKeyPair
+  ): Promise<string>;
 }

@@ -11,12 +11,12 @@ export function generateMnemonic(
   return mnemonicGenerate(numWords, onlyJs);
 }
 
-export function createAccount(): ITrackbackAccount {
+export function createAccount(metadata?: { [key: string]: string }): ITrackbackAccount {
   const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
 
   const MNEMONIC = mnemonicGenerate();
 
-  const keyPair: KeyringPair = keyring.addFromUri(MNEMONIC);
+  const keyPair: KeyringPair = keyring.addFromUri(MNEMONIC, metadata);
 
   return {
     keyPair,

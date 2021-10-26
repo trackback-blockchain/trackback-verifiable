@@ -4,5 +4,13 @@
         "rootDir": "src",
         "outDir": "build",
         "declarationDir": "build"
-    }
+    },
+    "references": [
+        {
+            "path": "../trackback-key"
+        },
+        {
+            "path": "../trackback-vc"
+        },
+    ]
 }

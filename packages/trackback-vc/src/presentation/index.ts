@@ -81,7 +81,7 @@ export class VP {
     }
     this.validate(presentation);
 
-    const privateKeyJwk = keyPair.getPrivateKeyJwk();
+    const privateKeyJwk = keyPair.getPrivateKey();
 
     if (!privateKeyJwk) {
       throw new TypeError('Private key required for issuing');
@@ -121,7 +121,7 @@ export class VP {
       throw new TypeError(' keyPair required');
     }
 
-    const publicKeyJwk = keyPair.getPublicKeyJwk();
+    const publicKeyJwk = keyPair.getPublicKey();
 
     if (!publicKeyJwk) {
       throw new TypeError('public key required for verifing');
