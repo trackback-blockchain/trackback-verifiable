@@ -1,6 +1,6 @@
 {
   "name": "@trackback/key",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -10,7 +10,7 @@
     "Don <don@track-back.co>",
     "Dev <dev@track-back.co>"
   ],
-    "scripts": {
+  "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register 'tests/**/*.ts'"
   },
