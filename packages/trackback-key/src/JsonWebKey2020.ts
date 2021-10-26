@@ -1,8 +1,8 @@
+import { KeyPairOptions } from './types/index';
 import { AbstractJsonWebKey } from './types';
 import { flattenedVerify } from 'jose/jws/flattened/verify';
 import {
   generateKeyPair,
-  GenerateKeyPairOptions,
 } from 'jose/util/generate_key_pair';
 import { exportJWK } from 'jose/key/export';
 import { importJWK } from 'jose/key/import';
@@ -35,6 +35,7 @@ function isDeattachedHeader(encodedHeader: string) {
 }
 
 export class JsonWebKey2020 extends AbstractJsonWebKey {
+
   public id: string;
   public type: string;
   public controller: string;
@@ -59,7 +60,7 @@ export class JsonWebKey2020 extends AbstractJsonWebKey {
   static async generate(
     controller?: string,
     alg?: string,
-    options?: GenerateKeyPairOptions
+    options?: KeyPairOptions
   ): Promise<JsonWebKey2020> {
     alg = alg || DEFAULT_ALG;
     const { publicKey, privateKey } = await generateKeyPair(
@@ -98,10 +99,10 @@ export class JsonWebKey2020 extends AbstractJsonWebKey {
     return this.controller;
   }
 
-  getPublicKeyJwk(): JWK {
+  getPublicKey(): JWK {
     return this.publicKeyJwk;
   }
-  getPrivateKeyJwk(): JWK | undefined {
+  getPrivateKey(): JWK | undefined {
     return this.privateKeyJwk;
   }
 
@@ -217,5 +218,41 @@ export class JsonWebKey2020 extends AbstractJsonWebKey {
         return false;
       },
     };
+  }
+
+
+  toDIDDocument(didUri?: string) {
+
+    if (!this.publicKeyJwk) {
+      throw new Error('Public key required')
+    }
+
+    const keyWithoutPk = new JsonWebKey2020({ ...this });
+    if (didUri) {
+      keyWithoutPk.id = keyWithoutPk.id.replace(keyWithoutPk.controller, didUri)
+      keyWithoutPk.controller = didUri;
+    }
+    // remove private key 
+    delete keyWithoutPk.privateKeyJwk;
+
+    return {
+      '@context': "https://www.w3.org/ns/did/v1",
+      id: didUri || this.controller,
+      publicKey: [
+        { ...keyWithoutPk }
+      ],
+      "authentication": [
+        keyWithoutPk.id
+      ],
+      "assertionMethod": [
+        keyWithoutPk.id
+      ],
+      "capabilityDelegation": [
+        keyWithoutPk.id
+      ],
+      "capabilityInvocation": [
+        keyWithoutPk.id
+      ]
+    }
   }
 }

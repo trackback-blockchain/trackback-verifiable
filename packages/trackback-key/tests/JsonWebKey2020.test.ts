@@ -113,5 +113,6 @@ describe('verify', () => {
     const verified = await verifier.verify({ data: testMSG, signature });
 
     expect(verified).to.equal(true);
+
   });
 });

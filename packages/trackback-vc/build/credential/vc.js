@@ -56,7 +56,7 @@ class VC {
                 ? credential.credentialSubject[0].id
                 : credential.credentialSubject.id;
             (0, check_1.check)(credential);
-            const privateKeyJwk = keyPair.getPrivateKeyJwk();
+            const privateKeyJwk = keyPair.getPrivateKey();
             if (!privateKeyJwk) {
                 throw new TypeError('Private key required for issuing');
             }
@@ -81,7 +81,7 @@ class VC {
             if (!keyPair) {
                 throw new TypeError(' keyPair required');
             }
-            const publicKeyJwk = keyPair.getPublicKeyJwk();
+            const publicKeyJwk = keyPair.getPublicKey();
             if (!publicKeyJwk) {
                 throw new TypeError('public key required for verifing');
             }

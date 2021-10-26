@@ -1,6 +1,6 @@
-
-import { ITrackBackAgent, IConnect } from '../types';
+import { ITrackBackAgent, IConnect, ITrackbackAccount } from '../types';
 import { IProcedure, Procedure } from './procedure';
+import { createAccount } from './account';
 
 export class TrackBackAgent implements ITrackBackAgent {
 
@@ -9,4 +9,10 @@ export class TrackBackAgent implements ITrackBackAgent {
   constructor(connection: IConnect | null | undefined) {
     this.procedure = new Procedure(connection);
   }
+
+
+  createAccount(metadata: { [key: string]: string }): ITrackbackAccount {
+    return createAccount(metadata)
+  }
+
 }

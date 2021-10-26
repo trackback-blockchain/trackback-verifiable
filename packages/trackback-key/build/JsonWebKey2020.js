@@ -77,10 +77,10 @@ class JsonWebKey2020 extends types_1.AbstractJsonWebKey {
     getController() {
         return this.controller;
     }
-    getPublicKeyJwk() {
+    getPublicKey() {
         return this.publicKeyJwk;
     }
-    getPrivateKeyJwk() {
+    getPrivateKey() {
         return this.privateKeyJwk;
     }
     static from(keyPair) {
@@ -171,6 +171,37 @@ class JsonWebKey2020 extends types_1.AbstractJsonWebKey {
                     return false;
                 });
             },
+        };
+    }
+    toDIDDocument(didUri) {
+        if (!this.publicKeyJwk) {
+            throw new Error('Public key required');
+        }
+        const keyWithoutPk = new JsonWebKey2020(Object.assign({}, this));
+        if (didUri) {
+            keyWithoutPk.id = keyWithoutPk.id.replace(keyWithoutPk.controller, didUri);
+            keyWithoutPk.controller = didUri;
+        }
+        // remove private key 
+        delete keyWithoutPk.privateKeyJwk;
+        return {
+            '@context': "https://www.w3.org/ns/did/v1",
+            id: didUri || this.controller,
+            publicKey: [
+                Object.assign({}, keyWithoutPk)
+            ],
+            "authentication": [
+                keyWithoutPk.id
+            ],
+            "assertionMethod": [
+                keyWithoutPk.id
+            ],
+            "capabilityDelegation": [
+                keyWithoutPk.id
+            ],
+            "capabilityInvocation": [
+                keyWithoutPk.id
+            ]
         };
     }
 }

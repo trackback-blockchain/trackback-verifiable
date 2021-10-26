@@ -7,6 +7,15 @@ function check(credential) {
     if (!credential) {
         throw new Error('credential required');
     }
+    if (typeof credential === 'string') {
+        const [encodedHeader, encodedPayload] = credential.split('.');
+        const header = JSON.parse(Buffer.from(encodedHeader, 'base64').toString());
+        if (!header.alg) {
+            throw new Error('alg parameter is required in JWT header');
+        }
+        const payload = JSON.parse(Buffer.from(encodedPayload, 'base64').toString());
+        credential = payload.vc;
+    }
     if (!credential['@context'] || !(0, utils_1.isNonEmptyArray)(credential['@context'])) {
         throw new Error('Credentials must have a "@context" property.');
     }
