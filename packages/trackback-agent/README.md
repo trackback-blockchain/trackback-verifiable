@@ -1,5 +1,7 @@
 # TrackBack Agent
-
+* Create, Revoke, Resolve, Update DIDs
+* Connects with TrackBack chain
+* Store DID documents in a Decentralised file store ( IPFS for MVP stage) 
 ## DID Operations 
 * Reference :- https://www.w3.org/TR/did-core/
  
