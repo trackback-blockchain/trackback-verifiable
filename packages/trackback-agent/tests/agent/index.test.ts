@@ -204,6 +204,31 @@ describe('DID operation tests', () => {
 
   });
 
+  it("Should revoke a DID Document", async () => {
+
+    await agent.procedure.revoke(
+      account,
+      didDocument.id
+    );
+
+    const transformed = transformParams(
+      [true], 
+      [
+        uriToHex(didDocument.id)
+      ]
+    );
+
+    assert(
+      stub.calledOnceWith(
+          account, 
+          TrackBackModules.DIDModule,
+          TrackBackCallables.DIDRevoke,
+          transformed
+      )
+    );
+
+  });
+
   it("Should save a record on IPFS or a Decentralised data store", async () => {
       agent = new TrackBackAgent(null);
       let result = await agent.procedure.saveToDistributedStorage(desDIDStructure, null);

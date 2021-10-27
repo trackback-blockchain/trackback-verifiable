@@ -7,4 +7,5 @@ export enum TrackBackCallables {
   DIDUpdate = "updateDid",
   DIDResolve = "resolveDid",
   DIDTrail = "trailDid",
+  DIDRevoke = "revokeDid"
 }
