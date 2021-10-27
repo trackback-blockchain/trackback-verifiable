@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IKeyPair } from '@trackback/key';
+import { AbstractJsonWebKey } from '@trackback/key';
 import { checkPresentation } from './check';
 
 /**
@@ -10,7 +10,7 @@ export interface IJWTSignOptions {
   /**
    * Implementation of JsonWebKey2020
    */
-  keyPair: IKeyPair;
+  keyPair: AbstractJsonWebKey;
 
   /**
    * presenation
@@ -32,7 +32,7 @@ export interface IJWTVerifyOptions {
   /**
    * Implementation of JsonWebKey2020
    */
-  keyPair: IKeyPair;
+  keyPair: AbstractJsonWebKey;
 
   /**
    * presenation
@@ -67,7 +67,7 @@ export class VP {
    * @param options {IJWTSignOptions} Parameter nessasary to create a JSON Web Token.
    * @returns Promise<string> jwt
    */
-  async issue(options: IJWTSignOptions): Promise<string> {
+  async issueJWT(options: IJWTSignOptions): Promise<string> {
     const { keyPair } = options;
 
     if (!keyPair) {
@@ -114,7 +114,7 @@ export class VP {
    * @returns {Promise<boolean>}  A promise result
    */
 
-  async verify(jwt: string, options: IJWTVerifyOptions): Promise<boolean> {
+  async verifyJWT(jwt: string, options: IJWTVerifyOptions): Promise<boolean> {
     const { keyPair } = options;
 
     if (!keyPair) {

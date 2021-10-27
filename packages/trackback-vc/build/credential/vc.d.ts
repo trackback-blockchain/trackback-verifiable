@@ -1,4 +1,4 @@
-import { IKeyPair } from '@trackback/key';
+import { AbstractJsonWebKey } from '@trackback/key';
 import { W3Credential } from './../types/VerifiableCredential';
 /**
  * Trackback implementation for verifiable credential
@@ -16,12 +16,12 @@ export declare class VC {
      * where no explicit encoding rules for JWT exist
      * @param options
      */
-    issue(options: {
-        keyPair: IKeyPair;
+    issueJWT(options: {
+        keyPair: AbstractJsonWebKey;
         credential: W3Credential;
     }): Promise<string>;
-    verify(jwt: string, options: {
-        keyPair: IKeyPair;
+    verifyJWT(jwt: string, options: {
+        keyPair: AbstractJsonWebKey;
         credential: W3Credential;
     }): Promise<boolean>;
 }

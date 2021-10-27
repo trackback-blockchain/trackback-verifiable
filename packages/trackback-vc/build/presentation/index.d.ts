@@ -1,4 +1,4 @@
-import { IKeyPair } from '@trackback/key';
+import { AbstractJsonWebKey } from '@trackback/key';
 /**
  * Presenation JWT sign options
  * @public
@@ -7,7 +7,7 @@ export interface IJWTSignOptions {
     /**
      * Implementation of JsonWebKey2020
      */
-    keyPair: IKeyPair;
+    keyPair: AbstractJsonWebKey;
     /**
      * presenation
      *
@@ -26,7 +26,7 @@ export interface IJWTVerifyOptions {
     /**
      * Implementation of JsonWebKey2020
      */
-    keyPair: IKeyPair;
+    keyPair: AbstractJsonWebKey;
     /**
      * presenation
      *
@@ -55,7 +55,7 @@ export declare class VP {
      * @param options {IJWTSignOptions} Parameter nessasary to create a JSON Web Token.
      * @returns Promise<string> jwt
      */
-    issue(options: IJWTSignOptions): Promise<string>;
+    issueJWT(options: IJWTSignOptions): Promise<string>;
     /**
      * verify jwt presentation
      *
@@ -65,6 +65,6 @@ export declare class VP {
      * @param options {IJWTVerifyOptions} options for verifing jwt
      * @returns {Promise<boolean>}  A promise result
      */
-    verify(jwt: string, options: IJWTVerifyOptions): Promise<boolean>;
+    verifyJWT(jwt: string, options: IJWTVerifyOptions): Promise<boolean>;
 }
 //# sourceMappingURL=index.d.ts.map

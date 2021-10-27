@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { IKeyPair } from '@trackback/key';
+import { AbstractJsonWebKey } from '@trackback/key';
 
 import { W3Credential } from './../types/VerifiableCredential';
 import { check } from './check';
@@ -26,8 +26,8 @@ export class VC {
 
   // based on https://www.w3.org/TR/vc-data-model/#jwt-and-jws-considerations
 
-  async issue(options: {
-    keyPair: IKeyPair;
+  async issueJWT(options: {
+    keyPair: AbstractJsonWebKey;
     credential: W3Credential;
   }): Promise<string> {
     const { keyPair } = options;
@@ -79,9 +79,9 @@ export class VC {
     return keyPair.signer().sign(payload, { header });
   }
 
-  async verify(
+  async verifyJWT(
     jwt: string,
-    options: { keyPair: IKeyPair; credential: W3Credential }
+    options: { keyPair: AbstractJsonWebKey; credential: W3Credential }
   ): Promise<boolean> {
     const { keyPair } = options;
 

@@ -177,7 +177,7 @@ describe('Presentation Tests', () => {
         ],
       };
 
-      const jwt = await vp.issue({ keyPair, presentation });
+      const jwt = await vp.issueJWT({ keyPair, presentation });
 
       const [encodedHeader, encodedPayload] = jwt.split('.');
 
@@ -218,7 +218,7 @@ describe('Presentation Tests', () => {
           alg: 'EdDSA',
         },
       };
-      const keyPair = JsonWebKey2020.import(key);
+      const keyPair = JsonWebKey2020.from(key);
 
       const JWT = `eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRpZDp0cmFja2JhY2s6a2V5OlNCUXlYeEFVYTQxeXJCUDlZSi1tUHNDdEVTRmptemJPSVVyekdJMy1vV3MjU0JReVh4QVVhNDF5ckJQOVlKLW1Qc0N0RVNGam16Yk9JVXJ6R0kzLW9XcyJ9.eyJuYmYiOjE2MzQ2ODA2MDksInZwIjp7IkBjb250ZXh0IjpbImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL3YxIl0sInR5cGUiOlsiVmVyaWZpYWJsZVByZXNlbnRhdGlvbiJdLCJ2ZXJpZmlhYmxlQ3JlZGVudGlhbCI6W3siQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiXSwidHlwZSI6WyJWZXJpZmlhYmxlQ3JlZGVudGlhbCJdLCJjcmVkZW50aWFsU3ViamVjdCI6e30sImlzc3VlciI6ImRpZDp0cmFja2JhY2s6aXNzdWVyLzEyMzQifV19fQ.mZLZIH-BOd3r72ryGEkfs7UBfIQ5_fSRchUo9h7DgIwd9L2BE3fhIviJW2X9YMIyEVeAi8C2Yz1m8ETT9pmHBw`;
 
@@ -235,7 +235,7 @@ describe('Presentation Tests', () => {
         ],
       };
 
-      const result = await vp.verify(JWT, { keyPair, presentation });
+      const result = await vp.verifyJWT(JWT, { keyPair, presentation });
 
       expect(result).to.be.equal(true);
     });

@@ -39,7 +39,7 @@ class VP {
      * @param options {IJWTSignOptions} Parameter nessasary to create a JSON Web Token.
      * @returns Promise<string> jwt
      */
-    issue(options) {
+    issueJWT(options) {
         return __awaiter(this, void 0, void 0, function* () {
             const { keyPair } = options;
             if (!keyPair) {
@@ -73,7 +73,7 @@ class VP {
      * @param options {IJWTVerifyOptions} options for verifing jwt
      * @returns {Promise<boolean>}  A promise result
      */
-    verify(jwt, options) {
+    verifyJWT(jwt, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const { keyPair } = options;
             if (!keyPair) {
