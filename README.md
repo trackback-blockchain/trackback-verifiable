@@ -29,7 +29,7 @@
 </a>
 
 ## IMPORTANT! 
-* This is a minimum viable product suite. The Tech Team is fully aware of limitations.
+* This is a minimum viable product suite with limited functionality.
 * Please do not use this for production
 
 ## Prerequisites
