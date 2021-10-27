@@ -169,7 +169,7 @@ describe('VC Tests', () => {
         credentialSubject: {},
         issuer: 'did:trackback:issuer/1234',
       };
-      const jwt = await vc.issueJWT({ keyPair, credential });
+      const jwt = await vc.issue({ keyPair, credential });
 
       const [encodedHeader, encodedPayload] = jwt.split('.');
 
@@ -212,7 +212,7 @@ describe('VC Tests', () => {
           alg: 'EdDSA',
         },
       };
-      const keyPair = JsonWebKey2020.from(key);
+      const keyPair = JsonWebKey2020.import(key);
 
       const JWT = `eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRpZDp0cmFja2JhY2s6a2V5OlNCUXlYeEFVYTQxeXJCUDlZSi1tUHNDdEVTRmptemJPSVVyekdJMy1vV3MjU0JReVh4QVVhNDF5ckJQOVlKLW1Qc0N0RVNGam16Yk9JVXJ6R0kzLW9XcyJ9.eyJpc3MiOiJkaWQ6dHJhY2tiYWNrOmlzc3Vlci8xMjM0IiwibmJmIjoxMjYyMzczODA0LCJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIl0sImlzc3VhbmNlRGF0ZSI6IjIwMTAtMDEtMDFUMTk6MjM6MjRaIiwiY3JlZGVudGlhbFN1YmplY3QiOnt9LCJpc3N1ZXIiOiJkaWQ6dHJhY2tiYWNrOmlzc3Vlci8xMjM0In19.Lnaizuud1y7q6ZV7gprkGUJkQwPFEYjIXskG25EsF5QrLXZHefkVbulXmIiAvUT634LthaTc92oKpA_jzvQIBQ`;
 
@@ -224,7 +224,7 @@ describe('VC Tests', () => {
         issuer: 'did:trackback:issuer/1234',
       };
 
-      const result = await vc.verifyJWT(JWT, { keyPair, credential });
+      const result = await vc.verify(JWT, { keyPair, credential });
 
       expect(result).to.be.equal(true);
     });
