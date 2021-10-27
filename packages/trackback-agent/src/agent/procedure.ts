@@ -18,6 +18,7 @@ import {
 
 export interface IProcedure {
   resolve(didUri: string): Promise<IDIDResolutionResult|null>;
+  revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults>
   constructDIDDocument(
     account: IKeyringPair,
     didDocument: DIDDocument,
@@ -99,7 +100,30 @@ export class Procedure implements IProcedure {
   }
 
   /**
-   * Updates a DID Document
+   * @param didUri Revoke a Decentralised Identifier by the DID URI
+   * Simply pass the DID URI to this method to revoke a DID.
+   * This action cannot be undone. 
+   * @returns Promise<ExtrinsicResults>
+   */
+   async revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults> {
+
+    const inputParams = [uriToHex(didURI)];
+
+    const paramFields = [true];
+
+    const transformed = transformParams(paramFields, inputParams);
+    return this.dispatch(
+      account,
+      TrackBackModules.DIDModule,
+      TrackBackCallables.DIDRevoke,
+      transformed
+    );
+  }
+
+  /**
+   * Updates a DID Document metadata
+   * Use the method `saveToDistributedStorage` to publish a new version of the DID document and 
+   * then include the new CID
    * @param account | Polkadot Account
    * @param didDocument | DID Document represented in a JSON Structure
    * - DID Document gets update on IPFS or Decentralosed data store
@@ -249,7 +273,7 @@ export class Procedure implements IProcedure {
                     );
                     resolve({
                       Error: false,
-                      Message: "Data has been saved successfully",
+                      Message: "Data has been processed successfully",
                     });
                   }
                 }
