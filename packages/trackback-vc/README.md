@@ -13,17 +13,25 @@ yarn install
 
 ### importing Verifiable Credentials
 
+ES Modules import
+
 ```javascript
 
 import { VC } from '@trackback/vc'
 
 ```
 
-### Validate Verifiable Credentials
+CommonJS import
 
 ```javascript
 
-import { VC } from '@trackback/vc'
+const { VC } = require('@trackback/vc');
+
+```
+
+### Validate Verifiable Credentials
+
+```javascript
 
 const vc = new VC();
 

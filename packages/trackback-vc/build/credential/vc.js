@@ -34,7 +34,7 @@ class VC {
      * @param options
      */
     // based on https://www.w3.org/TR/vc-data-model/#jwt-and-jws-considerations
-    issueJWT(options) {
+    issue(options) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const { keyPair } = options;
@@ -75,7 +75,7 @@ class VC {
             return keyPair.signer().sign(payload, { header });
         });
     }
-    verifyJWT(jwt, options) {
+    verify(jwt, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const { keyPair } = options;
             if (!keyPair) {
