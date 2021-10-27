@@ -226,7 +226,6 @@ describe('DID operation tests', () => {
           transformed
       )
     );
-
   });
 
   it("Should save a record on IPFS or a Decentralised data store", async () => {

@@ -62,7 +62,7 @@ export class DecentralisedFileStoreConnector {
       return {
         CID: cid,
         content: response.data
-      };;
+      };
     }).catch( error => {
       return {
         "Error": error,
