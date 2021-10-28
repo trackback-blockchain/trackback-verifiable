@@ -23,7 +23,7 @@ export class CredentialIssuer implements ICredentialIssuer {
   }
 
   static async build(options?: any) {
-    const id = options?.id || `did:trakback:${uuidv4()}`
+    const id = options?.id || `did:trackback:${uuidv4()}`
     const keypair = await JsonWebKey2020.generate();
     return new CredentialIssuer({ ...options, id, keypair });
   }
