@@ -23,13 +23,16 @@ function decodeJWT(jwt: string) {
 async function resolveKeyPair(issuer: string, context: ITrackBackContext): Promise<IKeyPair> {
     const result = await context?.agent?.procedure.resolve(issuer);
 
+    console.log("***********resolveKeyPair********************************")
+    console.log(result)
+
     if (!result || !result.didDocument) {
         throw new Error('issuer not resolvable');
     }
 
     const verificationMethod = result.didDocument.verificationMethod;
 
-    const supportedKey = (verificationMethod || []).find(v => v.type === 'JsonWebKey2020')
+    const supportedKey = (verificationMethod || []).find((v:any) => v.type === 'JsonWebKey2020')
 
     return JsonWebKey2020.import(supportedKey);
 }
