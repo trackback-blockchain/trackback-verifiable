@@ -139,6 +139,11 @@ export class CredentialVerifier {
     }
 
 
+    /**
+     * decode jwt
+     * @param jwt 
+     * @returns 
+     */
     static decodeJWT(jwt: string): { header: any, payload: any, signature: string} {
         return decodeJWT(jwt);
     }
