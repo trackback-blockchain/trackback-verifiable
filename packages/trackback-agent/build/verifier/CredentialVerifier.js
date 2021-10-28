@@ -34,6 +34,12 @@ function resolveKeyPair(issuer, context) {
     });
 }
 class CredentialVerifier {
+    /**
+     *  Verify w3 credentials as jwt
+     * @param credentials - credentials as jwt
+     * @param context - trackback context
+     * @returns promise true/false
+     */
     verifyCredentials(credentials, context) {
         return __awaiter(this, void 0, void 0, function* () {
             const vc = new vc_1.VC();
@@ -64,6 +70,13 @@ class CredentialVerifier {
             throw new Error('only jwt verification is supported');
         });
     }
+    /**
+     * Verify presentation for jwt
+     * @param presentation - presentation jwt format
+     * @param context - trackback context
+     * @param keypair - key pair to verify presentation
+     * @returns promise true/false
+     */
     verifyPresentation(presentation, context, keypair) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof presentation === 'string') {

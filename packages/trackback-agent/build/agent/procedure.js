@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Procedure = void 0;
 const connection_1 = require("./connection");
 const enums_1 = require("./enums");
-const helpers_1 = require("./helpers");
+const utils_1 = require("./utils");
 /**
  * Facilitates DID operations
  */
@@ -33,7 +33,7 @@ class Procedure {
     resolve(didURI) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const didURIHex = (0, helpers_1.uriToHex)(didURI);
+            const didURIHex = (0, utils_1.uriToHex)(didURI);
             console.log(didURIHex);
             if (!this.connector)
                 throw new Error("Throw");
@@ -45,16 +45,16 @@ class Procedure {
                         console.log(result);
                         if (!result.isEmpty) {
                             let data = (JSON.parse(result.toString()));
-                            let cid = (0, helpers_1.hexToUtf8)(data.did_ref.substr(2).toString());
+                            let cid = (0, utils_1.hexToUtf8)(data.did_ref.substr(2).toString());
                             let desContent = yield new connection_1.DecentralisedFileStoreConnector().getData(cid, null);
                             data["did_document"] = desContent.content;
-                            data["did_document_metadata"] = JSON.parse((0, helpers_1.hexToUtf8)(data.did_document_metadata.substr(2).toString()));
-                            data["did_resolution_metadata"] = JSON.parse((0, helpers_1.hexToUtf8)(data.did_resolution_metadata.substr(2).toString()));
+                            data["did_document_metadata"] = JSON.parse((0, utils_1.hexToUtf8)(data.did_document_metadata.substr(2).toString()));
+                            data["did_resolution_metadata"] = JSON.parse((0, utils_1.hexToUtf8)(data.did_resolution_metadata.substr(2).toString()));
                             data["did_ref"] = cid;
                             data["public_keys"] = data.public_keys.map((pk) => {
-                                return (0, helpers_1.hexToUtf8)(pk.substr(2).toString());
+                                return (0, utils_1.hexToUtf8)(pk.substr(2).toString());
                             });
-                            data["sender_account_id"] = (0, helpers_1.hexToUtf8)(data.sender_account_id.substr(2).toString());
+                            data["sender_account_id"] = (0, utils_1.hexToUtf8)(data.sender_account_id.substr(2).toString());
                             resolve(data);
                         }
                         else {
@@ -81,9 +81,9 @@ class Procedure {
      */
     revoke(account, didURI) {
         return __awaiter(this, void 0, void 0, function* () {
-            const inputParams = [(0, helpers_1.uriToHex)(didURI)];
+            const inputParams = [(0, utils_1.uriToHex)(didURI)];
             const paramFields = [true];
-            const transformed = (0, helpers_1.transformParams)(paramFields, inputParams);
+            const transformed = (0, utils_1.transformParams)(paramFields, inputParams);
             return this.dispatch(account, enums_1.TrackBackModules.DIDModule, enums_1.TrackBackCallables.DIDRevoke, transformed);
         });
     }
@@ -102,13 +102,13 @@ class Procedure {
      */
     updateDIDDocument(account, didDocument, didDocumentMetadata, didResolutionMetadata, didRef, publicKeys) {
         return __awaiter(this, void 0, void 0, function* () {
-            const didDoc = (0, helpers_1.toUint8Array)(didDocument);
-            const didDocMetadata = (0, helpers_1.toUint8Array)(didDocumentMetadata);
-            const didDocRes = (0, helpers_1.toUint8Array)(didResolutionMetadata);
-            const didURI = (0, helpers_1.uriToHex)(didDocument.id);
+            const didDoc = (0, utils_1.toUint8Array)(didDocument);
+            const didDocMetadata = (0, utils_1.toUint8Array)(didDocumentMetadata);
+            const didDocRes = (0, utils_1.toUint8Array)(didResolutionMetadata);
+            const didURI = (0, utils_1.uriToHex)(didDocument.id);
             const inputParams = [didURI, didDocRes, didDocMetadata, didRef, publicKeys];
             const paramFields = [true, true, true, true, true];
-            const transformed = (0, helpers_1.transformParams)(paramFields, inputParams);
+            const transformed = (0, utils_1.transformParams)(paramFields, inputParams);
             return this.dispatch(account, enums_1.TrackBackModules.DIDModule, enums_1.TrackBackCallables.DIDUpdate, transformed);
         });
     }
@@ -145,10 +145,10 @@ class Procedure {
      */
     constructDIDDocument(account, didDocument, didDocumentMetadata, didResolutionMetadata, didRef, publicKeys) {
         return __awaiter(this, void 0, void 0, function* () {
-            const didDoc = (0, helpers_1.toUint8Array)(didDocument);
-            const didDocMetadata = (0, helpers_1.toUint8Array)(didDocumentMetadata);
-            const didDocRes = (0, helpers_1.toUint8Array)(didResolutionMetadata);
-            const didURI = (0, helpers_1.uriToHex)(didDocument.id);
+            const didDoc = (0, utils_1.toUint8Array)(didDocument);
+            const didDocMetadata = (0, utils_1.toUint8Array)(didDocumentMetadata);
+            const didDocRes = (0, utils_1.toUint8Array)(didResolutionMetadata);
+            const didURI = (0, utils_1.uriToHex)(didDocument.id);
             const inputParams = [
                 didDoc,
                 didDocMetadata,
@@ -159,7 +159,7 @@ class Procedure {
                 publicKeys,
             ];
             const paramFields = [true, true, true, true, true, true, true];
-            const transformed = (0, helpers_1.transformParams)(paramFields, inputParams);
+            const transformed = (0, utils_1.transformParams)(paramFields, inputParams);
             return this.dispatch(account, enums_1.TrackBackModules.DIDModule, enums_1.TrackBackCallables.DIDInsert, transformed);
         });
     }
