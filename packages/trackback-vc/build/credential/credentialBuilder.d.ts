@@ -22,7 +22,7 @@ export declare class CredentialBuilder {
     setIssuanceDate(date: string | Date): this;
     setExpirationDate(date: string | Date): this;
     build(): {
-        [k: string]: string[] | CredentialSubject | Issuer | CredentialStatus | undefined;
+        [k: string]: string[] | Issuer | CredentialStatus | CredentialSubject | undefined;
     };
 }
 //# sourceMappingURL=credentialBuilder.d.ts.map
