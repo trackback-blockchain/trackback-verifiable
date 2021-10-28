@@ -26,11 +26,11 @@ async function resolveKeyPair(issuer: string, context: ITrackBackContext): Promi
     console.log("***********resolveKeyPair********************************")
     console.log(result)
 
-    if (!result || !result.didDocument) {
+    if (!result || !result.did_document) {
         throw new Error('issuer not resolvable');
     }
 
-    const verificationMethod = result.didDocument.verificationMethod;
+    const verificationMethod = result.did_document.verificationMethod;
 
     const supportedKey = (verificationMethod || []).find((v:any) => v.type === 'JsonWebKey2020')
 
