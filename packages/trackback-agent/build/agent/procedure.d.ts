@@ -1,6 +1,6 @@
 import type { IKeyringPair } from "@polkadot/types/types";
 import { DIDDocument, IConnect, IDIDDocumentMetadata, IDIDResolutionMetadata, IDIDResolutionResult } from "../types";
-import { ExtrinsicResults } from "./helpers";
+import { ExtrinsicResults } from "./utils";
 export interface IProcedure {
     resolve(didUri: string): Promise<IDIDResolutionResult | null>;
     revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults>;

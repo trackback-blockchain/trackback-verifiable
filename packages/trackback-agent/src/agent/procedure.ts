@@ -14,7 +14,7 @@ import {
   toUint8Array,
   transformParams,
   uriToHex,
-} from "./helpers";
+} from "./utils";
 
 export interface IProcedure {
   resolve(didUri: string): Promise<IDIDResolutionResult|null>;
