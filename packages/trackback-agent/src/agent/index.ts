@@ -2,6 +2,11 @@ import { ITrackBackAgent, IConnect, ITrackbackAccount } from '../types';
 import { IProcedure, Procedure } from './procedure';
 import { createAccount } from './account';
 
+export * from './connection'
+export * from './account'
+export * from './enums'
+export * from './utils'
+
 export class TrackBackAgent implements ITrackBackAgent {
 
   procedure: IProcedure;
