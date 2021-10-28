@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CredentialIssuer = void 0;
 const key_1 = require("@trackback/key");
 const vc_1 = require("@trackback/vc");
 const uuid_1 = require("uuid");
+const crypto_1 = __importDefault(require("crypto"));
 /**
  * Trackback implementation for issuing credentials and presentations
  */
@@ -40,8 +44,16 @@ class CredentialIssuer {
     save(context) {
         return __awaiter(this, void 0, void 0, function* () {
             const didDocument = this.toDidDocument();
+            let publicKey = new TextDecoder().decode(context.account.keyPair.publicKey);
+            let data = {
+                didDocument: didDocument,
+                "proof": crypto_1.default.createHash('sha256').update(JSON.stringify(didDocument)).digest('base64'),
+                "senderTimeStamp": new Date().toISOString(),
+                "publicKey": publicKey
+            };
             if (context && context.agent) {
-                yield context.agent.procedure.constructDIDDocument(context.account.keyPair, didDocument, {}, {}, didDocument.id, [""]);
+                let didRef = yield context.agent.procedure.saveToDistributedStorage(data, {});
+                yield context.agent.procedure.constructDIDDocument(context.account.keyPair, didDocument, {}, {}, didRef, [publicKey]);
             }
             return didDocument;
         });

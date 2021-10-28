@@ -2,6 +2,7 @@ import { JsonWebKey2020, KeyPairOptions } from '@trackback/key';
 import { VC, VP, CredentialBuilder } from '@trackback/vc';
 import { v4 as uuidv4 } from 'uuid';
 import { ICredentialIssuer, IKeyPair, ICredential, ITrackBackContext, DIDDocument } from "../types";
+import crypto from 'crypto';
 
 
 /**
@@ -40,15 +41,23 @@ export class CredentialIssuer implements ICredentialIssuer {
    */
   async save(context: ITrackBackContext) {
     const didDocument = this.toDidDocument();
+    let publicKey = new TextDecoder().decode(context.account.keyPair.publicKey);
+    let data = {
+      didDocument: didDocument,
+      "proof": crypto.createHash('sha256').update(JSON.stringify(didDocument)).digest('base64'),
+      "senderTimeStamp": new Date().toISOString(),
+      "publicKey": publicKey
+    }
 
     if (context && context.agent) {
+      let didRef = await context.agent.procedure.saveToDistributedStorage(data ,{});
       await context.agent.procedure.constructDIDDocument(
         context.account.keyPair,
         didDocument,
         {},
         {},
-        didDocument.id,
-        [""]
+        didRef,
+        [publicKey]
       );
     }
 
