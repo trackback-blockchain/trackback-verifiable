@@ -1,6 +1,9 @@
 import { DIDResolutionResult, DIDResolutionOptions } from './types';
 import { DID_FORMAT } from './helpers';
 
+/**
+ * Abstract implementation for `DIDResolver`
+ */
 export interface IDIDResolver {
   resolve: (
     did: string,
@@ -16,12 +19,19 @@ export type ParsedResult = {
   prefix: string;
 };
 
+/**
+ * Default results for `DIDResolutionResult`
+ */
 const emptyResult: DIDResolutionResult = {
   didResolutionMetadata: {},
   didDocument: null,
   didDocumentMetadata: {},
 };
 
+/**
+ * DIDResolver
+ * Returns a DID Document with metadata
+ */
 export default class DIDResolver {
   private _resolverMap: ResolverMap;
 
@@ -39,6 +49,12 @@ export default class DIDResolver {
     Object.assign(this._resolverMap, map);
   }
 
+  /**
+   * 
+   * @param did DIDURI should follow the format defined in :- https://www.w3.org/TR/did-core/#a-simple-example
+   * @param options DID Resolution options
+   * @returns Promise<DIDResolutionResult>
+   */
   async resolve(
     did: string,
     options: DIDResolutionOptions = {}
@@ -63,7 +79,7 @@ export default class DIDResolver {
   }
 
   /**
-   * find did method from did uri
+   * find DID method from DID uri
    * @param {string} did  DID uri.
    *
    * @returns {{prefix: string}} Returns the did method

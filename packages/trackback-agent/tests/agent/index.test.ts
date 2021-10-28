@@ -1,8 +1,7 @@
 import { assert, expect } from "chai";
-import { TrackBackAgent } from "../../src/agent";
+import { toUint8Array, TrackBackAgent, transformParams, uriToHex } from "../../src/agent";
 import { Keyring } from "@polkadot/api";
 import { cryptoWaitReady } from "@polkadot/util-crypto";
-import  { toUint8Array, transformParams, uriToHex } from "../../src/agent/helpers";
 
 import sinon from 'sinon';
 

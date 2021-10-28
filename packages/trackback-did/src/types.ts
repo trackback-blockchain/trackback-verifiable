@@ -12,6 +12,9 @@ export interface JSONWebKey {
   x5u: string;
 }
 
+/**
+ * Abstract definition for verification method
+ */
 export interface VerificationMethod {
   id: string;
   controller: string;
