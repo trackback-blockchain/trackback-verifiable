@@ -107,3 +107,121 @@ await agent.procedure.updateDIDDocument(
     publicKeys
 );
 ```
+
+## Create W3C Verifiable Credentials
+
+Following steups to create and sign W3C credential as jwt
+
+### Sign credentials
+
+```javascript
+
+import { CredentialIssuer } from '@trackback/agent'
+import { createAccount } from '@trackback/agent/account'
+
+// initialize the agent
+const agent = new TrackBackAgent(new Connector());
+
+// create context
+const context = {
+  agent,
+  account: createAccount()
+}
+
+//initialize credential issuer
+const issuer = await CredentialIssuer.build();
+
+// save did document to ipfs
+issuer.save(context)
+
+const credential = {
+              '@context': ['https://www.w3.org/2018/credentials/v1'],
+              type: ['VerifiableCredential'],
+              issuanceDate: '2010-01-01T19:23:24Z',
+              credentialSubject: {},
+              issuer: issuer.id,
+          };
+
+const jwtCredential = await issuer.createVerifiableCredentials(credential)
+
+// jwt
+
+
+```
+
+### Verify credentials
+
+```javascript
+
+// initialize the agent
+const agent = new TrackBackAgent(new Connector());
+
+// create context
+const context = {
+  agent,
+  account: createAccount()
+}
+
+const verifier = new CredentialVerifier();
+
+// ... create jwtCredential
+
+
+ const r = await verifier.verifyCredentials(jwtCredential, context);
+
+
+ // true/false
+
+```
+
+## Create W3C Verifiable Presentation
+
+### Sign presentation
+
+Following steups to create and sign W3C Presentation as jwt
+
+```javascript
+
+import { CredentialIssuer } from '@trackback/agent'
+import { createAccount } from '@trackback/agent/account'
+
+
+//initialize credential issuer
+const issuer = await CredentialIssuer.build();
+
+const keyPair = issuer.keypair
+
+const jwtPresentaion = await issuer.createVerifiablePresentation([
+  jwtCredential
+], keyPair)
+
+// jwt
+
+
+```
+
+### Verify presentation
+
+Context is require to retrive verification for credentials
+
+```javascript
+
+// initialize the agent
+const agent = new TrackBackAgent(new Connector());
+
+// create context
+const context = {
+  agent,
+  account: createAccount()
+}
+
+const verifier = new CredentialVerifier();
+
+// ... create jwtPresentation
+
+
+ const r = await verifier.verifyPresentation(jwtPresentation, context, issuer.keypair)
+
+ // true/false
+
+```
