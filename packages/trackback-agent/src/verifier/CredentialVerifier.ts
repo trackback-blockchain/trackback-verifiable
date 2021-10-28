@@ -23,16 +23,13 @@ function decodeJWT(jwt: string) {
 async function resolveKeyPair(issuer: string, context: ITrackBackContext): Promise<IKeyPair> {
     const result = await context?.agent?.procedure.resolve(issuer);
 
-    console.log("***********resolveKeyPair********************************")
-    console.log(result)
-
     if (!result || !result.did_document) {
         throw new Error('issuer not resolvable');
     }
 
     const verificationMethod = result.did_document.verificationMethod;
 
-    const supportedKey = (verificationMethod || []).find((v:any) => v.type === 'JsonWebKey2020')
+    const supportedKey = (verificationMethod || []).find((v: any) => v.type === 'JsonWebKey2020')
 
     return JsonWebKey2020.import(supportedKey);
 }
@@ -147,7 +144,7 @@ export class CredentialVerifier {
      * @param jwt 
      * @returns 
      */
-    static decodeJWT(jwt: string): { header: any, payload: any, signature: string} {
+    static decodeJWT(jwt: string): { header: any, payload: any, signature: string } {
         return decodeJWT(jwt);
     }
 }
