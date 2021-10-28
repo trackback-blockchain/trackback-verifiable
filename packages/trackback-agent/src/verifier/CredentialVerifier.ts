@@ -5,7 +5,7 @@ import { IKeyPair, ITrackBackContext } from './../types';
 
 
 function decodeJWT(jwt: string) {
-    const [encodedHeader, encodedPayload] = jwt.split('.');
+    const [encodedHeader, encodedPayload, signature] = jwt.split('.');
 
     const header = JSON.parse(Buffer.from(encodedHeader, 'base64').toString());
     const payload = JSON.parse(
@@ -15,6 +15,7 @@ function decodeJWT(jwt: string) {
     return {
         header,
         payload,
+        signature
     }
 }
 
@@ -135,5 +136,10 @@ export class CredentialVerifier {
 
         throw new Error('only jwt verification is supported')
 
+    }
+
+
+    decodeJWT(jwt: string): { header: any, payload: any, signature: string} {
+        return decodeJWT(jwt);
     }
 }
