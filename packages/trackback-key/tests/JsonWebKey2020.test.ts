@@ -55,7 +55,7 @@ describe('generate', () => {
 
 describe('import tests', () => {
   it('from key', async () => {
-    const key = JsonWebKey2020.from({ ...test_ed25519_keypair });
+    const key = JsonWebKey2020.import({ ...test_ed25519_keypair });
     expect((key.publicKeyJwk as any).kty).to.equal('OKP');
     expect((key.publicKeyJwk as any).crv).to.equal('Ed25519');
   });
@@ -73,7 +73,7 @@ describe('sign test', () => {
     const sig =
       'NmVavyXt43T8eW3ISS4J0Z18jBmlzK8OwYMrjBTWrEZlrB3a5MDrcBeIeppheRgV_4BGys-IlpByxnNLPJsXDQ';
 
-    const key = JsonWebKey2020.from({ ...test_ed25519_keypair });
+    const key = JsonWebKey2020.import({ ...test_ed25519_keypair });
     const signer = key.signer();
     const signature = await signer.sign(testMSG, { deattached: true });
     expect(signature.split('.')[2]).to.equal(sig);
@@ -83,7 +83,7 @@ describe('sign test', () => {
     const sig =
       '8QKNsPEfCx35RmbHz39RchXCdRoOH9BVA1o-4yTdy6wO0co65DE5zMO0m-sIhYmAlQEY8UYrHvM6tUXAaTG6Cg';
 
-    const key = JsonWebKey2020.from({ ...test_ed25519_keypair });
+    const key = JsonWebKey2020.import({ ...test_ed25519_keypair });
     const signer = key.signer();
     const signature = await signer.sign(testMSG);
 
@@ -93,7 +93,7 @@ describe('sign test', () => {
 
 describe('verify', () => {
   it('verify', async () => {
-    const key = JsonWebKey2020.from({ ...test_ed25519_keypair });
+    const key = JsonWebKey2020.import({ ...test_ed25519_keypair });
     const signer = key.signer();
     const signature = await signer.sign(testMSG);
 
@@ -104,7 +104,7 @@ describe('verify', () => {
   });
 
   it('verify deattached signature', async () => {
-    const key = JsonWebKey2020.from({ ...test_ed25519_keypair });
+    const key = JsonWebKey2020.import({ ...test_ed25519_keypair });
     const signer = key.signer();
     const signature = await signer.sign(testMSG, { deattached: true });
 

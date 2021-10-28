@@ -54,7 +54,7 @@ class JsonWebKey2020 extends types_1.AbstractJsonWebKey {
             const privateKeyJwk = yield (0, export_1.exportJWK)(privateKey);
             const publicKeyJwk = yield (0, export_1.exportJWK)(publicKey);
             const thumbprint = yield (0, thumbprint_1.calculateThumbprint)(publicKeyJwk);
-            const _controller = controller || `did:trackback:key:${thumbprint}`;
+            const _controller = controller || `did:trackback:key:JsonWebKey2020:${thumbprint}`;
             if (!privateKeyJwk.alg) {
                 privateKeyJwk.alg = alg;
             }
@@ -83,7 +83,10 @@ class JsonWebKey2020 extends types_1.AbstractJsonWebKey {
     getPrivateKey() {
         return this.privateKeyJwk;
     }
-    static from(keyPair) {
+    static import(keyPair) {
+        if (!keyPair) {
+            throw new Error('keyPair required');
+        }
         return new JsonWebKey2020(Object.assign({}, keyPair));
     }
     static fingerprint(publicKeyJwk) {

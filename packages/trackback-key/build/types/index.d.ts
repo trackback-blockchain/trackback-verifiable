@@ -28,4 +28,7 @@ export interface KeyPairOptions {
     extractable?: boolean;
 }
 export * from './AbstractJsonWebKey';
+export * from './ISigner';
+export * from './IVerifier';
+export * from './IKeyPair';
 //# sourceMappingURL=index.d.ts.map

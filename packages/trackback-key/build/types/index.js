@@ -11,4 +11,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./AbstractJsonWebKey"), exports);
+__exportStar(require("./ISigner"), exports);
+__exportStar(require("./IVerifier"), exports);
+__exportStar(require("./IKeyPair"), exports);
 //# sourceMappingURL=index.js.map

@@ -71,7 +71,7 @@ export class JsonWebKey2020 extends AbstractJsonWebKey {
     const privateKeyJwk: JWK = await exportJWK(privateKey);
     const publicKeyJwk: JWK = await exportJWK(publicKey);
     const thumbprint = await calculateThumbprint(publicKeyJwk);
-    const _controller = controller || `did:trackback:key:${thumbprint}`;
+    const _controller = controller || `did:trackback:key:JsonWebKey2020:${thumbprint}`;
 
     if (!privateKeyJwk.alg) {
       privateKeyJwk.alg = alg;
@@ -106,7 +106,10 @@ export class JsonWebKey2020 extends AbstractJsonWebKey {
     return this.privateKeyJwk;
   }
 
-  static from(keyPair: any) {
+  static import(keyPair: any) {
+    if (!keyPair) {
+      throw new Error('keyPair required')
+    }
     return new JsonWebKey2020({
       ...keyPair,
     });

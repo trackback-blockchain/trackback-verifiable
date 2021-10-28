@@ -1,3 +1,4 @@
+import { IProcedure } from '../agent/procedure';
 import { ApiPromise } from "@polkadot/api/promise";
 import { ApiOptions } from "@polkadot/api/types";
 export interface IConnect {
@@ -9,6 +10,7 @@ export interface IDecentraliseStoreConnect {
     disconnect(): Promise<void>;
 }
 export interface ITrackBackAgent {
+    procedure: IProcedure;
 }
 export interface IDIDManager {
 }

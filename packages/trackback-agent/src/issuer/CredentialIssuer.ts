@@ -1,7 +1,7 @@
 import { JsonWebKey2020, KeyPairOptions } from '@trackback/key';
-import { VC, VP } from '@trackback/vc';
-
-import { ICredentialIssuer, IKeyPair, ICredential } from "../types";
+import { VC, VP, CredentialBuilder } from '@trackback/vc';
+import { v4 as uuidv4 } from 'uuid';
+import { ICredentialIssuer, IKeyPair, ICredential, ITrackBackContext, DIDDocument } from "../types";
 
 
 /**
@@ -9,26 +9,97 @@ import { ICredentialIssuer, IKeyPair, ICredential } from "../types";
  */
 export class CredentialIssuer implements ICredentialIssuer {
 
+  credentialBuilder: CredentialBuilder;
+  id: string
+  keypair: IKeyPair;
+
+
+  constructor(options?: any) {
+
+    this.id = options?.id;
+    this.keypair = options?.keypair;
+    this.credentialBuilder = new CredentialBuilder();
+
+  }
+
+  static async build(options?: any) {
+    const id = options?.id || `did:trakback:${uuidv4()}`
+    const keypair = await JsonWebKey2020.generate();
+    return new CredentialIssuer({ ...options, id, keypair });
+  }
+
+  getIssuer() {
+    return this.id;
+  }
+
+
+  /**
+   * Save Issuer did document
+   * @param context - ITrackBackContext
+   * @returns json didDocument
+   */
+  async save(context: ITrackBackContext) {
+    const didDocument = this.toDidDocument();
+
+    if (context && context.agent) {
+      await context.agent.procedure.constructDIDDocument(
+        context.account.keyPair,
+        didDocument,
+        {},
+        {},
+        didDocument.id,
+        [""]
+      );
+    }
+
+    return didDocument
+  }
+
+  /**
+   * create did document for this issuer
+   * @returns json didDocument
+   */
+  toDidDocument() {
+    const didDocument: DIDDocument = {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      id: this.id,
+    };
+
+    const { id, type, controller, publicKeyJwk } = this.keypair;
+
+    didDocument['verificationMethod'] = [{
+      id,
+      controller,
+      type,
+      publicKeyJwk
+    }]
+
+    return didDocument;
+  }
+
 
 
   /**
    * Create Verifiable Credentials as JWT
+   * 
    * @remarks Please see {@link https://www.w3.org/TR/vc-data-model/#json-web-token | 6.3.1 JSON Web Token}
    * @param cred - The credential
-   * @param keyPair - The key pair 
+   * @param keyPair - optional key pair 
    * @returns jwt
    */
-  createVerifiableCredentials(
+  async createVerifiableCredentials(
     cred: ICredential,
-    keyPair: IKeyPair
+    keyPair?: IKeyPair
   ): Promise<string> {
     if (!cred) throw new Error("Credentials required");
 
-    if (!keyPair) throw new Error("keyPair required");
+    if (!keyPair && !this.keypair) throw new Error("keyPair required");
 
     const vc = new VC();
 
-    return vc.issueJWT({ keyPair, credential: cred });
+    return vc.issue({ keyPair: (keyPair || this.keypair), credential: cred });
   }
 
 
@@ -57,7 +128,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     };
 
     const vp = new VP();
-    return vp.issueJWT({ keyPair, presentation });
+    return vp.issue({ keyPair, presentation });
 
   }
 
@@ -82,7 +153,8 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @param keyPair - json IKeyPair type
    * @returns IKeyPair
    */
-  from(keyPair: any) {
-    return JsonWebKey2020.from(keyPair);
+  import(keyPair: any): IKeyPair {
+    return JsonWebKey2020.import(keyPair);
   }
+
 }

@@ -11,5 +11,6 @@ var TrackBackCallables;
     TrackBackCallables["DIDUpdate"] = "updateDid";
     TrackBackCallables["DIDResolve"] = "resolveDid";
     TrackBackCallables["DIDTrail"] = "trailDid";
+    TrackBackCallables["DIDRevoke"] = "revokeDid";
 })(TrackBackCallables = exports.TrackBackCallables || (exports.TrackBackCallables = {}));
 //# sourceMappingURL=enums.js.map
