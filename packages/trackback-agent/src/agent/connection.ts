@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import axios from "axios";
 import { IConnect, IDistributedConnectorOptions, ITrackbackAgentOptions } from "../types";
-import { DefaultOptions, DistributedStorageOptions } from "./helpers";
+import { DefaultOptions, DistributedStorageOptions } from "./utils";
 
 /**
  * TrackBackAgentClass
@@ -11,8 +11,9 @@ export class Connector implements IConnect {
   private options: ITrackbackAgentOptions;
   private api: Promise<ApiPromise> | null | undefined;
 
-  constructor(options: ITrackbackAgentOptions = DefaultOptions) {
-    this.options = options;
+  constructor(options?: ITrackbackAgentOptions) {
+
+    this.options = options || DefaultOptions;
   }
 
   /**

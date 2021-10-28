@@ -15,14 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DecentralisedFileStoreConnector = exports.Connector = void 0;
 const api_1 = require("@polkadot/api");
 const axios_1 = __importDefault(require("axios"));
-const helpers_1 = require("./helpers");
+const utils_1 = require("./utils");
 /**
  * TrackBackAgentClass
  * Connects and disconnects RPC to chain
  */
 class Connector {
-    constructor(options = helpers_1.DefaultOptions) {
-        this.options = options;
+    constructor(options) {
+        this.options = options || utils_1.DefaultOptions;
     }
     /**
      * Connects to the TrackBack chain
@@ -54,7 +54,7 @@ exports.Connector = Connector;
  * IPFS storage connector
  */
 class DecentralisedFileStoreConnector {
-    constructor(options = helpers_1.DistributedStorageOptions) {
+    constructor(options = utils_1.DistributedStorageOptions) {
         this.options = options;
     }
     // TODO: Setup Auth Headers 
