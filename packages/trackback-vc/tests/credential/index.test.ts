@@ -191,7 +191,7 @@ describe('VC Tests', () => {
   });
 
   describe('VC Tests for veifyJWT ', () => {
-    it.skip('Credentials should be valid ', async () => {
+    it('Credentials should be valid ', async () => {
       const vc = new VC();
       const key = {
         id: 'did:trackback:key:SBQyXxAUa41yrBP9YJ-mPsCtESFjmzbOIUrzGI3-oWs#SBQyXxAUa41yrBP9YJ-mPsCtESFjmzbOIUrzGI3-oWs',

@@ -21,13 +21,32 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Encoding = void 0;
 const u8a = __importStar(require("uint8arrays"));
+/**
+ * Encoding | Decoding functionality provided by TrackBack
+ */
 class Encoding {
+    /**
+     * Base64Encode
+     * @param buffer string |Buffer|Uint8Array
+     * @returns string
+     */
     static base64Encode(buffer) {
         return Buffer.from(buffer).toString('base64').replace(/=+$/g, '');
     }
+    /**
+     * Base64Decode
+     * @param st string
+     * @returns string
+     */
     static base64Decode(st) {
         return Buffer.from(st, 'base64').toString('utf8');
     }
+    /**
+     * Base58BTC
+     * Reference :- https://en.bitcoin.it/wiki/Base58Check_encoding
+     * @param key Uint8Array | reference :- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
+     * @returns
+     */
     static base58BTC(key) {
         return u8a.toString(key, 'base58btc');
     }
@@ -56,7 +75,7 @@ class Encoding {
     static toBase58btc(publicKey) {
         return u8a.toString(publicKey, 'base58btc');
     }
-    // https://medium.com/swlh/json-web-signature-jws-and-jws-detached-for-a-five-year-old-88729b7b1a68
+    // Reference :- https://medium.com/swlh/json-web-signature-jws-and-jws-detached-for-a-five-year-old-88729b7b1a68
     static toBase64url(data) {
         return Buffer.from(data || '')
             .toString('base64')

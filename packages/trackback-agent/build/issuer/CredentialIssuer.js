@@ -24,7 +24,7 @@ class CredentialIssuer {
     }
     static build(options) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = (options === null || options === void 0 ? void 0 : options.id) || `did:trakback:${(0, uuid_1.v4)()}`;
+            const id = (options === null || options === void 0 ? void 0 : options.id) || `did:trackback:${(0, uuid_1.v4)()}`;
             const keypair = yield key_1.JsonWebKey2020.generate();
             return new CredentialIssuer(Object.assign(Object.assign({}, options), { id, keypair }));
         });
