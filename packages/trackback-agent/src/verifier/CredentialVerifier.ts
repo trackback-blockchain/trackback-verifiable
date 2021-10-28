@@ -139,7 +139,7 @@ export class CredentialVerifier {
     }
 
 
-    decodeJWT(jwt: string): { header: any, payload: any, signature: string} {
+    static decodeJWT(jwt: string): { header: any, payload: any, signature: string} {
         return decodeJWT(jwt);
     }
 }
