@@ -106,4 +106,4 @@ dist
 # Documentation
 docs
 
-build/**/*
+build/
