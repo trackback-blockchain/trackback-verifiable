@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DecentralisedFileStoreConnector = exports.Connector = void 0;
 const api_1 = require("@polkadot/api");
+const keyring_1 = __importDefault(require("@polkadot/keyring"));
 const axios_1 = __importDefault(require("axios"));
 const utils_1 = require("./utils");
 /**
@@ -46,6 +47,17 @@ class Connector {
         return __awaiter(this, void 0, void 0, function* () {
             (yield this.connect()).disconnect();
             this.api = null;
+        });
+    }
+    getDefaultAccount(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.connect();
+            const keyring = new keyring_1.default({ type: 'sr25519' });
+            const alice = keyring.addFromUri('//' + (name || "Alice"));
+            return {
+                keyPair: alice,
+                mnemonic: "Alice"
+            };
         });
     }
 }

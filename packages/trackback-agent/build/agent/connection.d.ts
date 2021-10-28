@@ -1,3 +1,4 @@
+import { ITrackbackAccount } from './../types/ITrackbackAccount';
 import { ApiPromise } from "@polkadot/api";
 import { IConnect, ITrackbackAgentOptions } from "../types";
 /**
@@ -17,6 +18,7 @@ export declare class Connector implements IConnect {
      * Disconnects from chain
      */
     disconnect(): Promise<void>;
+    getDefaultAccount(name?: string): Promise<ITrackbackAccount>;
 }
 /**
  * IPFS storage connector

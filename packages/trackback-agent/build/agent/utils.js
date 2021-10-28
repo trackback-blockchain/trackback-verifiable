@@ -7,7 +7,7 @@ exports.DistributedStorageOptions = {
     decentralisedStoreURL: "https://ipfs.trackback.dev:8080/ipfs/"
 };
 exports.DefaultOptions = {
-    url: "ws://127.0.0.1:9944",
+    url: "ws://ec2-13-210-205-180.ap-southeast-2.compute.amazonaws.com:9944",
     options: {
         types: {
             VerifiableCredential: {

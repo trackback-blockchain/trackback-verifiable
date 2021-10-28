@@ -10,11 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("./helpers");
+/**
+ * Default results for `DIDResolutionResult`
+ */
 const emptyResult = {
     didResolutionMetadata: {},
     didDocument: null,
     didDocumentMetadata: {},
 };
+/**
+ * DIDResolver
+ * Returns a DID Document with metadata
+ */
 class DIDResolver {
     constructor(method, resolver) {
         this._resolverMap = {};
@@ -28,6 +35,12 @@ class DIDResolver {
         };
         Object.assign(this._resolverMap, map);
     }
+    /**
+     *
+     * @param did DIDURI should follow the format defined in :- https://www.w3.org/TR/did-core/#a-simple-example
+     * @param options DID Resolution options
+     * @returns Promise<DIDResolutionResult>
+     */
     resolve(did, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -46,7 +59,7 @@ class DIDResolver {
         });
     }
     /**
-     * find did method from did uri
+     * find DID method from DID uri
      * @param {string} did  DID uri.
      *
      * @returns {{prefix: string}} Returns the did method
