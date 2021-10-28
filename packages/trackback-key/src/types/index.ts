@@ -1,3 +1,4 @@
+
 import type { KeyObject } from 'crypto';
 
 export interface Ed25519VerificationKey2018 {
@@ -31,3 +32,6 @@ export interface KeyPairOptions {
 }
 
 export * from './AbstractJsonWebKey';
+export * from './ISigner';
+export * from './IVerifier';
+export * from './IKeyPair';

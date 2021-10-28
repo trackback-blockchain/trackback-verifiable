@@ -72,7 +72,6 @@ class DecentralisedFileStoreConnector {
                     CID: cid,
                     content: response.data
                 };
-                ;
             }).catch(error => {
                 return {
                     "Error": error,

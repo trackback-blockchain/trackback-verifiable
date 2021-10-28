@@ -74,7 +74,23 @@ class Procedure {
         });
     }
     /**
-     * Updates a DID Document
+     * @param didUri Revoke a Decentralised Identifier by the DID URI
+     * Simply pass the DID URI to this method to revoke a DID.
+     * This action cannot be undone.
+     * @returns Promise<ExtrinsicResults>
+     */
+    revoke(account, didURI) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const inputParams = [(0, helpers_1.uriToHex)(didURI)];
+            const paramFields = [true];
+            const transformed = (0, helpers_1.transformParams)(paramFields, inputParams);
+            return this.dispatch(account, enums_1.TrackBackModules.DIDModule, enums_1.TrackBackCallables.DIDRevoke, transformed);
+        });
+    }
+    /**
+     * Updates a DID Document metadata
+     * Use the method `saveToDistributedStorage` to publish a new version of the DID document and
+     * then include the new CID
      * @param account | Polkadot Account
      * @param didDocument | DID Document represented in a JSON Structure
      * - DID Document gets update on IPFS or Decentralosed data store
@@ -188,7 +204,7 @@ class Procedure {
                                     console.log(`Finalised Block Hash ${JSON.stringify(result)}`);
                                     resolve({
                                         Error: false,
-                                        Message: "Data has been saved successfully",
+                                        Message: "Data has been processed successfully",
                                     });
                                 }
                             }

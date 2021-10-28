@@ -3,6 +3,7 @@ import { DIDDocument, IConnect, IDIDDocumentMetadata, IDIDResolutionMetadata, ID
 import { ExtrinsicResults } from "./helpers";
 export interface IProcedure {
     resolve(didUri: string): Promise<IDIDResolutionResult | null>;
+    revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults>;
     constructDIDDocument(account: IKeyringPair, didDocument: DIDDocument, didDocumentMetadata: IDIDDocumentMetadata, didResolutionMetadata: IDIDResolutionMetadata, didRef: string, publicKeys: Array<string>): Promise<ExtrinsicResults>;
     updateDIDDocument(account: IKeyringPair, didDocument: DIDDocument, didDocumentMetadata: IDIDDocumentMetadata, didResolutionMetadata: IDIDResolutionMetadata, didRef: string, publicKeys: Array<String>): Promise<ExtrinsicResults>;
     dispatch(account: IKeyringPair, palletRpc: string, callable: string, transformed: any): Promise<ExtrinsicResults>;
@@ -21,7 +22,16 @@ export declare class Procedure implements IProcedure {
      */
     resolve(didURI: string): Promise<IDIDResolutionResult | null>;
     /**
-     * Updates a DID Document
+     * @param didUri Revoke a Decentralised Identifier by the DID URI
+     * Simply pass the DID URI to this method to revoke a DID.
+     * This action cannot be undone.
+     * @returns Promise<ExtrinsicResults>
+     */
+    revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults>;
+    /**
+     * Updates a DID Document metadata
+     * Use the method `saveToDistributedStorage` to publish a new version of the DID document and
+     * then include the new CID
      * @param account | Polkadot Account
      * @param didDocument | DID Document represented in a JSON Structure
      * - DID Document gets update on IPFS or Decentralosed data store

@@ -1,5 +1,5 @@
 import { IKeyPair } from './IKeyPair';
-import { ICredential, VerifiableCredential } from "./VerifiableCredential";
+import { ICredential } from "./VerifiableCredential";
 
 
 /**
@@ -8,11 +8,11 @@ import { ICredential, VerifiableCredential } from "./VerifiableCredential";
 export interface ICredentialIssuer {
   createVerifiableCredentials(
     cred: ICredential,
-    keyPair: IKeyPair
+    keyPair?: IKeyPair
     ): Promise<string> 
 
   createVerifiablePresentation(
     vcs: string[],
-    keyPair: IKeyPair
+    keyPair?: IKeyPair
   ): Promise<string>;
 }
