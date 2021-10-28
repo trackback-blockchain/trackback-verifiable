@@ -39,7 +39,7 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @param context - ITrackBackContext
    * @returns json didDocument
    */
-  async save(context: ITrackBackContext, didDocumentMetadata: any = {}, didResolutionMetadata:any = {}) {
+  async save(context: ITrackBackContext, didDocumentMetadata: any = {}, didResolutionMetadata: any = {}) {
     const didDocument = this.toDidDocument();
     let publicKey = new TextDecoder().decode(context.account.keyPair.publicKey);
     let data = {
@@ -50,7 +50,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     }
 
     if (context && context.agent) {
-      let didRef = await context.agent.procedure.saveToDistributedStorage(data ,{});
+      let didRef = await context.agent.procedure.saveToDistributedStorage(data, {});
       await context.agent.procedure.constructDIDDocument(
         context.account.keyPair,
         didDocument,
@@ -137,7 +137,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     };
 
     const vp = new VP();
-    return vp.issue({ keyPair, presentation });
+    return vp.issue({ keyPair, presentation, headers: { iss: this.id } });
 
   }
 
