@@ -47,7 +47,7 @@ export class Ed25519KeyPair implements IEd25519KeyPair {
     return Encoding.encodeED25519Key(publicKey, '');
   }
 
-  //https://w3c-ccg.github.io/lds-ed25519-2018/#examples
+  //reference:- https://w3c-ccg.github.io/lds-ed25519-2018/#examples
   exportAsEd25519VerificationKey2018(): Ed25519VerificationKey2018 {
     const exprtKey: Ed25519VerificationKey2018 = {
       id: this.id,
@@ -85,7 +85,7 @@ export class Ed25519KeyPair implements IEd25519KeyPair {
     if (contentType === CONTENT_TYPE_DID_LD_JSON) {
       context['@context'] = 'https://w3id.org/did/v1';
     }
-    // info https://w3c-ccg.github.io/ld-cryptosuite-registry/#signature-suites
+    // refeence:- https://w3c-ccg.github.io/ld-cryptosuite-registry/#signature-suites
     return {
       ...context,
       id: did,
