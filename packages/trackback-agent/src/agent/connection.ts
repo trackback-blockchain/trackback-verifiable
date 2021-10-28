@@ -1,4 +1,7 @@
+import { ITrackbackAccount } from './../types/ITrackbackAccount';
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import Keyring from "@polkadot/keyring";
+
 import axios from "axios";
 import { IConnect, IDistributedConnectorOptions, ITrackbackAgentOptions } from "../types";
 import { DefaultOptions, DistributedStorageOptions } from "./utils";
@@ -39,6 +42,17 @@ export class Connector implements IConnect {
     (await this.connect()).disconnect();
     this.api = null;
   }
+
+  async getDefaultAccount(name?: string): Promise<ITrackbackAccount> {
+    await this.connect();
+    const keyring = new Keyring({ type: 'sr25519' });
+    const alice = keyring.addFromUri('//' + (name || "Alice"));
+
+    return {
+      keyPair: alice,
+      mnemonic: "Alice"
+    }
+  }
 }
 
 /**
@@ -58,13 +72,13 @@ export class DecentralisedFileStoreConnector {
    * @param headers Auth Headers
    * @returns 
    */
-  async getData(cid: string, headers:any): Promise<any> {
+  async getData(cid: string, headers: any): Promise<any> {
     return axios.get(cid).then(response => {
       return {
         CID: cid,
         content: response.data
       };
-    }).catch( error => {
+    }).catch(error => {
       return {
         "Error": error,
       }
@@ -78,10 +92,10 @@ export class DecentralisedFileStoreConnector {
    */
   async postData(data: any, headers: any): Promise<any> {
 
-    let url = this.options.url  + this.options.api + "ipfs/add";
-    return axios.post(url, data).then((response:any) => {
-      return this.options.decentralisedStoreURL +  response.data["cid"];
-    }).catch( error => {
+    let url = this.options.url + this.options.api + "ipfs/add";
+    return axios.post(url, data).then((response: any) => {
+      return this.options.decentralisedStoreURL + response.data["cid"];
+    }).catch(error => {
       return {
         "Error": error,
       }
