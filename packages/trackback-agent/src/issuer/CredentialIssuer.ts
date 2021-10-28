@@ -162,8 +162,26 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @param keyPair - json IKeyPair type
    * @returns IKeyPair
    */
-  import(keyPair: any): IKeyPair {
+  importKeyPair(keyPair: any): IKeyPair {
     return JsonWebKey2020.import(keyPair);
+  }
+
+
+  /**
+   * Export issuer as json
+   * 
+   */
+  export(): string {
+    return JSON.stringify(this);
+  }
+
+  /**
+   * import issuer from json
+   * @param options - json string
+   * @returns CredentialIssuer
+   */
+  import(options: string) {
+    return new CredentialIssuer(JSON.parse(options))
   }
 
 }
