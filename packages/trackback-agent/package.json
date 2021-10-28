@@ -1,6 +1,6 @@
 {
   "name": "@trackback/agent",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "main": "index.js",
   "author": "Team Trackback <dev@track-back.co>",
   "license": "GPL-3.0-or-later",
@@ -16,12 +16,14 @@
   "dependencies": {
     "@polkadot/api": "^6.1.2",
     "@polkadot/util-crypto": "^7.5.1",
-    "@trackback/key": "^0.0.1-alpha.2",
-    "@trackback/vc": "^0.0.1-alpha.2"
+    "@trackback/key": "^0.0.1-alpha.3",
+    "@trackback/vc": "^0.0.1-alpha.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
+    "@types/uuid": "^8.3.1",
     "chai": "^4.3.4",
     "mocha": "^9.1.2",
     "mock-socket": "^9.0.5",

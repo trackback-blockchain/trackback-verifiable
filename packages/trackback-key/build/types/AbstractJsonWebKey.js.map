@@ -1,1 +1,1 @@
-{"version":3,"file":"AbstractJsonWebKey.js","sourceRoot":"","sources":["../../src/types/AbstractJsonWebKey.ts"],"names":[],"mappings":";;;AAQA,MAAsB,kBAAkB;CAUvC;AAVD,gDAUC"}
+{"version":3,"file":"AbstractJsonWebKey.js","sourceRoot":"","sources":["../../src/types/AbstractJsonWebKey.ts"],"names":[],"mappings":";;;AAKA,MAAsB,kBAAkB;IAAxC;QACE,OAAE,GAAW,EAAE,CAAC;QAChB,SAAI,GAAW,EAAE,CAAC;QAClB,eAAU,GAAW,EAAE,CAAC;QACxB,iBAAY,GAAQ,IAAI,CAAC;IAW3B,CAAC;CAAA;AAfD,gDAeC"}

@@ -1,12 +1,14 @@
-export interface IVerifier {
-  verify: (options?: any) => Promise<any>;
-}
+import { IKeyPair } from './IKeyPair';
+import { ISigner } from './ISigner';
+import { IVerifier } from './IVerifier';
 
-export interface ISigner {
-  sign: (data: any, ...args: any[]) => any;
-}
 
-export abstract class AbstractJsonWebKey {
+export abstract class AbstractJsonWebKey implements IKeyPair {
+  id: string = "";
+  type: string = "";
+  controller: string = "";
+  publicKeyJwk: any = null;
+
   abstract signer(): ISigner;
   abstract verifier(): IVerifier;
   abstract getId(): string;
@@ -15,5 +17,5 @@ export abstract class AbstractJsonWebKey {
   abstract getPrivateKey(): any;
 
 
-  abstract toDIDDocument():any;
+  abstract toDIDDocument(): any;
 }

@@ -19,7 +19,7 @@ export declare class JsonWebKey2020 extends AbstractJsonWebKey {
     getController(): string;
     getPublicKey(): JWK;
     getPrivateKey(): JWK | undefined;
-    static from(keyPair: any): JsonWebKey2020;
+    static import(keyPair: any): JsonWebKey2020;
     static fingerprint(publicKeyJwk: JWK): Promise<string>;
     signer(): {
         sign(data: any, options?: any): Promise<string>;

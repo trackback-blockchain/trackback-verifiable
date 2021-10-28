@@ -13,4 +13,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./agent"), exports);
 __exportStar(require("./types"), exports);
 __exportStar(require("./issuer/CredentialIssuer"), exports);
+__exportStar(require("./verifier/CredentialVerifier"), exports);
 //# sourceMappingURL=index.js.map
