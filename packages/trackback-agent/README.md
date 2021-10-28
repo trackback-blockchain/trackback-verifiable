@@ -23,9 +23,41 @@
 # TrackBack Agent SDK
 * Create, Revoke, Resolve, Update DIDs
 * Connects with TrackBack chain
-* Store DID documents in a Decentralised file store ( IPFS for MVP stage) 
+* Store DID documents in a Decentralised file store ( IPFS for MVP stage)
 
-### Please refer`agent/tests/agent/index.test.ts` for more examples 
+### Please refer`agent/tests/agent/index.test.ts` for more examples
+
+## Usage
+
+## Installation
+
+```bash
+npm install @trackback/agent
+
+## or yarn 
+yarn add @trackback/agent
+
+```
+
+## Importing
+
+ES Modules import
+
+```javascript
+
+import { TrackBackAgent } from '@trackback/agent'
+
+```
+
+CommonJS import
+
+```javascript
+
+const { TrackBackAgent } = require('@trackback/vc');
+
+```
+
+
 ## DID Operations 
 * Reference :- https://www.w3.org/TR/did-core/
  
