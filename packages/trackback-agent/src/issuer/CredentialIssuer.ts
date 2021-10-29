@@ -40,6 +40,7 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @param context - ITrackBackContext
    * @returns json didDocument
    */
+
   async save(context: ITrackBackContext, didDocumentMetadata: any = {}, didResolutionMetadata:any = {}) {
     const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
     const didDocument = this.toDidDocument();
@@ -53,7 +54,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     }
 
     if (context && context.agent) {
-      let didRef = await context.agent.procedure.saveToDistributedStorage(data ,{});
+      let didRef = await context.agent.procedure.saveToDistributedStorage(data, {});
       await context.agent.procedure.constructDIDDocument(
         context.account.keyPair,
         didDocument,
@@ -140,7 +141,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     };
 
     const vp = new VP();
-    return vp.issue({ keyPair, presentation });
+    return vp.issue({ keyPair, presentation, headers: { iss: this.id } });
 
   }
 
@@ -165,8 +166,26 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @param keyPair - json IKeyPair type
    * @returns IKeyPair
    */
-  import(keyPair: any): IKeyPair {
+  importKeyPair(keyPair: any): IKeyPair {
     return JsonWebKey2020.import(keyPair);
+  }
+
+
+  /**
+   * Export issuer as json
+   * 
+   */
+  export(): string {
+    return JSON.stringify(this);
+  }
+
+  /**
+   * import issuer from json
+   * @param options - json string
+   * @returns CredentialIssuer
+   */
+  import(options: string) {
+    return new CredentialIssuer(JSON.parse(options))
   }
 
 }
