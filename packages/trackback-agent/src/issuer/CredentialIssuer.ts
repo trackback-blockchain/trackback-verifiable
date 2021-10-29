@@ -3,6 +3,7 @@ import { VC, VP, CredentialBuilder } from '@trackback/vc';
 import { v4 as uuidv4 } from 'uuid';
 import { ICredentialIssuer, IKeyPair, ICredential, ITrackBackContext, DIDDocument } from "../types";
 import crypto from 'crypto';
+import Keyring from "@polkadot/keyring";
 
 
 /**
@@ -40,8 +41,10 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @returns json didDocument
    */
   async save(context: ITrackBackContext, didDocumentMetadata: any = {}, didResolutionMetadata:any = {}) {
+    const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
     const didDocument = this.toDidDocument();
-    let publicKey = new TextDecoder().decode(context.account.keyPair.publicKey);
+    // TODO: Fix public key format
+    let publicKey = keyring.encodeAddress(context.account.keyPair.publicKey, 42)//new TextDecoder().decode(context.account.keyPair.publicKey);
     let data = {
       didDocument: didDocument,
       "proof": crypto.createHash('sha256').update(JSON.stringify(didDocument)).digest('base64'),

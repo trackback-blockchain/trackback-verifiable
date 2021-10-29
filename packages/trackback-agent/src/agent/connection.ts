@@ -46,11 +46,11 @@ export class Connector implements IConnect {
   async getDefaultAccount(name?: string): Promise<ITrackbackAccount> {
     await this.connect();
     const keyring = new Keyring({ type: 'sr25519' });
-    const alice = keyring.addFromUri('//' + (name || "Alice"));
+    const keyPair = keyring.addFromUri('//' + (name || "Alice"));
 
     return {
-      keyPair: alice,
-      mnemonic: "Alice"
+      keyPair: keyPair,
+      mnemonic: name || "Alice"
     }
   }
 }
