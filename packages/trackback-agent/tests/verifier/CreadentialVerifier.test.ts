@@ -84,9 +84,9 @@ describe('CredentialVerifier', () => {
 
             const mockprocedure = {
                 resolve: (any: any) => Promise.resolve({
-                    didResolutionMetadata: {},
-                    didDocument: issuer.toDidDocument(),
-                    didDocumentMetadata: {}
+                    did_resolution_metadata: {},
+                    did_document: issuer.toDidDocument(),
+                    did_document_metadata: {}
                 }),
                 constructDIDDocument: (any: any) => Promise.resolve(null),
                 updateDIDDocument: (any: any) => Promise.resolve(null),
@@ -165,9 +165,9 @@ describe('CredentialVerifier', () => {
 
             const mockprocedure = {
                 resolve: (any: any) => Promise.resolve({
-                    didResolutionMetadata: {},
-                    didDocument: issuer.toDidDocument(),
-                    didDocumentMetadata: {}
+                    did_resolution_metadata: {},
+                    did_document: issuer.toDidDocument(),
+                    did_document_metadata: {}
                 }),
                 constructDIDDocument: (any: any) => Promise.resolve(null),
                 updateDIDDocument: (any: any) => Promise.resolve(null),
