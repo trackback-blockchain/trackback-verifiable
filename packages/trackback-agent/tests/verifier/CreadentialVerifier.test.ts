@@ -146,7 +146,7 @@ describe('CredentialVerifier', () => {
 
             const jwtPresentation = await issuer.createVerifiablePresentation([jwt], issuer.keypair);
 
-            await expectThrowsAsync(() => verifier.verifyPresentation(jwtPresentation, context), "could not resolve verificationMethod.")
+            await expectThrowsAsync(() => verifier.verifyPresentation(jwtPresentation, context), "issuer not resolvable")
 
         });
 
