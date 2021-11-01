@@ -18,7 +18,11 @@
 
 ## IMPORTANT! 
 * This is a minimum viable product suite with limited functionality.
-* Please do not use this for production
+* Do not use this for productionise code or for an end product
+* Please view [Limitation](Limitations.md)
+
+## Issue and Verify credentials
+* Please go through the [Developer.md](Developer.md)
 
 # TrackBack Agent SDK
 * Create, Revoke, Resolve, Update DIDs

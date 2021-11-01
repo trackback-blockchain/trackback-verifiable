@@ -9,3 +9,7 @@
 * Multiple authentication
 * DID delegation is incomplete , only the nominated parties can modify a DID document
 * DID delegation functionality over a verifiable credential will be delivered after MVP stage
+
+## Miscellaneous 
+* You may see warning messages when creating DIDs
+* Only works with already created accounts on chain 
