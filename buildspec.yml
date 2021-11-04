@@ -8,7 +8,7 @@ phases:
       - apt-get update -y
       - apt install curl 
       - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-      - source ~/.bashrc
+      # - source ~/.bashrc
       - nvm install node
 
     finally:
