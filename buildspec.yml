@@ -18,7 +18,8 @@ phases:
     commands:
       - echo "Runnung Tests"
       - npm i -g yarn
-      - yarn install      
+      - npm i -g lerna
+      - npm run bootstrap
       - npm run test
     finally:
       - echo "Run Test finished"
