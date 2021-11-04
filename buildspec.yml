@@ -3,18 +3,24 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      nodejs: 14
     commands:
       - echo "Entered the install phase..."
       - apt-get update -y
-      - npm i -g yarn
-      - yarn install
+      - apt install curl 
+      - echo Installing nvm...
+      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+      - export NVM_DIR="$HOME/.nvm"
+      - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+      - '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'
+      - . "$NVM_DIR/nvm.sh" && nvm install 14
+
     finally:
       - echo "installed"
   pre_build:
     commands:
       - echo "Runnung Tests"
+      - npm i -g yarn
+      - yarn install      
       - npm run test
     finally:
       - echo "Run Test finished"
@@ -24,6 +30,3 @@ phases:
       - npm run build
     finally:
       - echo "Run Building finished"
-artifacts:
-   files:
-    -'**/*'
