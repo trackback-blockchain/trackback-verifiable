@@ -1,0 +1,29 @@
+version: 0.2
+
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - echo "Entered the install phase..."
+      - apt-get update -y
+      - npm i -g yarn
+      - yarn install
+    finally:
+      - echo "installed"
+  pre_build:
+    commands:
+      - echo "Runnung Tests"
+      - npm run test
+    finally:
+      - echo "Run Test finished"
+  build:
+    commands:
+      - echo "Running build command"
+      - npm run build
+    finally:
+      - echo "Run Building finished"
+artifacts:
+   files:
+    -'**/*'
