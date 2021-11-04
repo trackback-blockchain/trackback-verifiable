@@ -3,18 +3,21 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      nodejs: 14
     commands:
       - echo "Entered the install phase..."
       - apt-get update -y
-      - npm i -g yarn
-      - yarn install
+      - apt install curl 
+      - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+      - source ~/.profile
+      - nvm install node
+
     finally:
       - echo "installed"
   pre_build:
     commands:
       - echo "Runnung Tests"
+      - npm i -g yarn
+      - yarn install      
       - npm run test
     finally:
       - echo "Run Test finished"
@@ -24,6 +27,3 @@ phases:
       - npm run build
     finally:
       - echo "Run Building finished"
-artifacts:
-   files:
-    -'**/*'
