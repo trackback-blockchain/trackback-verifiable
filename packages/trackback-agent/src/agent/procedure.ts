@@ -274,7 +274,6 @@ export class Procedure implements IProcedure {
           });
       })
       .catch((error) => {
-        console.log(error);
         return {
           Error: true,
           Message: "Error",
