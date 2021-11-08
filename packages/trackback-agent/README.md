@@ -503,3 +503,22 @@ const verifier = new CredentialVerifier();
  // true/false
 
 ```
+
+## With custom chain settings
+
+You can use custom url with sdk.
+
+More info on `options` : <https://polkadot.js.org/docs/api/start/rpc.custom>
+
+```javascript
+
+const { DefaultOptions } = require('@trackback/agent')
+const options = {
+  url: 'https://custom.node.example.com', // custom node url
+  options: {...DefaultOptions.options} // using trackback defaults
+}
+
+const agent = new TrackBackAgent(new Connector(options));
+
+
+```
