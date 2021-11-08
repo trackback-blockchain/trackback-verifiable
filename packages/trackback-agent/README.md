@@ -299,7 +299,7 @@ CommonJS import
 
 ```javascript
 
-const { TrackBackAgent } = require('@trackback/vc');
+const { TrackBackAgent } = require('@trackback/agent');
 
 ```
 
