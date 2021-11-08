@@ -25,6 +25,7 @@ export interface ITrackbackAgentOptions {
   url: string;
   options: ApiOptions;
   didManager?: IDIDManager;
+  
 }
 
 

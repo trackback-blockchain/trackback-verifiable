@@ -123,7 +123,7 @@ describe('DID operation tests', () => {
 
     keyring = new Keyring({ type: 'sr25519' });
     account = keyring.addFromUri('//Alice', { name: 'Alice test account' });
-    agent = new TrackBackAgent(null);
+    agent = new TrackBackAgent();
   });
 
   afterEach(() => {
@@ -228,7 +228,7 @@ describe('DID operation tests', () => {
   });
 
   it("Should save a record on IPFS or a Decentralised data store", async () => {
-      agent = new TrackBackAgent(null);
+      agent = new TrackBackAgent();
       let result = await agent.procedure.saveToDistributedStorage(desDIDStructure, null);
       assert(
         decentralisedStorageServiceStubPostData.calledOnceWith(desDIDStructure, null
