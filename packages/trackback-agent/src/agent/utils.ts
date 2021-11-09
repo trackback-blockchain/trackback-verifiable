@@ -29,6 +29,7 @@ export const DefaultOptions = {
         sender_account_id: "Vec<u8>",
         public_keys: "Option<Vec<Vec<u8>>>",
       },
+      "PeerId": "(Vec<u8>)"
     },
     rpc: {
       didModule: {
