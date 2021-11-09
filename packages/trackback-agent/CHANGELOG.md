@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-alpha.23](https://github.com/trackback-blockchain/trackback-verifiable/compare/@trackback/agent@0.0.1-alpha.22...@trackback/agent@0.0.1-alpha.23) (2021-11-09)
+
+**Note:** Version bump only for package @trackback/agent
+
+
+
+
+
 ## [0.0.1-alpha.22](https://github.com/trackback-blockchain/trackback-verifiable/compare/@trackback/agent@0.0.1-alpha.21...@trackback/agent@0.0.1-alpha.22) (2021-11-08)
 
 **Note:** Version bump only for package @trackback/agent
