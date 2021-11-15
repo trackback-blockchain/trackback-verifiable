@@ -514,7 +514,7 @@ More info on `options` : <https://polkadot.js.org/docs/api/start/rpc.custom>
 
 const { DefaultOptions } = require('@trackback/agent')
 const options = {
-  url: 'https://custom.node.example.com', // custom node url
+  url: 'ws://custom.node.example.com', // custom node url ws[s]://custom.node.example.com:9944
   options: {...DefaultOptions.options} // using trackback defaults
 }
 
