@@ -3,6 +3,13 @@
     <img src="https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png" alt="TrackBack"></a>
 </p>
 
+# TrackBack Agent SDK
+
+<p>
+  <a href="https://trackback.co.nz/">
+    <img src="https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png" alt="TrackBack"></a>
+</p>
+
 <a href="https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-agent" target="_blank">
     <img src="https://img.shields.io/badge/trackback--agent-0.0.1--alpha.0-yellow" alt="TrackBack Agent SDK 0.0.1-alpha.0">
 </a>
