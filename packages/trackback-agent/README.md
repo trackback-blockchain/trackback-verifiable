@@ -5,9 +5,6 @@
 
 # TrackBack Agent SDK
 
-<a href="https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-agent" target="_blank">
-    <img src="https://img.shields.io/badge/trackback--agent-0.0.1--alpha.0-yellow" alt="TrackBack Agent SDK 0.0.1-alpha.0">
-</a>
 <a href="" target="_blank">
     <img src="https://img.shields.io/badge/build-pass-blueviolet" alt="Codeshare 3.0.0">
 </a>
