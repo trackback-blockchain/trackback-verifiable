@@ -3,7 +3,7 @@
     <img src="https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png" alt="TrackBack"></a>
 </p>
 
-# TrackBack DID Key SDK
+# TrackBack DIDKey SDK
 
 <a href="https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-key" target="_blank">
     <img src="https://img.shields.io/badge/trackback--key-0.0.1--alpha.6-green" alt="TrackBack Key SDK 0.0.1-alpha.6">
