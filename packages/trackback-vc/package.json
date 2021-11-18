@@ -25,5 +25,19 @@
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
     "chai": "^4.3.4"
-  }
+  },
+  "keywords": [
+    "DID",
+    "DID document",
+    "Verifiable Credential",
+    "Verifiable Presentation",
+    "W3C",
+    "Substrate",
+    "Polkadot",
+    "Web3",
+    "TrackBack",
+    "Blockchain",
+    "Cryptography",
+    "Self Sovereign Identity"
+  ]
 }

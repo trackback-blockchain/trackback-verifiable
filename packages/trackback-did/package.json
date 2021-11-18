@@ -27,5 +27,11 @@
   },
   "dependencies": {
     "uuid": "^8.3.2"
-  }
+  },
+  "keywords": [
+    "DID",
+    "DID document",
+    "W3C",
+    "TrackBack"
+  ]
 }

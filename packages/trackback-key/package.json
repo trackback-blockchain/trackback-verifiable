@@ -25,5 +25,14 @@
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
     "chai": "^4.3.4"
-  }
+  },
+  "keywords": [
+    "DID",
+    "DID document",
+    "Verifiable Credential",
+    "W3C",
+    "TrackBack",
+    "Cryptography",
+    "JSONWebKey2020"
+  ]
 }
