@@ -1,27 +1,16 @@
-<p>
-  <a href="https://trackback.co.nz/">
-    <img src="https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png" alt="TrackBack"></a>
-</p>
+
+[![ExpTrackback Logo](https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png)](https://trackback.co.nz/)
+
+[![TrackBack DID SDK](https://img.shields.io/badge/trackback--did-0.0.1--alpha-9cf)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-did)
+[![TrackBack DID SDK build](https://img.shields.io/badge/build-pass-blueviolet)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages)
+[![Node Version](https://img.shields.io/badge/nodejs-14.0.0+-8ca)](https://nodejs.org/es/blog/release/v14.0.0)
+[![Lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # TrackBack DID SDK
-
-<a href="https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-did" target="_blank">
-    <img src="https://img.shields.io/badge/trackback--did-0.0.1--alpha.0-9cf" alt="TrackBack DID SDK 0.0.1-alpha.0">
-</a>
-<a href="" target="_blank">
-    <img src="https://img.shields.io/badge/build-pass-blueviolet" alt="Codeshare 3.0.0">
-</a>
-<a href="https://nodejs.org/es/blog/release/v14.0.0/" target="_blank">
-    <img src="https://img.shields.io/badge/nodejs-14.0.0+-8ca" alt="NodeJS 14.0.0">
-</a>
-<a href="https://lerna.js.org/" target="_blank">
-    <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" alt="TrackBack Verifiable Credentials SDK 0.0.1-alpha.0">
-</a>
 
 The library is intended to be used as a common template for resolving a DID.
 
 Supports [Decentralized Identifiers](https://w3c.github.io/did-core/#identifier) spec.
-
 
 ## IMPORTANT!
 

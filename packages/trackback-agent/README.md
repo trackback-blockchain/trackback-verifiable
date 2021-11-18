@@ -1,20 +1,11 @@
-<p>
-  <a href="https://trackback.co.nz/">
-    <img src="https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png" alt="TrackBack"></a>
-</p>
+[![ExpTrackback Logo](https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png)](https://trackback.co.nz/)
+
+[![TrackBack Agent SDK](https://img.shields.io/badge/trackback--trackback--agent-0.0.1--alpha-yellow)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-agent)
+[![TrackBack Agent SDK Build](https://img.shields.io/badge/build-pass-blueviolet)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages)
+[![Node Version](https://img.shields.io/badge/nodejs-14.0.0+-8ca)](https://nodejs.org/es/blog/release/v14.0.0)
+[![Lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # TrackBack Agent SDK
-
-<a href=https://github.com/trackback-blockchain/trackback-verifiable target="_blank">
-    <img src="https://img.shields.io/badge/build-pass-blueviolet" alt="TrackBack Agent">
-</a>
-<a href="https://nodejs.org/es/blog/release/v14.0.0/" target="_blank">
-    <img src="https://img.shields.io/badge/nodejs-14.0.0+-8ca" alt="NodeJS 14.0.0">
-</a>
-<a href="https://lerna.js.org/" target="_blank">
-    <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" alt="TrackBack Verifiable Credentials SDK 0.0.1-alpha.0">
-</a>
-
 * Create, Revoke, Resolve, Update DIDs
 * Connects with TrackBack chain
 * Store DID documents in a Decentralised file store ( IPFS for MVP stage)

@@ -1,28 +1,16 @@
+[![ExpTrackback Logo](https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png)](https://trackback.co.nz/)
 
-<p>
-  <a href="https://trackback.co.nz/">
-    <img src="https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png" alt="TrackBack"></a>
-</p>
-<a href="https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-vc" target="_blank">
-    <img src="https://img.shields.io/badge/trackback--vc-0.0.1--alpha.0-blue" alt="TrackBack Verifiable Credentials SDK 0.0.1-alpha.0">
-</a>
-
-<a href="" target="_blank">
-    <img src="https://img.shields.io/badge/build-pass-blueviolet" alt="Codeshare 3.0.0">
-</a>
-<a href="https://nodejs.org/es/blog/release/v14.0.0/" target="_blank">
-    <img src="https://img.shields.io/badge/nodejs-14.0.0+-8ca" alt="NodeJS 14.0.0">
-</a>
-<a href="https://lerna.js.org/" target="_blank">
-    <img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg" alt="TrackBack Verifiable Credentials SDK 0.0.1-alpha.0">
-</a>
+[![TrackBack VC SDK](https://img.shields.io/badge/trackback--vc-0.0.1--alpha-blue)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-vc)
+[![TrackBack VC SDK Build](https://img.shields.io/badge/build-pass-blueviolet)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages)
+[![Node Version](https://img.shields.io/badge/nodejs-14.0.0+-8ca)](https://nodejs.org/es/blog/release/v14.0.0)
+[![Lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # TrackBack SDK for Verifiable Credentials & Presentations
 
 This sdk handles for issuing and verifying verifying Credentials
 and Presentations that adhere to W3C standards.
 
-## IMPORTANT! 
+## IMPORTANT!
 * This is a minimum viable product suite with limited functionality.
 * Please do not use this for production
 
