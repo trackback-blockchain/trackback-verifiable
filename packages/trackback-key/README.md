@@ -1,4 +1,3 @@
-
 [![ExpTrackback Logo](https://user-images.githubusercontent.com/2051324/127407635-236f8a7a-4ca6-410a-9fc4-add396743cfa.png)](https://trackback.co.nz/)
 
 [![TrackBack Key SDK 0.0.1-alpha.6](https://img.shields.io/badge/trackback--key-0.0.1--alpha-green)](https://github.com/trackback-blockchain/trackback-verifiable/tree/main/packages/trackback-key)
