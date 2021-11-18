@@ -6,6 +6,7 @@
 [![Lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 # TrackBack Agent SDK
+
 * Create, Revoke, Resolve, Update DIDs
 * Connects with TrackBack chain
 * Store DID documents in a Decentralised file store ( IPFS for MVP stage)
