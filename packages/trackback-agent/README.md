@@ -385,14 +385,18 @@ Following steups to create and sign W3C credential as jwt
 import { CredentialIssuer } from '@trackback/agent'
 import { createAccount } from '@trackback/agent/account'
 
+const connector = new Connector();
 // initialize the agent
-const agent = new TrackBackAgent(new Connector());
+const agent = new TrackBackAgent(connector);
+
+const account = connector.getAccount(mnemonic)
 
 // create context
 const context = {
   agent,
-  account: createAccount()
+  account
 }
+
 
 //initialize credential issuer
 const issuer = await CredentialIssuer.build();
@@ -419,13 +423,16 @@ const jwtCredential = await issuer.createVerifiableCredentials(credential)
 
 ```javascript
 
+const connector = new Connector();
 // initialize the agent
-const agent = new TrackBackAgent(new Connector());
+const agent = new TrackBackAgent(connector);
+
+const account = connector.getAccount(mnemonic)
 
 // create context
 const context = {
   agent,
-  account: createAccount()
+  account
 }
 
 const verifier = new CredentialVerifier();
@@ -472,13 +479,16 @@ Context is require to retrive verification for credentials
 
 ```javascript
 
+const connector = new Connector();
 // initialize the agent
-const agent = new TrackBackAgent(new Connector());
+const agent = new TrackBackAgent(connector);
+
+const account = connector.getAccount(mnemonic)
 
 // create context
 const context = {
   agent,
-  account: createAccount()
+  account
 }
 
 const verifier = new CredentialVerifier();
@@ -508,5 +518,40 @@ const options = {
 
 const agent = new TrackBackAgent(new Connector(options));
 
+
+```
+
+### Using custom account
+
+```javascript
+
+
+// CREATE NEW ACCOUNT
+
+const connector = new Connector();
+const account = connector.createAccount({name:"TrackBack"});
+
+// {
+//     keyPair:... ,
+//     mnemonic: ... // Your secret key
+// }
+
+// use polka js wallet to send credit to your account
+// https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Falpha-node.trackback.dev#/accounts
+
+// initialize the agent
+const agent = new TrackBackAgent(connector);
+
+// load your account back
+const importedAccount = connector.getAccount(account.mnemonic)
+
+// create context
+const context = {
+  agent,
+  account: importedAccount
+}
+
+const verifier = new CredentialVerifier();
+// ...
 
 ```
