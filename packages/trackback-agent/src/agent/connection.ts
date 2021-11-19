@@ -46,7 +46,7 @@ export class Connector implements IConnect {
   async getDefaultAccount(name?: string): Promise<ITrackbackAccount> {
     await this.connect();
     const keyring = new Keyring({ type: 'sr25519' });
-    const keyPair = keyring.addFromUri((name || "//Alice"));
+    const keyPair = keyring.addFromUri('//' + (name || "Alice"));
 
     return {
       keyPair: keyPair,
@@ -62,7 +62,7 @@ export class Connector implements IConnect {
   }
 
 
-  async getAccount(mnemonic:string): Promise<ITrackbackAccount> {
+  async getAccount(mnemonic: string): Promise<ITrackbackAccount> {
     await this.connect()
     return getAccount(mnemonic)
   }
