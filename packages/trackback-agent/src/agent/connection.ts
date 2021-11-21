@@ -1,10 +1,10 @@
-import { ITrackbackAccount } from './../types/ITrackbackAccount';
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import Keyring from "@polkadot/keyring";
 
 import axios from "axios";
-import { IConnect, IDistributedConnectorOptions, ITrackbackAgentOptions } from "../types";
+import { IConnect, IDistributedConnectorOptions, ITrackbackAgentOptions, ITrackbackAccount } from "../types";
 import { DefaultOptions, DistributedStorageOptions } from "./utils";
+import { createAccount, getAccount } from '.';
 
 /**
  * TrackBackAgentClass
@@ -53,6 +53,20 @@ export class Connector implements IConnect {
       mnemonic: name || "Alice"
     }
   }
+
+
+
+  async createAccount(metadata?: { [key: string]: string }): Promise<ITrackbackAccount> {
+    await this.connect()
+    return createAccount(metadata);
+  }
+
+
+  async getAccount(mnemonic: string): Promise<ITrackbackAccount> {
+    await this.connect()
+    return getAccount(mnemonic)
+  }
+
 }
 
 /**

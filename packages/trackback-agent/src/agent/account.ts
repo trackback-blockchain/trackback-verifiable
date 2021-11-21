@@ -23,3 +23,15 @@ export function createAccount(metadata?: { [key: string]: string }): ITrackbackA
     mnemonic: MNEMONIC,
   };
 }
+
+
+export function getAccount(mnemonic: string): ITrackbackAccount {
+  const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
+
+  const keyPair: KeyringPair = keyring.addFromUri(mnemonic);
+  return {
+    keyPair,
+    mnemonic: mnemonic,
+  };
+
+}
