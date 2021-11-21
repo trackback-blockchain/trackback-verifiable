@@ -512,7 +512,7 @@ More info on `options` : <https://polkadot.js.org/docs/api/start/rpc.custom>
 
 const { DefaultOptions } = require('@trackback/agent')
 const options = {
-  url: 'ws://custom.node.example.com', // custom node url ws[s]://custom.node.example.com:9944
+  url: 'ws://custom.node.example.com', // custom node url ws[s]://custom.node.example.com[:9944]
   options: {...DefaultOptions.options} // using trackback defaults
 }
 
@@ -521,7 +521,7 @@ const agent = new TrackBackAgent(new Connector(options));
 
 ```
 
-### Using custom account
+### Creates a new Account
 
 ```javascript
 
@@ -537,6 +537,8 @@ const account = connector.createAccount({name:"TrackBack"});
 // }
 
 // use polka js wallet to send credit to your account
+// Creates the new account by using the mnemonic generated for the new account
+// You can use a design implementation of your own to store the mnemonic
 // https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Falpha-node.trackback.dev#/accounts
 
 // initialize the agent
@@ -551,7 +553,15 @@ const context = {
   account: importedAccount
 }
 
-const verifier = new CredentialVerifier();
-// ...
+
+// Creates an Issuer
+const issuer = await CredentialIssuer.build();
+
+const metada = { "content-type": "application/json" }
+const resMetada = { "content-type": "application/json" }
+
+// Creates a Transaction based on the new account 
+const result = await issuer.save(context, metada, resMetada);
+
 
 ```
