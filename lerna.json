@@ -8,7 +8,9 @@
   "command": {
     "publish": {
       "allowBranch": [
-        "main"
+        "main",
+        "staging"
+
       ],
       "conventionalCommits": true,
       "gitRemote": "origin"

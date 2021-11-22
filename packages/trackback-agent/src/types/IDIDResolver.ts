@@ -23,9 +23,9 @@ export interface IDIDDocumentMetadata extends AnyType {
 }
 
 export interface IDIDResolutionResult {
-  didResolutionMetadata: IDIDResolutionMetadata;
-  didDocument: DIDDocument | null;
-  didDocumentMetadata: IDIDDocumentMetadata;
+  did_resolution_metadata: IDIDResolutionMetadata;
+  did_document: DIDDocument | null;
+  did_document_metadata: IDIDDocumentMetadata;
 }
 
 export interface ResolverMap {

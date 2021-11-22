@@ -5,7 +5,7 @@ import { IKeyPair, ITrackBackContext } from './../types';
 
 
 function decodeJWT(jwt: string) {
-    const [encodedHeader, encodedPayload] = jwt.split('.');
+    const [encodedHeader, encodedPayload, signature] = jwt.split('.');
 
     const header = JSON.parse(Buffer.from(encodedHeader, 'base64').toString());
     const payload = JSON.parse(
@@ -15,6 +15,7 @@ function decodeJWT(jwt: string) {
     return {
         header,
         payload,
+        signature
     }
 }
 
@@ -22,13 +23,13 @@ function decodeJWT(jwt: string) {
 async function resolveKeyPair(issuer: string, context: ITrackBackContext): Promise<IKeyPair> {
     const result = await context?.agent?.procedure.resolve(issuer);
 
-    if (!result || !result.didDocument) {
+    if (!result || !result.did_document) {
         throw new Error('issuer not resolvable');
     }
 
-    const verificationMethod = result.didDocument.verificationMethod;
+    const verificationMethod = result.did_document.verificationMethod;
 
-    const supportedKey = (verificationMethod || []).find(v => v.type === 'JsonWebKey2020')
+    const supportedKey = (verificationMethod || []).find((v: any) => v.type === 'JsonWebKey2020')
 
     return JsonWebKey2020.import(supportedKey);
 }
@@ -135,5 +136,15 @@ export class CredentialVerifier {
 
         throw new Error('only jwt verification is supported')
 
+    }
+
+
+    /**
+     * decode jwt
+     * @param jwt 
+     * @returns 
+     */
+    static decodeJWT(jwt: string): { header: any, payload: any, signature: string } {
+        return decodeJWT(jwt);
     }
 }

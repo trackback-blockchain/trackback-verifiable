@@ -1,6 +1,7 @@
 {
   "name": "@trackback/key",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.12",
+  "description": "TrackBack key SDK",
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -24,5 +25,14 @@
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
     "chai": "^4.3.4"
-  }
+  },
+  "keywords": [
+    "DID",
+    "DID document",
+    "Verifiable Credential",
+    "W3C",
+    "TrackBack",
+    "Cryptography",
+    "JSONWebKey2020"
+  ]
 }

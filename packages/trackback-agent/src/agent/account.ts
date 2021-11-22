@@ -11,6 +11,12 @@ export function generateMnemonic(
   return mnemonicGenerate(numWords, onlyJs);
 }
 
+/**
+ * Creates an account from a given key
+ * The Key can be a similat string to `Alice`, `Bob` or `TrackBack`
+ * @param metadata
+ * @returns ITrackbackAccount
+ */
 export function createAccount(metadata?: { [key: string]: string }): ITrackbackAccount {
   const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
 
@@ -22,4 +28,21 @@ export function createAccount(metadata?: { [key: string]: string }): ITrackbackA
     keyPair,
     mnemonic: MNEMONIC,
   };
+}
+
+
+/**
+ * Retrieves an account from a given mnemonic
+ * @param mnemonic 
+ * @returns ITrackbackAccount
+ */
+export function getAccount(mnemonic: string): ITrackbackAccount {
+  const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
+
+  const keyPair: KeyringPair = keyring.addFromUri(mnemonic);
+  return {
+    keyPair,
+    mnemonic: mnemonic,
+  };
+
 }

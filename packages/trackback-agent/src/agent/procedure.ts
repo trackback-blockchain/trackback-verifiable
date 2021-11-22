@@ -17,7 +17,7 @@ import {
 } from "./utils";
 
 export interface IProcedure {
-  resolve(didUri: string): Promise<IDIDResolutionResult|null>;
+  resolve(didUri: string): Promise<IDIDResolutionResult | null>;
   revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults>
   constructDIDDocument(
     account: IKeyringPair,
@@ -34,27 +34,26 @@ export interface IProcedure {
     didResolutionMetadata: IDIDResolutionMetadata,
     didRef: string,
     publicKeys: Array<String>
-  ) : Promise<ExtrinsicResults> ;
+  ): Promise<ExtrinsicResults>;
   dispatch(
     account: IKeyringPair,
     palletRpc: string,
     callable: string,
     transformed: any
   ): Promise<ExtrinsicResults>;
-  saveToDistributedStorage(data: any, headers: any):Promise<any>;
+  saveToDistributedStorage(data: any, headers: any): Promise<any>;
 }
 
 /**
  * Facilitates DID operations
  */
 export class Procedure implements IProcedure {
-  private connector: IConnect | null | undefined;
-  constructor(connector: IConnect | null | undefined) {
-    if(!connector){
-      this.connector = new Connector();
-    }else {
-      this.connector = connector;      
-    }
+  private connector: IConnect;
+  private fileConnector: DecentralisedFileStoreConnector;
+
+  constructor(connector?: IConnect, fileConnector?: DecentralisedFileStoreConnector) {
+    this.connector = !connector ? new Connector() : connector;
+    this.fileConnector = !fileConnector ? new DecentralisedFileStoreConnector() : fileConnector;
   }
 
   /**
@@ -64,23 +63,23 @@ export class Procedure implements IProcedure {
    */
   async resolve(didURI: string): Promise<IDIDResolutionResult | null> {
     const didURIHex = uriToHex(didURI);
-    console.log(didURIHex);
-    if(!this.connector) throw new Error("Throw")
+
+    if (!this.connector) throw new Error("Throw")
     return this.connector?.connect().then((api) => {
       return new Promise<IDIDResolutionResult>((resolve, reject) => {
         if (!api) return null;
-        api.query.didModule.dIDDocument(didURIHex, async(result: any) => {
-          console.log(result);
+        api.query.didModule.dIDDocument(didURIHex, async (result: any) => {
+
           if (!result.isEmpty) {
             let data = (JSON.parse(result.toString()));
             let cid = hexToUtf8(data.did_ref.substr(2).toString());
-            let desContent = await new DecentralisedFileStoreConnector().getData(cid, null);
-            data["did_document"]  = desContent.content;
+            let desContent = await this.fileConnector.getData(cid, null);
+            data["did_document"] = desContent.content;
             data["did_document_metadata"] = JSON.parse(hexToUtf8(data.did_document_metadata.substr(2).toString()));
             data["did_resolution_metadata"] = JSON.parse(hexToUtf8(data.did_resolution_metadata.substr(2).toString()));
             data["did_ref"] = cid;
             data["public_keys"] = data.public_keys.map((pk: string) => {
-                return hexToUtf8(pk.substr(2).toString())
+              return hexToUtf8(pk.substr(2).toString())
             });
             data["sender_account_id"] = hexToUtf8(data.sender_account_id.substr(2).toString());
             resolve(data);
@@ -89,13 +88,13 @@ export class Procedure implements IProcedure {
           }
         });
       })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      })
-      .finally(() => {
-        this.connector?.disconnect();
-      });
+        .catch((error) => {
+          console.log(error);
+          return null;
+        })
+        .finally(() => {
+          this.connector?.disconnect();
+        });
     });
   }
 
@@ -105,7 +104,7 @@ export class Procedure implements IProcedure {
    * This action cannot be undone. 
    * @returns Promise<ExtrinsicResults>
    */
-   async revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults> {
+  async revoke(account: IKeyringPair, didURI: string): Promise<ExtrinsicResults> {
 
     const inputParams = [uriToHex(didURI)];
 
@@ -140,8 +139,8 @@ export class Procedure implements IProcedure {
     didResolutionMetadata: IDIDResolutionMetadata,
     didRef: string,
     publicKeys: Array<String>
-  ) : Promise<ExtrinsicResults> {
-    const didDoc = toUint8Array(didDocument);
+  ): Promise<ExtrinsicResults> {
+
     const didDocMetadata = toUint8Array(didDocumentMetadata);
     const didDocRes = toUint8Array(didResolutionMetadata);
     const didURI = uriToHex(didDocument.id);
@@ -166,18 +165,16 @@ export class Procedure implements IProcedure {
    * @returns CID wrapped in a Promise
    */
   async saveToDistributedStorage(data: any, headers: any): Promise<any> {
-    let connector = new DecentralisedFileStoreConnector();
-    let results = await connector.postData(data, headers)
+
+    return this.fileConnector.postData(data, headers)
       .then((d) => {
-        console.log(d)
         return d;
       })
       .catch((error) => {
-        console.log(error)
-        return {error:error}
+
+        return { error: error }
       }
-    );
-    return results
+      );
   }
 
   /**
@@ -240,7 +237,7 @@ export class Procedure implements IProcedure {
     callable: string,
     transformed: any
   ): Promise<ExtrinsicResults> {
-    if(!this.connector) return null;
+    if (!this.connector) return null;
     return this.connector?.connect()
       .then((api) => {
         if (!api)
@@ -256,12 +253,7 @@ export class Procedure implements IProcedure {
               const txExecute = api.tx[palletRpc][callable](...transformed);
 
               txExecute.signAndSend(account, { nonce }, (result: any) => {
-                console.log(`Current status is ${JSON.stringify(result)}`);
-                console.log(`Current nonce is ${nonce}`);
-
-                if (result.status.isInBlock) {
-                  console.log(`Block Hash ${result.status.asInBlock}`);
-                } else if (result.status.isFinalized) {
+                if (result.status.isFinalized) {
                   if (result.dispatchError) {
                     resolve({
                       Error: true,
@@ -282,7 +274,6 @@ export class Procedure implements IProcedure {
           });
       })
       .catch((error) => {
-        console.log(error);
         return {
           Error: true,
           Message: "Error",
