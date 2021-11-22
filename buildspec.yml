@@ -1,0 +1,31 @@
+version: 0.2
+
+
+phases:
+  install:
+    commands:
+      - echo "Entered the install phase..."
+      - apt-get update -y
+      - apt install curl 
+      - echo Installing nvm...
+      - curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
+      - sh ./setup_14.sh
+      - apt install nodejs
+
+    finally:
+      - echo "installed"
+  pre_build:
+    commands:
+      - echo "Runnung Tests"
+      - npm i -g yarn
+      - npm i -g lerna
+      - npm run bootstrap
+      - npm run test
+    finally:
+      - echo "Run Test finished"
+  build:
+    commands:
+      - echo "Running build command"
+      - npm run build
+    finally:
+      - echo "Run Building finished"

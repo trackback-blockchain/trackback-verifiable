@@ -10,7 +10,7 @@ export const DistributedStorageOptions = {
 }
 
 export const DefaultOptions = {
-  url: "ws://ec2-13-210-205-180.ap-southeast-2.compute.amazonaws.com:9944",
+  url: "wss://alpha-node.trackback.dev",
   options: {
     types: {
       VerifiableCredential: {
@@ -29,6 +29,7 @@ export const DefaultOptions = {
         sender_account_id: "Vec<u8>",
         public_keys: "Option<Vec<Vec<u8>>>",
       },
+      "PeerId": "(Vec<u8>)"
     },
     rpc: {
       didModule: {

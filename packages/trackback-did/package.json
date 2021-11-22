@@ -1,7 +1,7 @@
 {
   "name": "@trackback/did",
-  "version": "0.0.1-alpha.4",
-  "description": "Decentralized Identifiers (DIDs) v1.0",
+  "version": "0.0.1-alpha.9",
+  "description": "Decentralized Identifiers (DIDs) SDK",
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -27,5 +27,11 @@
   },
   "dependencies": {
     "uuid": "^8.3.2"
-  }
+  },
+  "keywords": [
+    "DID",
+    "DID document",
+    "W3C",
+    "TrackBack"
+  ]
 }

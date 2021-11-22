@@ -1,8 +1,17 @@
 import { JsonWebKey2020, KeyPairOptions } from '@trackback/key';
 import { VC, VP, CredentialBuilder } from '@trackback/vc';
 import { v4 as uuidv4 } from 'uuid';
-import { ICredentialIssuer, IKeyPair, ICredential, ITrackBackContext, DIDDocument } from "../types";
+import {
+  ICredentialIssuer,
+  IKeyPair,
+  ICredential,
+  ITrackBackContext,
+  DIDDocument,
+  ServiceEndpoint,
+  VerificationMethod
+} from "../types";
 import crypto from 'crypto';
+import Keyring from "@polkadot/keyring";
 
 
 /**
@@ -13,6 +22,7 @@ export class CredentialIssuer implements ICredentialIssuer {
   credentialBuilder: CredentialBuilder;
   id: string
   keypair: IKeyPair;
+  didDocumentMetaData: any;
 
 
   constructor(options?: any) {
@@ -34,14 +44,62 @@ export class CredentialIssuer implements ICredentialIssuer {
   }
 
 
+  private __updateDidDocument(meta?: any) {
+    if (!meta) return;
+    Object.keys(meta).forEach(key => meta[key] === undefined ? delete meta[key] : {});
+    this.didDocumentMetaData = {
+      ...this.didDocumentMetaData,
+      ...meta,
+    }
+  }
+
+  setService(service?: ServiceEndpoint[]) {
+    this.__updateDidDocument({ service })
+  }
+
+  setAlsoKnownAs(alsoKnownAs?: string[]) {
+    this.__updateDidDocument({ alsoKnownAs })
+  }
+
+  setController(controller?: string | string[]) {
+    this.__updateDidDocument({ controller })
+  }
+
+  setAuthentication(authentication?: (string | VerificationMethod)[]) {
+    this.__updateDidDocument({ authentication })
+  }
+
+  setAssertionMethod(assertionMethod?: (string | VerificationMethod)[]) {
+    this.__updateDidDocument({ assertionMethod })
+  }
+
+  setKeyAgreement(keyAgreement?: (string | VerificationMethod)[]) {
+    this.__updateDidDocument({ keyAgreement })
+  }
+
+  setCapabilityInvocation(capabilityInvocation?: (string | VerificationMethod)[]) {
+    this.__updateDidDocument({ capabilityInvocation })
+  }
+
+  setCapabilityDelegation(capabilityDelegation?: (string | VerificationMethod)[]) {
+    this.__updateDidDocument({ capabilityDelegation })
+  }
+
+  setOther(other: { [key: string]: any }) {
+    this.__updateDidDocument({ ...other })
+  }
+
   /**
    * Save Issuer did document
    * @param context - ITrackBackContext
    * @returns json didDocument
    */
-  async save(context: ITrackBackContext, didDocumentMetadata: any = {}, didResolutionMetadata:any = {}) {
+
+  async save(context: ITrackBackContext, didDocumentMetadata: any = {}, didResolutionMetadata: any = {}) {
+    const keyring = new Keyring({ type: "sr25519", ss58Format: 42 });
     const didDocument = this.toDidDocument();
-    let publicKey = new TextDecoder().decode(context.account.keyPair.publicKey);
+    // TODO: Fix public key format
+    let publicKey = keyring.encodeAddress(context.account.keyPair.publicKey, 42)//new TextDecoder().decode(context.account.keyPair.publicKey);
     let data = {
       didDocument: didDocument,
       "proof": crypto.createHash('sha256').update(JSON.stringify(didDocument)).digest('base64'),
@@ -50,7 +108,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     }
 
     if (context && context.agent) {
-      let didRef = await context.agent.procedure.saveToDistributedStorage(data ,{});
+      let didRef = await context.agent.procedure.saveToDistributedStorage(data, {});
       await context.agent.procedure.constructDIDDocument(
         context.account.keyPair,
         didDocument,
@@ -69,12 +127,22 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @returns json didDocument
    */
   toDidDocument() {
+
     const didDocument: DIDDocument = {
       "@context": [
         "https://www.w3.org/ns/did/v1"
       ],
       id: this.id,
+      ...this.didDocumentMetaData
     };
+
+    if (!didDocument.id) {
+      throw new Error('DIDDocument id required. Please refer https://www.w3.org/TR/did-core/#did-syntax');
+    }
+
+    if (didDocument.id.split(':')[0] !== 'did') {
+      throw new Error('did prefix required. Please refer https://www.w3.org/TR/did-core/#did-syntax');
+    }
 
     const { id, type, controller, publicKeyJwk } = this.keypair;
 
@@ -137,7 +205,7 @@ export class CredentialIssuer implements ICredentialIssuer {
     };
 
     const vp = new VP();
-    return vp.issue({ keyPair, presentation });
+    return vp.issue({ keyPair, presentation, headers: { iss: this.id } });
 
   }
 
@@ -162,8 +230,26 @@ export class CredentialIssuer implements ICredentialIssuer {
    * @param keyPair - json IKeyPair type
    * @returns IKeyPair
    */
-  import(keyPair: any): IKeyPair {
+  importKeyPair(keyPair: any): IKeyPair {
     return JsonWebKey2020.import(keyPair);
+  }
+
+
+  /**
+   * Export issuer as json
+   * 
+   */
+  export(): string {
+    return JSON.stringify(this);
+  }
+
+  /**
+   * import issuer from json
+   * @param options - json string
+   * @returns CredentialIssuer
+   */
+  import(options: string) {
+    return new CredentialIssuer(JSON.parse(options))
   }
 
 }

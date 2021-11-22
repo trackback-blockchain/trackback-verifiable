@@ -14,6 +14,69 @@ describe('Creadential issuer', () => {
     });
 
 
+    it('should save addtional parameters', async () => {
+        const issuer = await CredentialIssuer.build();
+
+        issuer.setAlsoKnownAs(["https://test.example/"]);
+
+        issuer.setAssertionMethod([{
+            "id": "did:example:123456789abcdefghi#keys-2",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:example:123456789abcdefghi",
+            "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+        }])
+
+        issuer.setCapabilityDelegation([{
+            "id": "did:example:123456789abcdefghi#keys-2",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:example:123456789abcdefghi",
+            "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+        }])
+
+        issuer.setCapabilityInvocation([{
+            "id": "did:example:123456789abcdefghi#keys-2",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:example:123456789abcdefghi",
+            "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+        }])
+
+        issuer.setKeyAgreement([{
+            "id": "did:example:123456789abcdefghi#keys-2",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:example:123456789abcdefghi",
+            "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+        }])
+
+        issuer.setController("did:example:bcehfew7h32f32h7af3");
+
+        issuer.setService([{
+            "id": "did:example:123#linked-domain",
+            "type": "LinkedDomains",
+            "serviceEndpoint": "https://bar.example.com"
+        }]);
+
+        const didDocument = issuer.toDidDocument();
+
+        expect(didDocument).to.be.an('object');
+
+        expect(didDocument.controller).to.be.equal("did:example:bcehfew7h32f32h7af3");
+
+        const test = [{
+            "id": "did:example:123456789abcdefghi#keys-2",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:example:123456789abcdefghi",
+            "publicKeyMultibase": "zH3C2AVvLMv6gmMNam3uVAjZpfkcJCwDwnZn6z3wXmqPV"
+        }]
+
+        expect(didDocument.keyAgreement).to.deep.equal(test);
+        expect(didDocument.capabilityDelegation).to.deep.equal(test);
+        expect(didDocument.capabilityInvocation).to.deep.equal(test);
+        expect(didDocument.assertionMethod).to.deep.equal(test);
+        expect(didDocument.alsoKnownAs).to.deep.equal(["https://test.example/"]);
+
+    });
+
+
     it('should create jwt for credential ', async () => {
         const issuer = new CredentialIssuer();
         const keyPair = await issuer.generateKeyPair()
@@ -62,7 +125,7 @@ describe('Creadential issuer', () => {
 
 
         const presentation = await issuer.createVerifiablePresentation([jwt], keyPair)
-        
+
         expect(typeof presentation).to.be.equal('string');
         expect(presentation.split('.').length).to.be.equal(3);
     });

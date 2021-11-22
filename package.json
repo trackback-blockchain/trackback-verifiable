@@ -8,7 +8,7 @@
     "build": "find . -name 'tsconfig.tsbuildinfo' -prune -exec rm '{}' + && lerna run build",
     "bootstrap": "lerna bootstrap",
     "prettier": "prettier --write '{packages,!build}/**/*.ts'",
-    "test": "lerna run --stream test",
+    "test": "npm run build && lerna run --stream test",
     "publish:prerelease": "lerna publish --conventional-prerelease --yes"
   },
   "devDependencies": {
