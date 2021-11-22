@@ -19,6 +19,17 @@
 * BuildScripts 
 * Working with NodeJS 14.0.0 + in either Linux or Windows
 
+## The Big Picture ( MVP Release )
+![Architecture](Architecture.png)
+
+## Mono repo packages
+Please go through the individual repositories 
+* [trackback-agent](./packages/trackback-agent)
+* [trackback-did](./packages/trackback-did)
+* [trackback-key](./packages/trackback-key)
+* [trackback-vc](./packages/trackback-vc)
+
+
 ### Setup project
 ```bash
 yarn config set workspaces-experimental true
