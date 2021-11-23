@@ -16,7 +16,9 @@ Supports [Decentralized Identifiers](https://w3c.github.io/did-core/#identifier)
 
 * This is a minimum viable product suite with limited functionality.
 * Please do not use this for production
-  
+
+## The Big Picture ( MVP Release )
+![Architecture](Architecture.png)
 ## Installation
 
 ```bash
