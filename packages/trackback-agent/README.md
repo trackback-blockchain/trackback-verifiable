@@ -16,6 +16,11 @@
 * Do not use this for productionise code or for an end product
 * Please view Limitations
 
+
+## Architecture
+
+## The Big Picture ( MVP Release )
+![Architecture](Architecture.png)
 # Limitations
 ## The following features are not available in this minimum viable SDK
 * Zero Knowledge Proofs

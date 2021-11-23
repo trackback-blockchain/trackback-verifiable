@@ -17,6 +17,9 @@ Based on <https://github.com/w3c-ccg/lds-jws2020>
 yarn install
 ```
 
+
+## The Big Picture ( MVP Release )
+![Architecture](Architecture.png)
 ## Usage
 
 ### importing DID builder and resolver

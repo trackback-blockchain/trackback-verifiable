@@ -20,6 +20,8 @@ and Presentations that adhere to W3C standards.
 yarn install
 ```
 
+## TrackBack Verifiabe Credentials
+![Architecture](Architecture.png)
 ## Usage
 
 ### importing Verifiable Credentials
