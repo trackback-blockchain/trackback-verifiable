@@ -24,7 +24,7 @@ yarn install
 ![Architecture](Architecture.png)
 ## Usage
 
-### importing Verifiable Credentials
+### Importing Verifiable Credentials
 
 ES Modules import
 
