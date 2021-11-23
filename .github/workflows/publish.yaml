@@ -45,4 +45,4 @@ jobs:
 
       - name: publish to npm
         if: github.ref == 'refs/heads/main'
-        run: npm build && npm run publish:prerelease
+        run: npm run build && npm run publish:prerelease
