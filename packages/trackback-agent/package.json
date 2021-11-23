@@ -29,12 +29,13 @@
   "devDependencies": {
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
+    "@types/sinon": "^10.0.6",
     "@types/uuid": "^8.3.1",
     "chai": "^4.3.4",
     "mocha": "^9.1.2",
     "mock-socket": "^9.0.5",
     "prettier": "2.4.1",
-    "sinon": "@types/sinon@10.0.0",
+    "sinon": "^12.0.1",
     "ts-node": "^10.2.1",
     "ts-sinon": "^2.0.2"
   },
