@@ -39,6 +39,8 @@ jobs:
       - name: npm registry config
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          echo "@trackback:registry=http://registry.npmjs.org/" > .npmrc
+          echo "registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
           npm whoami
           npm run build && npm run publish:prerelease
