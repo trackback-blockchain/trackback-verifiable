@@ -1,6 +1,6 @@
 {
   "name": "@trackback/agent",
-  "version": "0.0.1-alpha.37",
+  "version": "0.0.1-alpha.38",
   "description": "TrackBack agent SDK",
   "source": "src/index.js",
   "main": "build/index.js",
