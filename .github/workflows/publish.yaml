@@ -1,46 +1,46 @@
-name: Build Publish
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - 'main'
+# name: Build Publish
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - 'main'
 
-jobs:
-  publish:
-    env:
-      NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-      GIT_HUB_TOKEN: ${{secrets.GIT_HUB_TOKEN}}
-      GIT_HUB_USER: ${{secrets.GIT_HUB_USER}}
-      GIT_HUB_EMAIL: ${{secrets.GIT_HUB_EMAIL}}
+# jobs:
+#   publish:
+#     env:
+#       NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+#       GIT_HUB_TOKEN: ${{secrets.GIT_HUB_TOKEN}}
+#       GIT_HUB_USER: ${{secrets.GIT_HUB_USER}}
+#       GIT_HUB_EMAIL: ${{secrets.GIT_HUB_EMAIL}}
     
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+#     strategy:
+#       matrix:
+#         node-version: [14.x]
 
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
 
-      - name: Install
-        run: npm run bootstrap
+#       - name: Install
+#         run: npm run bootstrap
 
-      - name: Test
-        run: npm test
+#       - name: Test
+#         run: npm test
 
-      - name: git config
-        run: |
-          git remote set-url origin https://trackback-blockchain:$GIT_HUB_TOKEN@github.com/trackback-blockchain/trackback-verifiable
-          git config user.name $GIT_HUB_USER
-          git config user.email $GIT_HUB_EMAIL
+#       - name: git config
+#         run: |
+#           git remote set-url origin https://trackback-blockchain:$GIT_HUB_TOKEN@github.com/trackback-blockchain/trackback-verifiable
+#           git config user.name $GIT_HUB_USER
+#           git config user.email $GIT_HUB_EMAIL
       
-      - name: npm registry config
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "@trackback:registry=http://registry.npmjs.org/" > .npmrc
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-          npm whoami
-          npm run build && npm run publish:prerelease
+#       - name: npm registry config
+#         if: github.ref == 'refs/heads/main'
+#         run: |
+#           echo "@trackback:registry=http://registry.npmjs.org/" > .npmrc
+#           echo "registry=https://registry.npmjs.org/" >> .npmrc
+#           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+#           npm whoami
+#           npm run build && npm run publish:prerelease
