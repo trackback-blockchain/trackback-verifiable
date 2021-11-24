@@ -177,7 +177,6 @@ async function verifiableCredential(credentialData: any) {
     // Creates a JWT presentation
     const jwtPresentation = await issuer.createVerifiablePresentation([jwt], issuer.keypair);
 
-    // console.log("JWT Presentation " +  jwtPresentation)
     let decode = CredentialVerifier.decodeJWT(jwtPresentation);
 
     // Prints decoded JWT presentation
