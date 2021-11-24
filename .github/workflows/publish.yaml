@@ -36,12 +36,9 @@ jobs:
           git config user.name $GIT_HUB_USER
           git config user.email $GIT_HUB_EMAIL
       
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
+      - name: npm registry config
         if: github.ref == 'refs/heads/main'
-        run: npm run build && npm run publish:prerelease
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+        run: |
+          echo "registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami
+          npm run build && npm run publish:prerelease
