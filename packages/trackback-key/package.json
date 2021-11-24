@@ -1,6 +1,6 @@
 {
   "name": "@trackback/key",
-  "version": "0.0.1-alpha.15",
+  "version": "0.0.1-alpha.16",
   "description": "TrackBack key SDK",
   "source": "src/index.js",
   "main": "build/index.js",
@@ -34,5 +34,6 @@
     "TrackBack",
     "Cryptography",
     "JSONWebKey2020"
-  ]
+  ],
+  "gitHead": "a1788c9dd3be21b48ade75046e16e65f9e1ec223"
 }
