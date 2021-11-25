@@ -16,6 +16,7 @@ Supports [Decentralized Identifiers](https://w3c.github.io/did-core/#identifier)
 
 * This is a minimum viable product suite with limited functionality.
 * Please do not use this for production
+* This is a part of SDKs for Verifiable Credentials, Verifiable Credential Presentations, DID Keys, Self Sovereign Identity and Decentralised Identifiers
 
 ## TrackBack DID
 ![Architecture](Architecture.png)

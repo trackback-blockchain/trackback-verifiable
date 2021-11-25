@@ -11,6 +11,12 @@ Implementation of JSON Web Key 2020 <https://w3c-ccg.github.io/lds-jws2020/>
 
 Based on <https://github.com/w3c-ccg/lds-jws2020>
 
+## IMPORTANT!
+
+* This is a minimum viable product suite with limited functionality.
+* Please do not use this for production
+* This is a part of SDKs for Verifiable Credentials, Verifiable Credential Presentations, DID Keys, Self Sovereign Identity and Decentralised Identifiers
+
 ## Installation
 
 ```bash

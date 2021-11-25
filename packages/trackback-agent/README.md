@@ -10,6 +10,7 @@
 * Create, Revoke, Resolve, Update DIDs
 * Connects with TrackBack chain
 * Store DID documents in a Decentralised file store ( IPFS for MVP stage)
+* This is a part of SDKs for Verifiable Credentials, Verifiable Credential Presentations, DID Keys, Self Sovereign Identity and Decentralised Identifiers
 
 ## IMPORTANT! 
 * This is a minimum viable product suite with limited functionality.

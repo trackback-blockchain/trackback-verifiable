@@ -9,7 +9,7 @@
 [![Node Version](https://img.shields.io/badge/nodejs-14.0.0+-8ca)](https://nodejs.org/es/blog/release/v14.0.0)
 [![Lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-## SDKs for Verifiable Credentials, Presentations, Keys and Decentralised Identifiers
+## SDKs for Verifiable Credentials, Verifiable Credential Presentations, DID Keys, Self Sovereign Identity and Decentralised Identifiers
 
 ## IMPORTANT! 
 * This is a minimum viable product suite with limited functionality.
