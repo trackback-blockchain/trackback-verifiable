@@ -9,7 +9,7 @@
     "bootstrap": "lerna bootstrap",
     "prettier": "prettier --write '{packages,!build}/**/*.ts'",
     "test": "npm run build && lerna run --stream test",
-    "publish:prerelease": "lerna publish --conventional-prerelease --yes --no-verify-access --force-push"
+    "publish:prerelease": "lerna publish --conventional-prerelease --yes --no-verify-access"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
