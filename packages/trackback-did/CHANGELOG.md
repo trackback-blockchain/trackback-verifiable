@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-alpha.15](github.com/trackback-blockchain/track-back-verifier/packages/trackback-did/compare/@trackback/did@0.0.1-alpha.14...@trackback/did@0.0.1-alpha.15) (2021-11-25)
+
+**Note:** Version bump only for package @trackback/did
+
+
+
+
+
 ## [0.0.1-alpha.14](https://github.com/trackback-blockchain/trackback-did/compare/@trackback/did@0.0.1-alpha.13...@trackback/did@0.0.1-alpha.14) (2021-11-24)
 
 **Note:** Version bump only for package @trackback/did
