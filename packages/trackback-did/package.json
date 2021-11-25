@@ -5,11 +5,15 @@
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "repository": "git@github.com/trackback-blockchain/track-back-verifier/packages/trackback-did",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trackback-blockchain/track-back-verifier.git"
+  },
   "author": "Team Trackback <dev@track-back.co>",
   "license": "GPL-3.0-or-later",
   "contributors": [
-    "Don <don@track-back.co>"
+    "Don <donlokuge@gmail.com>",
+    "Gayan <kalanamith@gmail.com>"
   ],
   "scripts": {
     "build": "tsc",

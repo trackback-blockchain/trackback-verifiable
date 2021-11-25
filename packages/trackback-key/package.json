@@ -6,10 +6,14 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "author": "Team Trackback <dev@track-back.co>",
-  "repository": "github.com/trackback-blockchain/track-back-verifier/packages/trackback-key",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trackback-blockchain/track-back-verifier.git"
+  },
   "license": "GPL-3.0-or-later",
   "contributors": [
-    "Don <don@track-back.co>",
+    "Don <donlokuge@gmail.com>",
+    "Gayan <kalanamith@gmail.com>",
     "Dev <dev@track-back.co>"
   ],
   "scripts": {
