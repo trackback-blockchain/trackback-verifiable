@@ -5,7 +5,7 @@
   "source": "src/index.js",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "repository": "github.com/trackback-blockchain/track-back-verifier/packages/trackback-did",
+  "repository": "git@github.com/trackback-blockchain/track-back-verifier/packages/trackback-did",
   "author": "Team Trackback <dev@track-back.co>",
   "license": "GPL-3.0-or-later",
   "contributors": [
