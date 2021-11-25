@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.1-alpha.22](https://github.com/trackback-blockchain/trackback-verifiable/compare/@trackback/vc@0.0.1-alpha.21...@trackback/vc@0.0.1-alpha.22) (2021-11-25)
+
+**Note:** Version bump only for package @trackback/vc
+
+
+
+
+
 ## [0.0.1-alpha.21](https://github.com/trackback-blockchain/track-back-verifier/compare/@trackback/vc@0.0.1-alpha.20...@trackback/vc@0.0.1-alpha.21) (2021-11-25)
 
 **Note:** Version bump only for package @trackback/vc
