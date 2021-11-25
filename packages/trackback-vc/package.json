@@ -8,7 +8,7 @@
   "author": "Team Trackback <dev@track-back.co>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/trackback-blockchain/track-back-verifier.git"
+    "url": "https://github.com/trackback-blockchain/trackback-verifiable.git"
   },
   "contributors": [
     "Don <donlokuge@gmail.com>",

@@ -7,7 +7,7 @@
   "types": "build/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/trackback-blockchain/track-back-verifier.git"
+    "url": "https://github.com/trackback-blockchain/trackback-verifiable.git"
   },
   "author": "Team Trackback <dev@track-back.co>",
   "license": "GPL-3.0-or-later",
