@@ -6,6 +6,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "author": "Team Trackback <dev@track-back.co>",
+  "repository": "github.com/trackback-blockchain/track-back-verifier/packages/trackback-agent",
   "license": "GPL-3.0-or-later",
   "contributors": [
     "Don <don@track-back.co>",
