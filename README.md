@@ -33,7 +33,8 @@ Please go through the individual repositories
 ### Setup project
 ```bash
 yarn config set workspaces-experimental true
-npm run bootrap
+npm install
+npm run bootstrap
 ```
 
 ### Tests
