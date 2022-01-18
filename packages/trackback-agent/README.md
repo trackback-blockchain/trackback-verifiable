@@ -45,7 +45,7 @@
 ## Requirements
 
 * Install nodejs 14.0.0  or above.
-* Install follwoing dependencies. 
+* Install following dependencies. 
 ```javascript
 sudo npm i -g ts-node
 npm install -g typescript
